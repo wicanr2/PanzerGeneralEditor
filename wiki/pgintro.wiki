@@ -1,0 +1,12 @@
+#summary One-sentence summary of this page.
+
+= 裝甲元帥修改器 =
+
+Hello 大家好, 裝甲元帥修改器 是中文版修改器.
+可以修改PG內的裝備檔 PANZEQUP.EQP, 所有屬性均可修改,
+
+可惜 裝備的國籍 並沒有在 裝備檔內. 
+
+這方面如果大家有資訊歡迎提供給我參考
+
+wicanr2 敬上
