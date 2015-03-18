@@ -1,0 +1,1 @@
+Panzer General I Chinese Editor for editing the equipment file "PANZEQUP.EQP"
