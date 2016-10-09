@@ -1,0 +1,32 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PGEdit", "PGEdit\PGEdit.csproj", "{A18502E3-9F06-451D-8EE1-8DA5FB0C1863}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PGEQReader", "PGEQReader\PGEQReader.csproj", "{C0F149EC-3234-4AE4-BE79-4704BB90D88E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PGEQConsole", "PGEQConsole\PGEQConsole.csproj", "{20995764-2B15-45E9-B3E7-88F9470D85C5}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A18502E3-9F06-451D-8EE1-8DA5FB0C1863}.Debug|x64.ActiveCfg = Debug|x64
+		{A18502E3-9F06-451D-8EE1-8DA5FB0C1863}.Debug|x64.Build.0 = Debug|x64
+		{A18502E3-9F06-451D-8EE1-8DA5FB0C1863}.Release|x64.ActiveCfg = Release|x64
+		{A18502E3-9F06-451D-8EE1-8DA5FB0C1863}.Release|x64.Build.0 = Release|x64
+		{C0F149EC-3234-4AE4-BE79-4704BB90D88E}.Debug|x64.ActiveCfg = Debug|x64
+		{C0F149EC-3234-4AE4-BE79-4704BB90D88E}.Debug|x64.Build.0 = Debug|x64
+		{C0F149EC-3234-4AE4-BE79-4704BB90D88E}.Release|x64.ActiveCfg = Release|x64
+		{C0F149EC-3234-4AE4-BE79-4704BB90D88E}.Release|x64.Build.0 = Release|x64
+		{20995764-2B15-45E9-B3E7-88F9470D85C5}.Debug|x64.ActiveCfg = Debug|x64
+		{20995764-2B15-45E9-B3E7-88F9470D85C5}.Debug|x64.Build.0 = Debug|x64
+		{20995764-2B15-45E9-B3E7-88F9470D85C5}.Release|x64.ActiveCfg = Release|x64
+		{20995764-2B15-45E9-B3E7-88F9470D85C5}.Release|x64.Build.0 = Release|x64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
