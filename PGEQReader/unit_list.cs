@@ -13,6 +13,9 @@ namespace PGEQReader
 		private unit_vector[] unit_pool = new unit_vector[500];
 		private int pool_max_cnt = 500;
 		private int pool_used = 0;
+    public void clear() {
+      pool_used =0;
+    }
 
 		public int get_pool_count() {
 			return pool_used;
@@ -304,5 +307,36 @@ namespace PGEQReader
 			pgu = unit_pool[i].pg_unit;
 			return pgu._move_type;
 		}
+    public byte get_unknown1(int i) {
+			if (i < 0 || i > pool_used) return 0;
+			PanzerGeneral_UNIT pgu;
+      pgu = unit_pool[i].pg_unit;
+			return pgu.unknown1;
+    }
+    public byte get_unknown2(int i) {
+			if (i < 0 || i > pool_used) return 0;
+			PanzerGeneral_UNIT pgu;
+      pgu = unit_pool[i].pg_unit;
+			return pgu.unknown2;
+    }
+    public int get_unknown3(int i) {
+			if (i < 0 || i > pool_used) return 0;
+			PanzerGeneral_UNIT pgu;
+      pgu = unit_pool[i].pg_unit;
+      int r = (pgu.unknown3[0] << 8) |(pgu.unknown3[1]);
+			return  r;
+    }
+    public byte get_unknown4(int i) {
+			if (i < 0 || i > pool_used) return 0;
+			PanzerGeneral_UNIT pgu;
+      pgu = unit_pool[i].pg_unit;
+			return pgu.unknown4;
+    }
+    public byte get_unknown5(int i) {
+			if (i < 0 || i > pool_used) return 0;
+			PanzerGeneral_UNIT pgu;
+      pgu = unit_pool[i].pg_unit;
+			return pgu.unknown5;
+    }
 	}
 }

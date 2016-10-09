@@ -26,6 +26,7 @@ namespace PGEQReader {
             
 			if (default_file == null)
 				default_file = equipement_file;
+      pg_unit_list.clear();
 
 			FileStream in_equ = File.Open( default_file, FileMode.Open );
 			BinaryReader br = new BinaryReader( in_equ );
@@ -217,6 +218,21 @@ namespace PGEQReader {
 		 * 06 = Sea
 		 * 07 = All Terrain
 		 */
+    public int get_unknown1(int i) {
+      return (int) pg_unit_list.get_unknown1(i);
+    }
+    public int get_unknown2(int i) {
+      return (int) pg_unit_list.get_unknown2(i);
+    }
+    public int get_unknown3(int i) {
+      return (int) pg_unit_list.get_unknown3(i);
+    }
+    public int get_unknown4(int i) {
+      return (int) pg_unit_list.get_unknown4(i);
+    }
+    public int get_unknown5(int i) {
+      return (int) pg_unit_list.get_unknown5(i);
+    }
 		public void list_i(int i) {
 			pg_unit_list.list_i( i );
 		}

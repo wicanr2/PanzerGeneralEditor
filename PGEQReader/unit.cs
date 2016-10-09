@@ -48,14 +48,14 @@ namespace PGEQReader
 		byte _target_type;
 		public byte _level_bomer_pression;
 		// level bomber 的壓制力
-		byte unknow;
+		public byte unknown1;
 
 		public byte _initiative;
 		public byte _range;
 		public byte _spotting;
 
 
-		byte unused; // sea ? cover 
+		public byte unknown2; // sea ? cover 
 		/* 飛機都有把上述的byte = 1*/
 
 		/*
@@ -69,17 +69,17 @@ namespace PGEQReader
 		public byte _ammunition;
 
 		// size = 2 0a 06
-		byte[] unknow3 = new byte[2];
+		public byte[] unknown3 = new byte[2];
 		public byte _cost; // 12 為基數 ex 1c = 28 cost = 28 * 12 = 336
-		byte _little_icon;
-		byte unknow4;
-		byte _combat_animation;
-		byte unknow5;
-		// size = 3
-		byte _present_month;// 登場月份
-		byte _present_year;// 登場年份
-		byte _non_present_year; // 結束使用年份  
+    public byte _little_icon;
+    public byte unknown4;
+    public byte _combat_animation;
+    public byte unknown5;
+    // size = 3
+    public byte _present_month;// 登場月份
+    public byte _present_year;// 登場年份
+    public byte _non_present_year; // 結束使用年份  
 
-		byte delimiter;
+    public byte delimiter;
 	}
 }

@@ -76,16 +76,26 @@
             this.tb_type = new System.Windows.Forms.TextBox();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
+            this.lable_unknown1 = new System.Windows.Forms.Label();
+            this.tb_unknown1 = new System.Windows.Forms.TextBox();
+            this.label_unknown2 = new System.Windows.Forms.Label();
+            this.tb_unknown2 = new System.Windows.Forms.TextBox();
+            this.label_unknown3 = new System.Windows.Forms.Label();
+            this.label_unknown4 = new System.Windows.Forms.Label();
+            this.label_unknown5 = new System.Windows.Forms.Label();
+            this.tb_unknown3 = new System.Windows.Forms.TextBox();
+            this.tb_unknown4 = new System.Windows.Forms.TextBox();
+            this.tb_unknown5 = new System.Windows.Forms.TextBox();
             this.pg_menuStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // tb_name
             // 
-            this.tb_name.Font = new System.Drawing.Font("新細明體", 8.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.tb_name.Font = new System.Drawing.Font("新細明體", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.tb_name.Location = new System.Drawing.Point(144, 55);
             this.tb_name.Name = "tb_name";
-            this.tb_name.Size = new System.Drawing.Size(273, 28);
+            this.tb_name.Size = new System.Drawing.Size(273, 29);
             this.tb_name.TabIndex = 1;
             this.tb_name.TextChanged += new System.EventHandler(this.tb_TextChanged);
             this.tb_name.Enter += new System.EventHandler(this.tb_Enter);
@@ -96,30 +106,30 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("新細明體", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label1.Font = new System.Drawing.Font("新細明體", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.label1.Location = new System.Drawing.Point(14, 56);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(49, 20);
+            this.label1.Size = new System.Drawing.Size(44, 18);
             this.label1.TabIndex = 1;
             this.label1.Text = "名稱";
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("新細明體", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label2.Font = new System.Drawing.Font("新細明體", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.label2.Location = new System.Drawing.Point(14, 90);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(89, 20);
+            this.label2.Size = new System.Drawing.Size(80, 18);
             this.label2.TabIndex = 2;
             this.label2.Text = "柔性攻擊";
             this.label2.Click += new System.EventHandler(this.label2_Click);
             // 
             // tb_hard_atk
             // 
-            this.tb_hard_atk.Font = new System.Drawing.Font("新細明體", 8.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.tb_hard_atk.Font = new System.Drawing.Font("新細明體", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.tb_hard_atk.Location = new System.Drawing.Point(144, 122);
             this.tb_hard_atk.Name = "tb_hard_atk";
-            this.tb_hard_atk.Size = new System.Drawing.Size(45, 28);
+            this.tb_hard_atk.Size = new System.Drawing.Size(45, 29);
             this.tb_hard_atk.TabIndex = 3;
             this.tb_hard_atk.TextChanged += new System.EventHandler(this.tb_TextChanged);
             this.tb_hard_atk.Enter += new System.EventHandler(this.tb_Enter);
@@ -130,29 +140,29 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("新細明體", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label3.Font = new System.Drawing.Font("新細明體", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.label3.Location = new System.Drawing.Point(14, 124);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(89, 20);
+            this.label3.Size = new System.Drawing.Size(80, 18);
             this.label3.TabIndex = 4;
             this.label3.Text = "硬性攻擊";
             // 
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Font = new System.Drawing.Font("新細明體", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label4.Font = new System.Drawing.Font("新細明體", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.label4.Location = new System.Drawing.Point(14, 158);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(89, 20);
+            this.label4.Size = new System.Drawing.Size(80, 18);
             this.label4.TabIndex = 5;
             this.label4.Text = "對空攻擊";
             // 
             // tb_air_atk
             // 
-            this.tb_air_atk.Font = new System.Drawing.Font("新細明體", 8.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.tb_air_atk.Font = new System.Drawing.Font("新細明體", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.tb_air_atk.Location = new System.Drawing.Point(144, 155);
             this.tb_air_atk.Name = "tb_air_atk";
-            this.tb_air_atk.Size = new System.Drawing.Size(45, 28);
+            this.tb_air_atk.Size = new System.Drawing.Size(45, 29);
             this.tb_air_atk.TabIndex = 4;
             this.tb_air_atk.TextChanged += new System.EventHandler(this.tb_TextChanged);
             this.tb_air_atk.Enter += new System.EventHandler(this.tb_Enter);
@@ -162,10 +172,10 @@
             // 
             // tb_nav_atk
             // 
-            this.tb_nav_atk.Font = new System.Drawing.Font("新細明體", 8.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.tb_nav_atk.Font = new System.Drawing.Font("新細明體", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.tb_nav_atk.Location = new System.Drawing.Point(144, 189);
             this.tb_nav_atk.Name = "tb_nav_atk";
-            this.tb_nav_atk.Size = new System.Drawing.Size(45, 28);
+            this.tb_nav_atk.Size = new System.Drawing.Size(45, 29);
             this.tb_nav_atk.TabIndex = 5;
             this.tb_nav_atk.TextChanged += new System.EventHandler(this.tb_TextChanged);
             this.tb_nav_atk.Enter += new System.EventHandler(this.tb_Enter);
@@ -176,19 +186,19 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Font = new System.Drawing.Font("新細明體", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label5.Font = new System.Drawing.Font("新細明體", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.label5.Location = new System.Drawing.Point(14, 191);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(89, 20);
+            this.label5.Size = new System.Drawing.Size(80, 18);
             this.label5.TabIndex = 8;
             this.label5.Text = "對海攻擊";
             // 
             // tb_soft_atk
             // 
-            this.tb_soft_atk.Font = new System.Drawing.Font("新細明體", 8.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.tb_soft_atk.Font = new System.Drawing.Font("新細明體", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.tb_soft_atk.Location = new System.Drawing.Point(144, 88);
             this.tb_soft_atk.Name = "tb_soft_atk";
-            this.tb_soft_atk.Size = new System.Drawing.Size(45, 28);
+            this.tb_soft_atk.Size = new System.Drawing.Size(45, 29);
             this.tb_soft_atk.TabIndex = 2;
             this.tb_soft_atk.TextChanged += new System.EventHandler(this.tb_TextChanged);
             this.tb_soft_atk.Enter += new System.EventHandler(this.tb_Enter);
@@ -229,7 +239,7 @@
             // pg_menuStrip1
             // 
             this.pg_menuStrip1.AutoSize = false;
-            this.pg_menuStrip1.Font = new System.Drawing.Font("微軟正黑體", 10F);
+            this.pg_menuStrip1.Font = new System.Drawing.Font("微軟正黑體", 9F);
             this.pg_menuStrip1.ImageScalingSize = new System.Drawing.Size(12, 12);
             this.pg_menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.RootToolStripMenuItem});
@@ -246,7 +256,7 @@
             this.FileToolStripMenuItem,
             this.EndToolStripMenuItem});
             this.RootToolStripMenuItem.Name = "RootToolStripMenuItem";
-            this.RootToolStripMenuItem.Size = new System.Drawing.Size(50, 32);
+            this.RootToolStripMenuItem.Size = new System.Drawing.Size(94, 32);
             this.RootToolStripMenuItem.Text = "檔案";
             // 
             // FileToolStripMenuItem
@@ -260,21 +270,21 @@
             // EndToolStripMenuItem
             // 
             this.EndToolStripMenuItem.Name = "EndToolStripMenuItem";
-            this.EndToolStripMenuItem.Size = new System.Drawing.Size(184, 30);
+            this.EndToolStripMenuItem.Size = new System.Drawing.Size(170, 28);
             this.EndToolStripMenuItem.Text = "結束";
             this.EndToolStripMenuItem.Click += new System.EventHandler(this.EndToolStripMenuItem_Click);
             // 
             // openFileDialog1
             // 
-            this.openFileDialog1.FileName = "openFileDialog1";
+            this.openFileDialog1.FileName = "*.eqp";
             this.openFileDialog1.Filter = "裝甲元帥裝備檔 | *.eqp";
             // 
             // tb_air_def
             // 
-            this.tb_air_def.Font = new System.Drawing.Font("新細明體", 8.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.tb_air_def.Font = new System.Drawing.Font("新細明體", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.tb_air_def.Location = new System.Drawing.Point(144, 256);
             this.tb_air_def.Name = "tb_air_def";
-            this.tb_air_def.Size = new System.Drawing.Size(45, 28);
+            this.tb_air_def.Size = new System.Drawing.Size(45, 29);
             this.tb_air_def.TabIndex = 7;
             this.tb_air_def.TextChanged += new System.EventHandler(this.tb_TextChanged);
             this.tb_air_def.Enter += new System.EventHandler(this.tb_Enter);
@@ -285,19 +295,19 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Font = new System.Drawing.Font("新細明體", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.label6.Location = new System.Drawing.Point(14, 360);
+            this.label6.Font = new System.Drawing.Font("新細明體", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label6.Location = new System.Drawing.Point(13, 364);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(89, 20);
+            this.label6.Size = new System.Drawing.Size(80, 18);
             this.label6.TabIndex = 22;
             this.label6.Text = "攻擊範圍";
             // 
             // tb_range
             // 
-            this.tb_range.Font = new System.Drawing.Font("新細明體", 8.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.tb_range.Font = new System.Drawing.Font("新細明體", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.tb_range.Location = new System.Drawing.Point(144, 358);
             this.tb_range.Name = "tb_range";
-            this.tb_range.Size = new System.Drawing.Size(45, 28);
+            this.tb_range.Size = new System.Drawing.Size(45, 29);
             this.tb_range.TabIndex = 10;
             this.tb_range.TextChanged += new System.EventHandler(this.tb_TextChanged);
             this.tb_range.Enter += new System.EventHandler(this.tb_Enter);
@@ -307,10 +317,10 @@
             // 
             // tb_initiative
             // 
-            this.tb_initiative.Font = new System.Drawing.Font("新細明體", 8.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.tb_initiative.Font = new System.Drawing.Font("新細明體", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.tb_initiative.Location = new System.Drawing.Point(144, 324);
             this.tb_initiative.Name = "tb_initiative";
-            this.tb_initiative.Size = new System.Drawing.Size(45, 28);
+            this.tb_initiative.Size = new System.Drawing.Size(45, 29);
             this.tb_initiative.TabIndex = 9;
             this.tb_initiative.TextChanged += new System.EventHandler(this.tb_TextChanged);
             this.tb_initiative.Enter += new System.EventHandler(this.tb_Enter);
@@ -321,29 +331,29 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Font = new System.Drawing.Font("新細明體", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.label7.Location = new System.Drawing.Point(14, 326);
+            this.label7.Font = new System.Drawing.Font("新細明體", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label7.Location = new System.Drawing.Point(14, 327);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(109, 20);
+            this.label7.Size = new System.Drawing.Size(98, 18);
             this.label7.TabIndex = 19;
             this.label7.Text = "攻擊起始值";
             // 
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Font = new System.Drawing.Font("新細明體", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label8.Font = new System.Drawing.Font("新細明體", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.label8.Location = new System.Drawing.Point(14, 292);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(89, 20);
+            this.label8.Size = new System.Drawing.Size(80, 18);
             this.label8.TabIndex = 18;
             this.label8.Text = "近戰防禦";
             // 
             // tb_close_def
             // 
-            this.tb_close_def.Font = new System.Drawing.Font("新細明體", 8.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.tb_close_def.Font = new System.Drawing.Font("新細明體", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.tb_close_def.Location = new System.Drawing.Point(144, 290);
             this.tb_close_def.Name = "tb_close_def";
-            this.tb_close_def.Size = new System.Drawing.Size(45, 28);
+            this.tb_close_def.Size = new System.Drawing.Size(45, 29);
             this.tb_close_def.TabIndex = 8;
             this.tb_close_def.TextChanged += new System.EventHandler(this.tb_TextChanged);
             this.tb_close_def.Enter += new System.EventHandler(this.tb_Enter);
@@ -354,10 +364,10 @@
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Font = new System.Drawing.Font("新細明體", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label9.Font = new System.Drawing.Font("新細明體", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.label9.Location = new System.Drawing.Point(14, 259);
             this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(89, 20);
+            this.label9.Size = new System.Drawing.Size(80, 18);
             this.label9.TabIndex = 16;
             this.label9.Text = "對空防禦";
             this.label9.Click += new System.EventHandler(this.label9_Click);
@@ -365,19 +375,19 @@
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Font = new System.Drawing.Font("新細明體", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label10.Font = new System.Drawing.Font("新細明體", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.label10.Location = new System.Drawing.Point(14, 225);
             this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(89, 20);
+            this.label10.Size = new System.Drawing.Size(80, 18);
             this.label10.TabIndex = 15;
             this.label10.Text = "對地防禦";
             // 
             // tb_gnd_def
             // 
-            this.tb_gnd_def.Font = new System.Drawing.Font("新細明體", 8.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.tb_gnd_def.Font = new System.Drawing.Font("新細明體", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.tb_gnd_def.Location = new System.Drawing.Point(144, 224);
             this.tb_gnd_def.Name = "tb_gnd_def";
-            this.tb_gnd_def.Size = new System.Drawing.Size(45, 28);
+            this.tb_gnd_def.Size = new System.Drawing.Size(45, 29);
             this.tb_gnd_def.TabIndex = 6;
             this.tb_gnd_def.TextChanged += new System.EventHandler(this.tb_TextChanged);
             this.tb_gnd_def.Enter += new System.EventHandler(this.tb_Enter);
@@ -388,19 +398,19 @@
             // label11
             // 
             this.label11.AutoSize = true;
-            this.label11.Font = new System.Drawing.Font("新細明體", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label11.Font = new System.Drawing.Font("新細明體", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.label11.Location = new System.Drawing.Point(14, 462);
             this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(49, 20);
+            this.label11.Size = new System.Drawing.Size(44, 18);
             this.label11.TabIndex = 29;
             this.label11.Text = "油量";
             // 
             // tb_fuel
             // 
-            this.tb_fuel.Font = new System.Drawing.Font("新細明體", 8.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.tb_fuel.Font = new System.Drawing.Font("新細明體", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.tb_fuel.Location = new System.Drawing.Point(144, 460);
             this.tb_fuel.Name = "tb_fuel";
-            this.tb_fuel.Size = new System.Drawing.Size(45, 28);
+            this.tb_fuel.Size = new System.Drawing.Size(45, 29);
             this.tb_fuel.TabIndex = 13;
             this.tb_fuel.TextChanged += new System.EventHandler(this.tb_TextChanged);
             this.tb_fuel.Enter += new System.EventHandler(this.tb_Enter);
@@ -410,10 +420,10 @@
             // 
             // tb_movement
             // 
-            this.tb_movement.Font = new System.Drawing.Font("新細明體", 8.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.tb_movement.Font = new System.Drawing.Font("新細明體", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.tb_movement.Location = new System.Drawing.Point(144, 426);
             this.tb_movement.Name = "tb_movement";
-            this.tb_movement.Size = new System.Drawing.Size(45, 28);
+            this.tb_movement.Size = new System.Drawing.Size(45, 29);
             this.tb_movement.TabIndex = 12;
             this.tb_movement.TextChanged += new System.EventHandler(this.tb_TextChanged);
             this.tb_movement.Enter += new System.EventHandler(this.tb_Enter);
@@ -424,10 +434,10 @@
             // label12
             // 
             this.label12.AutoSize = true;
-            this.label12.Font = new System.Drawing.Font("新細明體", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label12.Font = new System.Drawing.Font("新細明體", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.label12.Location = new System.Drawing.Point(14, 429);
             this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(69, 20);
+            this.label12.Size = new System.Drawing.Size(62, 18);
             this.label12.TabIndex = 26;
             this.label12.Text = "移動量";
             // 
@@ -442,10 +452,10 @@
             // 
             // tb_spotting
             // 
-            this.tb_spotting.Font = new System.Drawing.Font("新細明體", 8.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.tb_spotting.Font = new System.Drawing.Font("新細明體", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.tb_spotting.Location = new System.Drawing.Point(144, 393);
             this.tb_spotting.Name = "tb_spotting";
-            this.tb_spotting.Size = new System.Drawing.Size(45, 28);
+            this.tb_spotting.Size = new System.Drawing.Size(45, 29);
             this.tb_spotting.TabIndex = 11;
             this.tb_spotting.TextChanged += new System.EventHandler(this.tb_TextChanged);
             this.tb_spotting.Enter += new System.EventHandler(this.tb_Enter);
@@ -455,10 +465,10 @@
             // 
             // tb_ammo
             // 
-            this.tb_ammo.Font = new System.Drawing.Font("新細明體", 8.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.tb_ammo.Font = new System.Drawing.Font("新細明體", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.tb_ammo.Location = new System.Drawing.Point(348, 88);
             this.tb_ammo.Name = "tb_ammo";
-            this.tb_ammo.Size = new System.Drawing.Size(45, 28);
+            this.tb_ammo.Size = new System.Drawing.Size(45, 29);
             this.tb_ammo.TabIndex = 14;
             this.tb_ammo.TextChanged += new System.EventHandler(this.tb_TextChanged);
             this.tb_ammo.Enter += new System.EventHandler(this.tb_Enter);
@@ -468,11 +478,11 @@
             // 
             // tb_move_type
             // 
-            this.tb_move_type.Font = new System.Drawing.Font("新細明體", 8.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.tb_move_type.Font = new System.Drawing.Font("新細明體", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.tb_move_type.Location = new System.Drawing.Point(348, 155);
             this.tb_move_type.Name = "tb_move_type";
             this.tb_move_type.ReadOnly = true;
-            this.tb_move_type.Size = new System.Drawing.Size(45, 28);
+            this.tb_move_type.Size = new System.Drawing.Size(45, 29);
             this.tb_move_type.TabIndex = 34;
             this.tb_move_type.TabStop = false;
             this.tb_move_type.TextChanged += new System.EventHandler(this.tb_TextChanged);
@@ -480,29 +490,29 @@
             // label15
             // 
             this.label15.AutoSize = true;
-            this.label15.Font = new System.Drawing.Font("新細明體", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label15.Font = new System.Drawing.Font("新細明體", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.label15.Location = new System.Drawing.Point(218, 158);
             this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(89, 20);
+            this.label15.Size = new System.Drawing.Size(80, 18);
             this.label15.TabIndex = 33;
             this.label15.Text = "移動型態";
             // 
             // label16
             // 
             this.label16.AutoSize = true;
-            this.label16.Font = new System.Drawing.Font("新細明體", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label16.Font = new System.Drawing.Font("新細明體", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.label16.Location = new System.Drawing.Point(218, 124);
             this.label16.Name = "label16";
-            this.label16.Size = new System.Drawing.Size(89, 20);
+            this.label16.Size = new System.Drawing.Size(80, 18);
             this.label16.TabIndex = 32;
             this.label16.Text = "單位價格";
             // 
             // tb_cost
             // 
-            this.tb_cost.Font = new System.Drawing.Font("新細明體", 8.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.tb_cost.Font = new System.Drawing.Font("新細明體", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.tb_cost.Location = new System.Drawing.Point(348, 122);
             this.tb_cost.Name = "tb_cost";
-            this.tb_cost.Size = new System.Drawing.Size(45, 28);
+            this.tb_cost.Size = new System.Drawing.Size(45, 29);
             this.tb_cost.TabIndex = 15;
             this.tb_cost.TextChanged += new System.EventHandler(this.tb_TextChanged);
             this.tb_cost.Enter += new System.EventHandler(this.tb_Enter);
@@ -513,20 +523,20 @@
             // label17
             // 
             this.label17.AutoSize = true;
-            this.label17.Font = new System.Drawing.Font("新細明體", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label17.Font = new System.Drawing.Font("新細明體", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.label17.Location = new System.Drawing.Point(218, 90);
             this.label17.Name = "label17";
-            this.label17.Size = new System.Drawing.Size(69, 20);
+            this.label17.Size = new System.Drawing.Size(62, 18);
             this.label17.TabIndex = 30;
             this.label17.Text = "彈藥量";
             // 
             // tb_level_pression
             // 
             this.tb_level_pression.Enabled = false;
-            this.tb_level_pression.Font = new System.Drawing.Font("新細明體", 8.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.tb_level_pression.Font = new System.Drawing.Font("新細明體", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.tb_level_pression.Location = new System.Drawing.Point(348, 189);
             this.tb_level_pression.Name = "tb_level_pression";
-            this.tb_level_pression.Size = new System.Drawing.Size(45, 28);
+            this.tb_level_pression.Size = new System.Drawing.Size(45, 29);
             this.tb_level_pression.TabIndex = 16;
             this.tb_level_pression.TextChanged += new System.EventHandler(this.tb_TextChanged);
             this.tb_level_pression.Enter += new System.EventHandler(this.tb_Enter);
@@ -537,10 +547,10 @@
             // label14
             // 
             this.label14.AutoSize = true;
-            this.label14.Font = new System.Drawing.Font("新細明體", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label14.Font = new System.Drawing.Font("新細明體", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.label14.Location = new System.Drawing.Point(218, 191);
             this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(69, 20);
+            this.label14.Size = new System.Drawing.Size(62, 18);
             this.label14.TabIndex = 38;
             this.label14.Text = "壓制力";
             // 
@@ -558,7 +568,7 @@
             // label18
             // 
             this.label18.AutoSize = true;
-            this.label18.Location = new System.Drawing.Point(218, 280);
+            this.label18.Location = new System.Drawing.Point(218, 281);
             this.label18.Name = "label18";
             this.label18.Size = new System.Drawing.Size(80, 18);
             this.label18.TabIndex = 41;
@@ -566,11 +576,11 @@
             // 
             // tb_type
             // 
-            this.tb_type.Font = new System.Drawing.Font("新細明體", 8.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.tb_type.Font = new System.Drawing.Font("新細明體", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.tb_type.Location = new System.Drawing.Point(296, 278);
             this.tb_type.Name = "tb_type";
             this.tb_type.ReadOnly = true;
-            this.tb_type.Size = new System.Drawing.Size(97, 28);
+            this.tb_type.Size = new System.Drawing.Size(97, 29);
             this.tb_type.TabIndex = 42;
             this.tb_type.TabStop = false;
             // 
@@ -590,11 +600,117 @@
             this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
             this.toolStripStatusLabel1.Size = new System.Drawing.Size(0, 17);
             // 
+            // lable_unknown1
+            // 
+            this.lable_unknown1.AutoSize = true;
+            this.lable_unknown1.Location = new System.Drawing.Point(218, 325);
+            this.lable_unknown1.Name = "lable_unknown1";
+            this.lable_unknown1.Size = new System.Drawing.Size(52, 18);
+            this.lable_unknown1.TabIndex = 44;
+            this.lable_unknown1.Text = "未知1";
+            // 
+            // tb_unknown1
+            // 
+            this.tb_unknown1.Font = new System.Drawing.Font("新細明體", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.tb_unknown1.Location = new System.Drawing.Point(296, 314);
+            this.tb_unknown1.Name = "tb_unknown1";
+            this.tb_unknown1.ReadOnly = true;
+            this.tb_unknown1.Size = new System.Drawing.Size(97, 29);
+            this.tb_unknown1.TabIndex = 45;
+            this.tb_unknown1.TabStop = false;
+            // 
+            // label_unknown2
+            // 
+            this.label_unknown2.AutoSize = true;
+            this.label_unknown2.Location = new System.Drawing.Point(218, 358);
+            this.label_unknown2.Name = "label_unknown2";
+            this.label_unknown2.Size = new System.Drawing.Size(52, 18);
+            this.label_unknown2.TabIndex = 46;
+            this.label_unknown2.Text = "未知2";
+            // 
+            // tb_unknown2
+            // 
+            this.tb_unknown2.Font = new System.Drawing.Font("新細明體", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.tb_unknown2.Location = new System.Drawing.Point(296, 347);
+            this.tb_unknown2.Name = "tb_unknown2";
+            this.tb_unknown2.ReadOnly = true;
+            this.tb_unknown2.Size = new System.Drawing.Size(97, 29);
+            this.tb_unknown2.TabIndex = 47;
+            this.tb_unknown2.TabStop = false;
+            // 
+            // label_unknown3
+            // 
+            this.label_unknown3.AutoSize = true;
+            this.label_unknown3.Location = new System.Drawing.Point(218, 393);
+            this.label_unknown3.Name = "label_unknown3";
+            this.label_unknown3.Size = new System.Drawing.Size(52, 18);
+            this.label_unknown3.TabIndex = 48;
+            this.label_unknown3.Text = "未知3";
+            // 
+            // label_unknown4
+            // 
+            this.label_unknown4.AutoSize = true;
+            this.label_unknown4.Location = new System.Drawing.Point(218, 426);
+            this.label_unknown4.Name = "label_unknown4";
+            this.label_unknown4.Size = new System.Drawing.Size(52, 18);
+            this.label_unknown4.TabIndex = 49;
+            this.label_unknown4.Text = "未知4";
+            // 
+            // label_unknown5
+            // 
+            this.label_unknown5.AutoSize = true;
+            this.label_unknown5.Location = new System.Drawing.Point(218, 460);
+            this.label_unknown5.Name = "label_unknown5";
+            this.label_unknown5.Size = new System.Drawing.Size(52, 18);
+            this.label_unknown5.TabIndex = 50;
+            this.label_unknown5.Text = "未知5";
+            // 
+            // tb_unknown3
+            // 
+            this.tb_unknown3.Font = new System.Drawing.Font("新細明體", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.tb_unknown3.Location = new System.Drawing.Point(296, 382);
+            this.tb_unknown3.Name = "tb_unknown3";
+            this.tb_unknown3.ReadOnly = true;
+            this.tb_unknown3.Size = new System.Drawing.Size(97, 29);
+            this.tb_unknown3.TabIndex = 51;
+            this.tb_unknown3.TabStop = false;
+            // 
+            // tb_unknown4
+            // 
+            this.tb_unknown4.Font = new System.Drawing.Font("新細明體", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.tb_unknown4.Location = new System.Drawing.Point(296, 415);
+            this.tb_unknown4.Name = "tb_unknown4";
+            this.tb_unknown4.ReadOnly = true;
+            this.tb_unknown4.Size = new System.Drawing.Size(97, 29);
+            this.tb_unknown4.TabIndex = 52;
+            this.tb_unknown4.TabStop = false;
+            // 
+            // tb_unknown5
+            // 
+            this.tb_unknown5.Font = new System.Drawing.Font("新細明體", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.tb_unknown5.Location = new System.Drawing.Point(296, 451);
+            this.tb_unknown5.Name = "tb_unknown5";
+            this.tb_unknown5.ReadOnly = true;
+            this.tb_unknown5.Size = new System.Drawing.Size(97, 29);
+            this.tb_unknown5.TabIndex = 53;
+            this.tb_unknown5.TabStop = false;
+            // 
             // PGEditForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 18F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoSize = true;
             this.ClientSize = new System.Drawing.Size(622, 544);
+            this.Controls.Add(this.tb_unknown5);
+            this.Controls.Add(this.tb_unknown4);
+            this.Controls.Add(this.tb_unknown3);
+            this.Controls.Add(this.label_unknown5);
+            this.Controls.Add(this.label_unknown4);
+            this.Controls.Add(this.label_unknown3);
+            this.Controls.Add(this.tb_unknown2);
+            this.Controls.Add(this.label_unknown2);
+            this.Controls.Add(this.tb_unknown1);
+            this.Controls.Add(this.lable_unknown1);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.tb_type);
             this.Controls.Add(this.label18);
@@ -637,9 +753,11 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.tb_name);
             this.Controls.Add(this.pg_menuStrip1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.pg_menuStrip1;
             this.Name = "PGEditForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "裝甲元帥修改器";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.pg_menuStrip1.ResumeLayout(false);
@@ -700,6 +818,16 @@
         private System.Windows.Forms.TextBox tb_type;
         private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
+        private System.Windows.Forms.Label lable_unknown1;
+        private System.Windows.Forms.TextBox tb_unknown1;
+        private System.Windows.Forms.Label label_unknown2;
+        private System.Windows.Forms.TextBox tb_unknown2;
+        private System.Windows.Forms.Label label_unknown3;
+        private System.Windows.Forms.Label label_unknown4;
+        private System.Windows.Forms.Label label_unknown5;
+        private System.Windows.Forms.TextBox tb_unknown3;
+        private System.Windows.Forms.TextBox tb_unknown4;
+        private System.Windows.Forms.TextBox tb_unknown5;
     }
 }
 
