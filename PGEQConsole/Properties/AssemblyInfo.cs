@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // 組件的一般資訊是由下列的屬性集控制。
 // 變更這些屬性的值即可修改組件的相關
 // 資訊。
-[assembly: AssemblyTitle("console_test")]
+[assembly: AssemblyTitle("PaznerGeneralUnitReaderConsole")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("console_test")]
-[assembly: AssemblyCopyright("Copyright ©  2010")]
+[assembly: AssemblyCompany("Chun-Yu Wang (wicanr2@gmail.com)")]
+[assembly: AssemblyProduct("PaznerGeneralUnitReaderConsole")]
+[assembly: AssemblyCopyright("Chun-Yu Wang Copyright ©  2016")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
