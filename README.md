@@ -28,5 +28,5 @@ Chun-Yu Wang (wicanr2@gmail.com)
  <img src="/images/screenshot5.png?raw=true" width="480" alt="部隊檢視" title="部隊檢視">
 
 -戰場模式選單 ( Play Scenario )
- <img src="/images/screenshot5.png?raw=true" width="480" alt="戰場模式選單" title="戰場模式選單">
+ <img src="/images/screenshot6.png?raw=true" width="480" alt="戰場模式選單" title="戰場模式選單">
 
