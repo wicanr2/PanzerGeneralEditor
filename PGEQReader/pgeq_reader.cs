@@ -8,7 +8,6 @@ namespace PGEQReader {
 
 	public class pgeq_reader {
 		private string equipement_file = "PANZEQUP.EQP";
-		private string default_file;
 		unit_list pg_unit_list = new unit_list();
 		int init = 0;
 		public pgeq_reader() {
@@ -16,19 +15,17 @@ namespace PGEQReader {
 		~pgeq_reader() {
 		}
 		public void set_equ_file(string f) {
-			default_file = f;
+			equipement_file = f;
 		}
 		public string get_file_name() {
-			return default_file;
+			return equipement_file ;
 		}
 		public void read_equ_file() {
 			if (init > 0) return;
             
-			if (default_file == null)
-				default_file = equipement_file;
       pg_unit_list.clear();
 
-			FileStream in_equ = File.Open( default_file, FileMode.Open );
+			FileStream in_equ = File.Open( equipement_file , FileMode.Open );
 			BinaryReader br = new BinaryReader( in_equ );
 			byte[] tmp = null;
 			int pos = 0;
@@ -164,19 +161,19 @@ namespace PGEQReader {
 		public string get_type_name(int i) {
 			switch (i) {
 				case 0:
-					return "步兵";
+					return "步兵團";
 				case 1:
-					return "裝甲";
+					return "戰車";
 				case 2:
-					return "偵查";
+					return "偵查車";
 				case 3:
-					return "反裝甲";
+					return "反戰車砲";
 				case 4:
 					return "砲兵";
 				case 5:
-					return "移動式防空砲";
-				case 6:
 					return "防空砲";
+				case 6:
+					return "防空高射砲";
 				case 7:
 					return "碉堡";
 				case 8:
@@ -190,11 +187,11 @@ namespace PGEQReader {
 				case 12:
 					return "驅逐艦";
 				case 13:
-					return "戰艦";
+					return "主力艦";
 				case 14:
 					return "巡洋艦";
 				case 15:
-					return "裝甲載具";
+					return "裝甲車";
 				case 16:
 					return "運輸機";
 				case 17:
@@ -221,17 +218,23 @@ namespace PGEQReader {
     public int get_unknown1(int i) {
       return (int) pg_unit_list.get_unknown1(i);
     }
-    public int get_unknown2(int i) {
-      return (int) pg_unit_list.get_unknown2(i);
+    public int get_ground_unit(int i) {
+      return (int) pg_unit_list.get_ground_unit(i);
     }
-    public int get_unknown3(int i) {
-      return (int) pg_unit_list.get_unknown3(i);
+		public void set_init_force(int i, int v) {
+			pg_unit_list.set_init_force( i, v );
+		}
+    public int get_init_force(int i) {
+      return (int) pg_unit_list.get_init_force(i);
     }
     public int get_unknown4(int i) {
       return (int) pg_unit_list.get_unknown4(i);
     }
     public int get_unknown5(int i) {
       return (int) pg_unit_list.get_unknown5(i);
+    }
+    public int get_transport_type(int i) {
+      return (int) pg_unit_list.get_transport_type(i);
     }
 		public void list_i(int i) {
 			pg_unit_list.list_i( i );
@@ -248,8 +251,7 @@ namespace PGEQReader {
 			tmp = pg_unit_list.get_alldata( i );
 			if (tmp.Length != 50) return;
 
-			FileStream out_equ = File.Open( equipement_file,
-			FileMode.Open );
+			FileStream out_equ = File.Open( equipement_file, FileMode.Open );
 			BinaryWriter bw = new BinaryWriter( out_equ );
 			bw.BaseStream.Seek( offset, SeekOrigin.Begin );
 			bw.Write( tmp, 0, 50 );

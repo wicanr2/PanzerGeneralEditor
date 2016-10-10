@@ -178,6 +178,13 @@ namespace PGEQReader
 			if (y > 0) x++;
 			pgu._cost = (byte) x;
 		}
+    public void set_init_force(int i, int v) {
+			int x = 0, y = 0;
+			if (i < 0 || i > pool_used) return;
+			PanzerGeneral_UNIT pgu;
+			pgu = unit_pool[i].pg_unit;
+			pgu.init_force = (byte) v;
+    }
 		public void write_back(int i) {
 			if (i < 0 || i > pool_used) return;
 			PanzerGeneral_UNIT pgu;
@@ -313,18 +320,17 @@ namespace PGEQReader
       pgu = unit_pool[i].pg_unit;
 			return pgu.unknown1;
     }
-    public byte get_unknown2(int i) {
+    public byte get_ground_unit(int i) {
 			if (i < 0 || i > pool_used) return 0;
 			PanzerGeneral_UNIT pgu;
       pgu = unit_pool[i].pg_unit;
-			return pgu.unknown2;
+			return pgu.ground_unit;
     }
-    public int get_unknown3(int i) {
+    public int get_init_force(int i) {
 			if (i < 0 || i > pool_used) return 0;
 			PanzerGeneral_UNIT pgu;
       pgu = unit_pool[i].pg_unit;
-      int r = (pgu.unknown3[0] << 8) |(pgu.unknown3[1]);
-			return  r;
+			return  pgu.init_force;
     }
     public byte get_unknown4(int i) {
 			if (i < 0 || i > pool_used) return 0;
@@ -337,6 +343,12 @@ namespace PGEQReader
 			PanzerGeneral_UNIT pgu;
       pgu = unit_pool[i].pg_unit;
 			return pgu.unknown5;
+    }
+    public byte get_transport_type(int i) {
+			if (i < 0 || i > pool_used) return 0;
+			PanzerGeneral_UNIT pgu;
+      pgu = unit_pool[i].pg_unit;
+			return pgu.transport_type;
     }
 	}
 }

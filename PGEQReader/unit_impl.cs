@@ -47,7 +47,7 @@ namespace PGEQReader
 					r = "plane";
 					break;
 				default:
-					r = "unknow";
+					r = "unknown";
 					break;
 			}
 			return r;
@@ -79,12 +79,13 @@ namespace PGEQReader
 			_initiative = total[31];
 			_range = total[32];
 			_spotting = total[33];
-            unknown2 = total[34];
+      ground_unit = total[34];
 			_move_type = total[35];
 			_movement = total[36];
 			_fuel = total[37];
 			_ammunition = total[38];
-			Array.Copy( total, 39, unknown3, 0, 2 );
+      init_force = total[39];
+			//Array.Copy( total, 39, init_force, 0, 2 );
 			_cost = total[41];
 			_little_icon = total[42];
 			unknown4 = total[43];
@@ -93,7 +94,7 @@ namespace PGEQReader
 			_present_month = total[46];
 			_present_year = total[47];
 			_non_present_year = total[48];
-			delimiter = total[49];
+			transport_type = total[49];
 		}
 		public void write_back() {
 			Array.Copy( name, 0, total, 0, 20 );
@@ -115,8 +116,10 @@ namespace PGEQReader
 			total[36] = _movement;
 			total[37] = _fuel;
 			total[38] = _ammunition;
+      total[39] = init_force;
 
 			total[41] = _cost;
+      total[49] = transport_type;
 		}
 		public void simple_list() {
 			System.Text.ASCIIEncoding enc = new System.Text.ASCIIEncoding();

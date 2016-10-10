@@ -28,6 +28,7 @@ namespace PanzerGeneralEdit {
 
 		private void listBox1_SelectedIndexChanged(object sender, EventArgs e) {
 			change_unit( lb_unit.SelectedIndex );
+            store_button.Enabled = false;
 		}
 
 		private void FileToolStripMenuItem_Click(object sender, EventArgs e) {
@@ -52,9 +53,10 @@ namespace PanzerGeneralEdit {
 
 		}
 
-		private void button3_Click(object sender, EventArgs e) {
+		private void store_button_Click(object sender, EventArgs e) {
 			apply_modify();
 			lb_unit.Items[cur_i] = tb_name.Text;
+      store_button.Enabled = false;
 		}
 
 		private void tb_TextChanged(object sender, EventArgs e) {

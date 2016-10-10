@@ -39,13 +39,16 @@ namespace PanzerGeneralEdit {
       lb_unit.SelectedIndex = cur_i;
       fill_textbox();
     }
+    private string[] move_type_str = new string[] {
+      "履帶", "半履帶", "輪胎", "徒步", "拖曳", "飛行", "航行", "全地形"
+    };
     void fill_textbox() {
       int s = 0, h = 0, a = 0, n = 0;
       int g_def = 0, a_def = 0, c_def = 0;
       int initiative = 0, range = 0, spotting = 0;
       int move = 0, fuel = 0, ammo = 0;
       int cost = 0, pression = 0;
-      int unknown1 = 0, unknown2 = 0, unknown3 = 0, unknown4 = 0, unknown5 = 0;
+      int unknown1 = 0, ground_unit = 0, init_force = 0, unknown4 = 0, unknown5 = 0;
 
       string name;
       name = pg.get_unit_name( cur_i );
@@ -59,8 +62,8 @@ namespace PanzerGeneralEdit {
       cost = pg.get_cost( cur_i );
       pression = pg.get_level_pression( cur_i );
       unknown1 = pg.get_unknown1(cur_i);
-      unknown2 = pg.get_unknown2(cur_i);
-      unknown3 = pg.get_unknown3(cur_i);
+      ground_unit = pg.get_ground_unit(cur_i);
+      init_force = pg.get_init_force(cur_i);
       unknown4 = pg.get_unknown4(cur_i);
       unknown5 = pg.get_unknown5(cur_i);
 
@@ -81,8 +84,12 @@ namespace PanzerGeneralEdit {
       tb_cost.Text = cost.ToString();
       tb_level_pression.Text = pression.ToString();
       tb_unknown1.Text = unknown1.ToString();
-      tb_unknown2.Text = unknown2.ToString();
-      tb_unknown3.Text = unknown3.ToString();
+      if ( ground_unit == 0 ) {
+        tb_ground_unit.Text = "是"; 
+      } else {
+        tb_ground_unit.Text = "否"; 
+      }
+      tb_init_force.Text = init_force.ToString();
       tb_unknown4.Text = unknown4.ToString();
       tb_unknown5.Text = unknown5.ToString();
 
@@ -100,7 +107,11 @@ namespace PanzerGeneralEdit {
       tb_level_pression.Enabled = true;
 
       int move_type = pg.get_move_type( cur_i );
-      tb_move_type.Text = move_type.ToString();
+      if ( move_type >= 0 && move_type <= 7 ) { 
+        tb_move_type.Text =move_type_str[move_type]; 
+      } else {
+        tb_move_type.Text ="未知";
+      }
     }
     void fill_listbox() {
       lb_unit.Items.Clear();
@@ -151,6 +162,10 @@ namespace PanzerGeneralEdit {
       pression = Convert.ToInt32( tb_level_pression.Text );
       pg.set_cost( cur_i, cost );
       pg.set_level_pression( cur_i, pression );
+
+      int init_force = 0;
+      init_force = Convert.ToInt32(tb_init_force.Text);
+      pg.set_init_force(cur_i,init_force);
 
       pg.write_back( cur_i );
 

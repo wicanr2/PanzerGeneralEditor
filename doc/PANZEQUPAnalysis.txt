@@ -1,0 +1,178 @@
+JP's Panzer General and Allied General Forum
+PANZEQUP.EQP
+=============
+
+Our interest here lies in Unit Equipment Specs (UES) editing. UES editing focuses on adding or altering PANZEQUP.EQP data.
+
+History
+---------
+
+1) The grand-daddy of all PANZEQUP.EQP versions is none other than the PANZEQUP.EQP binary file that is NATIVE to PG1-DOS, Floppy Disk Ver. 1.2. It is 21,252 bytes long and has a date file stamp of November 1, 1994. It is located in the \DAT\ sub-directory.
+
+2) There is also the PANZEQUP.EQP file which is NATIVE to AG-Win9x Ver. 1.1. It is 21,902 bytes long. This file is a SLIGHTLY MODIFIED & EXPANDED version of the PANZEQUP.EQP file that is native to PG1-DOS.
+
+3) In its present state of technical development, PGF NEITHER requires the presence of NOR utilizes a PANZEQUP.EQP file in the \SCENARIO\ sub-folder. Instead it employs its own NATIVE EQUIPMENT.PGEQP file.
+
+4) Countless Modded PANZEQUP.EQP files have been "publicized" in the last 15 years or so!  :) Modded Second Generation PANZEQUP.EQP files have done away with numerous misconceptions that have plagued the Hobby during the first 3-4 years... :phew 
+
+Data Structure: Overview
+-------------------------------
+
+The byte values at offsets 0 (XX) and 1 (YY) have a special meaning and must be read together (16-BIT format). Thus, "XX YY" must be interpreted as hexadecimal YYXX. This value represents the total number of UES entries sequentially present in PANZEQUP.EQP.
+
+Each UES is described by a data block (array) 50 bytes long. Such arrays are sequentially placed one after another in STRICT order.
+
+To illustrate, let us take SSI's grand-daddy. The hexadecimal byte value at offset 0 is "A9" and that at offset 1 is "01"; this means hexadeximal 01A9. In base ten terms, hexadecimal 01A9 translates to 425. Therefore, the PANZEQUP.EQP file contains PRECISELY 425 UES data entries, each 50 bytes long. Now, 425 times 50 equals 21,250. Add 2 bytes corresponding to offsets 0 and 1 and the result is 21,252 bytes which is, of course, the PANZEQUP.EQP file size. Mercifully, everything checks out !! :phew 
+
+A typical UES array consists of TWO (2) consecutive data segments. The FIRST data segment is 20 bytes long and is dedicated to the unit type's alphanumeric description (e.g., Katyusha BM31). In binary terms, each UES array sports a "null-terminated" data segment, 20 bytes long. The SECOND data segment is 30 bytes long and each byte is dedicated to a particular unit attribute.
+
+ATTENTION: PANZEQUP.EQP can accommodate up to 450 UES entries, MAXIMUM !! Thus spoke the... PG1-DOS engine... :yikes :)
+
+Data Structure: Details
+----------------------------
+
+Consider a typical UES array.
+
+Bytes b00 to b19 inclusive constitute the FIRST data segment (UNIT LABEL).
+
+The SECOND data segment is outlined via the following legend:
+
+===> Byte b20
+UNIT CLASS
+Hexadecimal Range: "00" to "11"
+
+Infantry (00) ; Tank (01) ; Recon (02) ; Anti-Tank (03) ; Artillery (04)
+Anti-Aircraft (05) ; Air Defense (06) ; Fort(ification) (07) ; Fighter (08)
+Tactical Bomber (09) ; Level Bomber (0A) ; Submarine (0B)
+Destroyer (0C) ; Capital Ship (0D) ; Aircraft Carrier (0E)
+Land Transport (0F) ; Air Transport (10) ; Sea Transport (11)
+
+===> Byte b21
+SOFT ATTACK
+Hexadecimal Range: "00" to "FF"
+
+===> Byte b22
+HARD ATTACK
+Hexadecimal Range: "00" to "FF"
+
+===> Byte b23
+AIR ATTACK
+Hexadecimal Range: "00" to "FF"
+
+===> Byte b24
+NAVAL ATTACK
+Hexadecimal Range: "00" to "FF"
+
+===> Byte b25
+GROUND DEFENSE
+Hexadecimal Range: "00" to "FF"
+
+===> Byte b26
+AIR DEFENSE
+Hexadecimal Range: "00" to "FF"
+
+===> Byte b27
+CLOSE / ASW DEFENSE
+Hexadecimal Range: "00" to "FF"
+
+===> Byte b28
+TARGET TYPE
+Hexadecimal Range: "00" to "03"
+
+Soft (00) ; Hard (01) ; Air (02) ; Naval (03)
+
+===> Bytes b29 AND b30
+BOMBER SPECIAL CAPABILITIES
+
+IF Tactical Bomber Class THEN
+"00 00" ALLOWS the initiation of air combat (i.e., Fighter-Bomber);
+"01 00" PROHIBITS the initiation of air combat
+
+IF Level Bomber Class THEN
+"XX YY" SPECIFIES the unit's BASE ACCURACY RATING (16-BIT)
+Array Range: "00 00" to "FF 01"
+
+IF Other Class THEN
+"00 00"
+
+===> Byte b31
+INITIATIVE
+Hexadecimal Range: "00" to "FF"
+
+===> Byte b32
+RANGE
+Hexadecimal Range: "00" to "FF"
+
+===> Byte b33
+SPOTTING
+Hexadecimal Range: "00" to "FF"
+
+===> Byte b34
+SURFACE / AIR UNIT
+Hexadecimal Range: "00" OR "01" (Boolean)
+
+Surface (00) ; Air (01)
+
+===> Byte b35
+MOVEMENT METHOD
+Hexadecimal Range: "00" to "07"
+
+Tracked (00) ; Half-Tracked (01) ; Wheeled (02) ; Leg (03)
+Towed (04) ; Air (05) ; Naval (06) ; All Terrain (07)
+
+===> Byte b36
+MOVEMENT ALLOWANCE
+Hexadecimal Range: "00" to "FF"
+
+===> Byte b37
+FUEL CAPACITY
+Hexadecimal Range: "00" to "FF"
+
+===> Byte b38
+AMMO CAPACITY
+Hexadecimal Range: "00" to "FF"
+
+===> Byte b39
+UNKNOWN
+Hexadecimal Value: "0A" (Universal)
+
+SPECULATION: Unit-specific entrenchment level (PLUS points) cap universally overridden by "last minute" PANZER.EXE simplifying code tinkering... :2cents  :dunno 
+
+===> Byte b40
+UNKNOWN
+Hexadecimal Value: "06" (Universal)
+
+SPECULATION: Unit-specific experience level (PLUS points) cap universally overridden by "last minute" PANZER.EXE simplifying code tinkering... :2cents  :dunno 
+
+===> Byte b41
+PURCHASE COST DIVIDED BY TWELVE (12)
+Hexadecimal Range: "00" to "FF"
+
+===> Bytes b42 AND b43
+UNIT IMAGE POSITION IN TACICONS.SHP
+"XX YY" (16-BIT) ----> hexadecimal YYXX
+Array Range: "00 00" to "FF FF"
+
+===> Bytes b44 AND b45
+UNIT ANIMATION ID (decimal) "xxx" AS PER FILE A_xxx_n.SHP
+"XX YY" (16-BIT) ----> hexadecimal YYXX
+Array Range: "00 00" to "68 00"
+
+===> Byte b46
+UNIT TYPE DEBUT MONTH
+Hexadecimal Range: "01" to "0C"
+
+===> Byte b47
+UNIT TYPE DEBUT YEAR
+Hexadecimal Range: "0A" to "63"
+
+===> Byte b48
+UNIT TYPE LAST YEAR OF AVAILABILITY
+Hexadecimal Range: "0A" to "63"
+
+===> Byte b49
+UNIT TYPE TRANSPORTABILITY COMBO CAPABILITIES
+Hexadecimal Range: "00" to "03"
+
+None (00) ; Sea ONLY (01) ; Sea AND Air (Airfields ONLY) (02)
+Sea AND Air (Paradrop) (03)
