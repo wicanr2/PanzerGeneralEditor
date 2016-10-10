@@ -22,7 +22,7 @@ Chun-Yu Wang (wicanr2@gmail.com)
  <img src="/images/screenshot3.png?raw=true" width="480" alt="遊戲畫面" title="遊戲畫面">
 
 -ORG TABLE
- <img src="/images/screenshot4.png?raw=true" width="480" alt="ORG TABLE" title="ORG TABLE">
+ <img src="/images/screenshot4.png?raw=true" width="240" alt="ORG TABLE" title="ORG TABLE">
 
 -部隊檢視 ( Review Unit )
  <img src="/images/screenshot5.png?raw=true" width="480" alt="部隊檢視" title="部隊檢視">
