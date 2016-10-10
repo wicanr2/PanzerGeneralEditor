@@ -1,6 +1,10 @@
 #Pazner General Chinese Editor
 This editor supports "Panzer General DOS/WIN95", "Allied General".
 
++PGEdit/prebuilt/PGEdit.exe
+-裝甲元帥中文修改器 (Panzer General Chinese Editor)
+![Alt text](/images/screenshot7.png?raw=true "中文修改器畫面")
+
 #Compliation
 prerequisite: Visual Stduio 2012, .Net Framework 4.5
 
