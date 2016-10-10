@@ -1,0 +1,903 @@
+PANZER GENERAL DATA STRUCTURE  (Version 2.02  28 May, 1995)
+  CONTENTS
+1.  DISCLAIMER
+2.  SYNTAX CONVENTIONS
+3.  PANZER GENERAL FORMATS
+      A.  the demo version
+      B.  the disk version
+      C.  the CD-ROM version
+4.  PATCHES
+5.  STRUCTURE OF A SCENARIO
+      A.  details of GAME0nn.SCN
+            1.  nationalities involved
+            2.  graphical orientation
+            3.  number of turns 
+            4.  date of the scenario
+            5.  number of partecipating units
+            6.  victory objectives and prestige
+            7.  available starting units
+      B.  details of MAPnn.SET
+            1.  playfield width and height
+            2.  names on the map
+            3.  ownership flags
+            4.  hex terrain images
+      C.  details of MAPnn.STM
+6.  OTHER RELEVANT FILES
+      A.  details of SCENSTAT.BIN
+      B.  details of PANZEQUP.EQP
+      C.  details of MAPNAMES.STR
+7.  DETAILS OF THE SAVED GAME FILES GAME.SVn and PBM.SVn
+      A.  scenario data
+      B.  ownership flag block
+      C.  victory objectives block
+      D.  graphical image and sighting block
+      E.  individual unit record breakdown
+      F.  offsets of unit records
+      G.  other important offsets
+      H.  saved game editor
+8.  PLAYING OTHER SCENARIOS WITH THE ("rich") DEMO VERSION
+9.  SCENARIO NUMBERS AND RELATED DATA TABLE
+************************************************************
+A BRIEF WORD FROM THE WRITERS OF THIS DOCUMENT
+
+Most of the scenario data was decoded by Francesco, while
+most of the saved game decoding was done by Steve.  However,
+both of us found many similarities, so the data found in one
+file many times gave valuable clues as to the data
+structures found in other files.  It's therefore difficult
+to give exact recognition as to who decoded what other than
+the general guidelines above.  If you have any information
+to share, email us!  If you like (and can) debugging, reverse 
+engineering, zen-interpretating data and modifying applications,
+join us!
+
+From this paragraph you should be able to see who the most
+appropriate one to email is.
+
+Francesco Vianello 
+10011...@compuserve.com
+
+       and
+
+Steven C. Schultz
+ssch...@crl.com
+
+************************************************************
+1.  DISCLAIMER
+
+Be aware that attemping to modify any file without knowing
+exactly what you are doing may cause your computer to crash,
+may require you to reinstall the entire software package to
+repair the damage, and at the extreme range may cause you to
+lose data from your hard drive.  This information is
+primarily intended for those who are familiar with
+hexediting and investigating data structures.  This report
+is not intended to teach you how to do this.  (Please don't
+ask for lessons in these areas either.)  The writers of this
+document assume no responsibility for any problems that you
+may have resulting from the use or misuse of information
+contained in this report.  
+
+************************************************************
+2.  SYNTAX CONVENTIONS
+
+To make explanations easier, we will use the following
+notations unless otherwise noted.
+
+"Panzer General" will be refered to as "PzG".
+
+Individual scenarios will be refered to by number in many
+instances.  The numbers are 1 for Poland, 2 for Warsaw, and
+so on, in the same order they are listed in the "scenario
+selection" menu.  A complete listing of these numbers and
+the corresponding scenarios is included in section 9.
+
+All hexadecimal numbers (base 16) will be preceded by the
+prefix "0x".  For example the value 35 (base 10) would be
+written as 0x23.  
+
+All numbers not proceded by the "0x" prefix are assumed to
+be decimal (base 10) unless specifically stated as
+otherwise.
+
+The following "clock notation" will be used to describe
+actual graphical hexes.  This will make more sense later.
+
+                    12  
+              11 ------- 1
+                /        \
+            10 /          \ 2 
+              /            \
+           9 <              > 3
+              \            /
+             8 \          / 4
+                \        /
+               7 -------- 5
+                    6
+
+Notice that each side corresponds to an even number on the
+clock, while each vertex corresponds to an odd number on the
+clock.  References to clock values will be preceeded by an
+"0c" prefix.  Thus, to describe a clear hex containing a
+road that goes from the "1 o'clock" vertex to the "5
+o'clock" vertex, the description would be "0c01 0c05 road"
+
+************************************************************
+3.  PANZER GENERAL FORMATS
+There are three distribution formats of PzG.
+
+3A.  demo versions ("rich" and "poor", see point 8)
+
+The demo version can be obtained from many FTP and WWW
+sites.  The demo is installed on your hard drive, and is
+simple to modify.  It is basically a crippled version of the
+full game that only allows a few scenarios to be played,
+although it can be used to play most other scenarios as
+well.  Interestingly, the demo version also includes a
+scenario (ARENA) that is not included in either of the commercial
+releases.  This will be discussed later after some
+groundwork on the game structure has been laid. Some of the
+WWW demo versions have been recently closed or substituted with
+*really* crippled versions, probably a clumsy answer from SSI to 
+this very file. We found a "good" demo version in the CD-ROM 
+n° 10 of PC FORMAT, in issue 41 (February 1995) of PC FORMAT, 
+Future publishing Ltd, 390 Monmouth St., Bath, Avon,
+BA1 2BW, UK, European Union. (Fax: EU-UK, 0225 447465
+Tel.: EU-UK, 01225 442244), but there are many other "rich" demo 
+version around, in many CD compilations sold in the months
+february-march 1995.
+
+
+3B.  disk version
+
+The disk version is installed on the hard drive and allows
+you to modify many aspects of the game that cannot be
+modified with the CD-ROM version.
+
+
+3C.  CD-ROM version
+
+The CD-ROM version contains over 200 mb of animated actual
+WW2 footage clips and voice add-ons that are not present in
+the disk version.  The price of this extravangance comes at
+the cost of not being able to modify most of the game, as it
+is read off the CD-ROM during gameplay. It is basically *always*
+a good move to buy a Disk version instead of a CD-ROM version
+of an application (if they allow you to choose). CD-ROM versions 
+cannot be easily modified and leave you defenceless against the
+original programmers.
+
+************************************************************
+4.  PATCHES
+
+Currently there are 6 patches available for PzG.
+
+For the Disk version there is a version 1.0 to version 1.1
+upgrade, a version 1.1 to version 1.2 upgrade and a version
+1.0 to version 1.2 upgrade.  These upgrades are exclusive; a
+patch will only work on the specified version.  Attempting
+to use the version 1.0 to version 1.2 patch on version 1.1
+will not work and so on.The same three upgrades are also 
+available for the CD-ROM version.  Be aware that the disk and
+CD-ROM patches are NOT interchangeable; the CD-ROM patch will
+not work on the disk version or vice versa.
+
+************************************************************
+5.  STRUCTURE OF A SCENARIO
+
+Each scenario consists of three files named GAME0nn.SCN,
+MAPnn.STM, and MAPnn.SET, located in the [drive:\path]\DAT
+directory.  nn refers to the number of the scenario as
+discussed in the syntax conventions section.  Thus, the
+files for the BudaPest scenario are called GAME033.SCN,
+MAP33.STM, and MAP33.SET and so on for each scenario.
+
+
+5A.  details of GAME0nn.SCN
+
+The following scenario specific data is stored in this file:
+nationality, graphical orientation, number of turns, date,
+victory objectives, prestige and available starting units. 
+Each of these will be discussed in detail.
+
+
+5A1.  nationalities involved
+
+The first 12 bytes represent the powers participating in a
+given scenario.  The powers are represented by the following
+codes:
+
+   0x03 Bulgaria
+   0x07 France
+   0x08 Germany
+   0x09 Greece
+   0x0a United States
+   0x0b Hungary
+   0x0d Italy
+   0x0f Norway
+   0x10 Poland
+   0x12 Romania
+   0x14 Russia
+   0x17 England
+   0x18 Yugoslavia
+   ???? Belgium
+   ???? Netherlands
+
+Thus, for scenario 1, Poland, the bytes are 0x08 0x10, or
+Germany vs Poland.  The bytes alternate between Axis and
+Allied powers.  Thus, the bytes 0x08 0x17 0x0d 0x14 would
+mean Germany (0x08)and Italy (0x0d) against England (0x17)
+and the Soviet Union (0x14).  0x00's are used as "fillers";
+thus 0x08 0x14 0x0d 0x00 would repesent Germany (0x08) and 
+Italy (0x0d) against Russia (0x14) and no one (0x00).
+
+
+5A2.  graphical orientation
+
+The following 2 bytes (13th & 14th) represent the graphical
+orientation of the Axis forces: 0x01 0x00 means "facing
+East" and 0xff 0xff means "facing West".
+
+The following 2 bytes (15th & 16th) represent the graphical
+orientation of the Allied forces: here 0x01 0x00 means
+"facing West" and 0x00 0x01 means "facing West".
+
+
+5A3.  number of turns 
+ 
+The 22nd byte represents the number of turns allowed to
+complete a scenario.
+
+
+5A4.  date of the scenario
+ 
+Byte 23 represents the day, byte 24 the month and byte 25
+the last two digits of the year.
+
+Several undecode bytes then follow.
+
+5A5. Number of partecipating units
+Byte 30, 31 (and 32) represent in the demo version the number
+of partecipating units (i.e., for Scenario 2), 0x0c (12) for Germany
+and 0x0f (15) for Poland. If you add units to a scenario (at 5A6) 
+(debug, e (cx+0x100), rcx= new length, write), you will not see them 
+unlessyou alter these bytes too. If you reduce the number of 
+partecipating units of Axis and Allies to a total inferior to the units 
+present in the scenario (at 5A6), some of the german units will
+"pass to the enemy".
+
+5A6.  victory objectives and prestige
+Byte 33 is a fence, which brings us to byte
+34, the start of the objectives block.  The 34th byte starts
+the victory objectives block, a series of 4 bytes, closed by
+an 0xff block.  For example, in GAME004.SCN the 4 bytes
+indicating respectively the X and Y map hex positions of the
+cities (or objectives) the two players must conquer: 0x2a
+0x00, 0x09 0x00(Aachen), 0x06 0x00, 0x04 0x00 (Calais) and
+so on.  Apparently the producers of PzG had planned on using
+MUCH larger maps, because all hex values throughout the game
+are stored as integer values, not character values.  Since
+the largest map is much smaller than 256 hexes in either
+axes, the second byte of the hex location is always 0x00
+throughout the game.  
+
+The 114th and 115th bytes (in the demo version, add 4 for
+the commercial one) give the length (in hexadec) of the
+"sequencer_bit_quartets",  4 bytes codes not yet decoded,
+then (after 2+ 114&115 * 4) you find and may change  the initial
+prestige of the two players followed by a 14 byte fence.
+
+
+5A7.  available starting units
+
+The next section is a list of the starting units of each
+side.  Each unit requires 14 bytes, as in this example (all
+of these values are base 16, not base 10):
+
+69 00 56 00 08 00 00 2a 00 09 00 0a 03 02
+
+0x69 0x00 is an integer value (hence two bytes) representing
+the position in the file "panzequp.eqp".  Here we have the
+0x69th or 105th record in panzequp.eqp, which happens to be
+the 39 Wehr Inf.  (More on this record relationship later)
+
+0x56 0x00 is the same integer format, and represents the
+transport vehicle.  Here 0x56 represents the 86th unit in
+the panzequp.eqp file, an Opel 6700.  If these values had
+both been 0x00's, there would have been no transport
+vehicle.
+
+0x08 represents the nationality, using the same nationality
+codes as those mentioned in the section on nationalities
+involved (5A1).  Here 0x08 represents Germany, so we have a
+German 39 Wehr Inf with an Opel 6700 transport.
+
+0x2a 0x00 represents the x hex coordinate of the starting
+location.
+
+0x09 0x00 represents the y hex coordinate of the starting
+location.
+
+0x0a represents the starting strength.
+
+0x03 represents starting entrenchment.
+
+0x02 represents the hundred's value of the starting
+experience, which also happens to represent the number of 
+golden experience stars.
+
+
+5B.  details of MAPnn.SET
+
+The following scenario specific data is stored in this file:
+playfield width and height, names on the map ,ownership
+flags on the map and the values which correspond to the
+terrain images in the map hexes.
+
+
+5B1.  playfield width and height
+
+The file begins with the ASCII file concatenation block (6
+0x16 bytes) which is followed by a fence of 5 0x00 bytes.
+The following two bytes represent the width and height of
+the playfield of the scenario minus 1 to take account of the
+frame.
+
+For instance: MAP01.SET reads 0x11 0x00 0x0f 0x00 and that
+means (add 1 to each) 0x12 horizontal by 0x10 vertical or 18
+by 16 hexes.  This is followed by a double fence (all values
+in base 16) 00 01 01 00 00 01 01 00 00 00 00 01 01 01 01 01
+01 00.  
+
+
+5B2.  names on the map
+
+Next is a names block that mirrors the playfield, where each
+code byte is accompanied by a twin 0x00 byte, whose
+dimension are 2*(width*height).  (It seems that the 0x00
+byte is stored in order to allow the file offsets to
+correspond to the offsets in the saved game files on a 1:1
+ratio, as these 0x00 bytes have a meaning in the saved game
+files.  More on this later.)  These bytes represent the
+connection of each hexagon of the playfield to the file
+MAPNAMES.STR, whereby 0x00 is "unnamed", 0x4b is Warsaw and
+so on. (More on this later.)
+
+Three blocks mirroring the playfield, all three with the
+dimension width*height follow now.
+
+The first block, the "tactical supply block", is still under
+investigation; values refer to the roads somehow.
+
+
+5B3.  ownership flags
+
+The second block flags block mirrors where ownership flags
+are placed, while the third block indicates with 0x01 which
+flags are active, and with 0x03 indicates which hexagons are
+neutral.
+
+
+5B4.  hex terrain images
+
+Last comes the most interesting block, the graphical image
+block, where each "terrain hex image byte" is accompanied by
+a twin 0x00 byte, and so the block's dimensions are
+therefore 2*(width*height).  (Again, it is suspected that
+these 0x00 bytes are used so that offsets in the saved game
+file and this data block correspond to each other in a 1:1
+ratio, since these 0x00 bytes have meaning in the saved game
+files.)  
+
+This block represents the possible terrain types in each
+hexagon of the specific map.  There is one byte value for
+each possible graphic image that can be displayed inside a
+hex.
+
+As mentioned, each terrain image byte is always followed by
+a twin 0x00 byte. "0x1a" for instance refers to an "0c09
+port" image (The "0c09" means "faces west" in accordance
+with the naming syntax described earlier.)
+
+0x49 is a water only hex, 0x28 is an "0c03 0c09 river with
+an 0c01 0c07 road", 0x4c is "light mountains",  and so on. A
+comprehensive list of all images and corresponding codes has
+not yet been created, but it will be a simple matter to
+complete such a list.
+
+The size of a MAPnn.SET file is computed by the equation
+2wh+wh+wh+wh+2wh+123 bytes, or 7*Width*Height+123.  That
+means that MAP04.SET, whose dimensions are width 0x2f and
+height 0x19 will be (adding 1 to both w and h) (48*26*7)+123
+bytes or 8859 bytes long.
+
+
+5C.  details of MAPnn.STM
+
+This file is a summary of the movement costs of each hex, in
+the same format as the other files.  Since each hex
+containing for example a road has the same movement cost
+regardless of which way the road is facing, each of the many
+different road hex types can be represented by just one
+value, 0x0a.  An 0x0a value thus refers to road movement
+costs.  Thus this basically mirrors the graphical image
+block of the MAPnn.SET file, but is much simpler in that any
+of the many types of road hexes can be represented by 0x0a.
+
+Other codes are (and note that "difficult" terrain has
+higher values): 0x15 is city, 0x14 is marsh, 0x16 is
+mountains, 0x02 is road, and so on.
+
+************************************************************
+6.  OTHER RELEVANT FILES
+
+6A.  details of SCENSTAT.BIN
+
+This file contains the scenario names and descriptions. 
+After a 38 byte long "0x01 block" followed by 0x00 bytes,
+comes the "scenario names" block: 38 fields of 14 bytes
+each, with the different names for each scenario, in the
+apreviously mentioned scenario numbering format;
+01="POLAND", 02="WARSAW", 03="NORWAY", etc.  This is
+followed by a 28 0x00 byte "separator" followed by the
+fields of the ASCII description of each scenario (10*16
+bytes for each "record").
+
+
+6B. details of PANZEQUP.EQP
+This file is the value database for all units in the game. 
+Each record lies in a 50 bytes structure, with this
+composition:
+Byte  Significance
+01-20 ASCII Name 
+21    Unit type (see below)
+22    SoftAttack
+23    HardAttack
+24    AirAttack
+25    NavalAttack
+26    GroundDefence
+27    AirDefence
+28    CloseDefence
+29    Mol_type of unit
+30    Unit type 
+31    Not yet analyzed
+32    Initiative
+33    Range
+34    Spotting
+35    "Planetude"
+36    Target type
+37    Movement
+38    Fuel
+39    Ammo
+40    Strength (always 0x0a)
+41    This version (?) (always 0x06)
+42    Val
+43    Not yet analyzed
+44    always 0x00
+45    Not yet analyzed
+46    Not yet analyzed (Always 0x00)
+47    Month
+48    Year
+49    Not yet analyzed (only 6 possible bytes: 0x29-0x2e)
+50    Not yet analyzed (only 4 possible bytes: 0x00-0x03)
+
+The Cost of each unit is the product of Value*Strength.
+
+Unit types (byte 21)are the following:
+
+0x00=foot infantry
+0x01=tank
+0x02=recon
+0x03=anti-tank
+0x04=artillery
+0x05=anti-aircraft
+0x06=air defense
+0x07=fixed position fortification
+0x08=fighter
+0x09=tactical bomber, battleships (see below)
+0x0a=level bomber, light cruisers (see below)
+0x0b=submarine, heavy cruisers    (see below)
+0x0c=destroyer
+0x0d=not used
+0x0e=a/c carrier
+0x0f=land transport
+0x10=air transport
+0x11=sea transport
+
+
+Notice that 0x09, 0x0a and 0x0b represent two very different
+unit types.
+
+For units with these values, byte 30 is not equal to 0x00,
+while for all other units it is.  I'm not sure what the
+correlation is, but there is some relationship here.
+
+Notes the unit type bytes that are used in several files: 
+These integers correspond to the units in the panzequp.eqp
+file.  Unit type  0x01 0x00 is the first unit in the file,
+"BF109e", 0x02 0x00 is "BF109f" and so on.  I believe there
+are either 423 or 424 different unit types.  The unit type
+byte corresponds to the file PANZEQUP.EQP according to the
+formula   offset=2+unit type*50.
+
+Example: the 39 Wehr Inf is unit number 0x69 0x00, or 105. 
+You can find the data for the 39 Wehr Inf in PANZEQUP.EQP
+starting at offset 2+105*50 or offset 5252.
+
+Transport unit types behave identically to regular unit
+types and are also read from "panzequp.eqp" except for the
+fact that there is a limited number of possible values due
+to the fact that few units in the data file are transport
+vehicles.  Also, a transport type of 0x00 0x00 means that no
+transport is present.
+
+
+6C.  details of MAPNAMES.STR
+This file contains the city and geographical names.  Here
+you have all ASCII names, called after the "names block" of
+MAPnn.SET file. The names lie in a Database with 20 bytes
+structure, from Clear, Coast, Ocean... through Ancona, San
+Marino, Rimini... to Touques River, Selune River and See
+River.
+
+************************************************************
+7.  DETAILS OF THE SAVED GAME FILES GAME.SVn and PBM.SVn
+
+To start with, there are 12 possible saved game files.  For
+GAME.SVn, the n refers to the save slot number minus 1; thus
+a game saved in slot 4 would be saved as file GAME.SV3 and
+so on.  For the PBM.SVn files, the n corresponds directly to
+the slot number.
+
+
+7A.  scenario data
+
+Each file starts with an initial byte followed by the user
+sepecified name label string starting at byte 2 and lasting
+for 13 bytes.  After this comes the ASCII representation of
+the date.  After this comes a block of 0x00's that continues
+to byte 196.  Byte 197 is the scenario number byte, and uses
+the scenario numbers in the format already described; Poland
+is 0x01, Warsaw is 0x02, etc.  Up to this point, these
+offsets do not change regardless of the file length.
+
+
+7B.  ownership flag block
+
+Immediately after this byte, at offset 198 comes the
+"ownership flag block" which is stored identically to the
+format it is stored in the MAPnn.SET file.  The difference
+is that this block is dynamic and changes with the flow of
+the game, as opposed to the block in MAPnn.SET, which never
+changes.  (See section 5B3 for the specifics.)  The size of
+this block is width*height, where the width and height are
+the same values mentioned above.
+
+
+7C.  victory objectives block
+
+Immediately after this comes the "victory objectives" block,
+which is where the current owner of individual victory hexes 
+is stored.  All non-victory hexes are stored as 0x00 bytes. 
+This again parallels the corresponding block in the
+MAPnn.SET file, except for its dynamic nature as opposed to
+the static MAPnn.SET file.  Also, this block has a size of
+width*height.
+
+
+7D.  graphical image and sighting block
+
+Predictably, the next block contains the graphical image
+block, also modeled after the corresponding block in the
+MAPnn.SET file.  This block is copied directly from the
+MAPnn file.  However, the 0x00 byte that follows each
+terrain byte in the MAPnn.SET file is not necessarily 0x00
+in the saved game file.  These bytes represent the sighting
+range of the active player.   If a player has a unit in
+position to sight a hex, the byte has a value of 0xe0, while
+if the corresponding hex cannot be seen it has a value of
+0x00.  Every time a unit is moved this block is updated. 
+The entire block is completely recalculated before each
+player's turn from the unit positions stored in the next
+block.
+
+
+7E.  individual unit record breakdown
+
+The next block is the unit block.  Each unit has a record
+that is 49 bytes long.  The 49 bytes are in the following
+format:
+
+bytes:
+1-19    unit name
+  20    name string null terminator
+  21    country  once again, the same codes are used to 
+             indicate the country of a specific unit.
+  22    unit type int byte low (see section 6B)
+  23    unit type int byte high
+  24    transport type int byte low (see section 6B)
+  25    transport type int byte high
+  26    always 0x00
+  27    always 0x00
+  28    X coordinate
+  29    always 0x00
+  30    Y coordinate
+  31    always 0x00
+  32    strength
+  33    visibility status  0x00=hidden, 0x01=visible.
+  34    visibility status  (byte 33 and 34 are always
+             equal.)
+  35    transport status 0x00=not loaded, 0x01=loaded
+             Sometimes this byte is 0x02 for a/c, but this
+             is meaningless.
+  36    fuel
+  37    ammo
+  38    entrenchment
+  39 ?? This byte appears to be a starting morale... It
+             starts out as high as 0x08 for some units, but
+             drops rapidly with combat and never increases
+             again.  For unit replacement types I wrote a 
+             0x00 in this location with no noticeable
+             effects. 
+  40    experience int byte low
+  41    experience int byte high  Experience is not stored
+             in normal low-high fashion.  The low byte
+             covers 0dec to 99dec, and wraps around to 0x00
+             for 100dec.  The high byte covers the hundreds 
+             value.  For example:  Experience of 330 is
+             stored as low 0x1e, high 0x03, or 0x1e 0x03. 
+             This only applies to experience; no other
+             integers are stored in this fashion.  This was
+             done so that the number of stars/overstrength
+             allowed value could be read directly from byte
+             41.  (Exp high=0x03 means 3 stars/ 3
+             overstrength allowed.)
+  42    moves remaining
+  43    moved status  0x00=not moved this turn, 0x01=moved.
+  44    always 0x00
+  45    moved status  always the same value as byte 43.
+  46    always 0x00
+  47    kills int byte low
+  48    kills int byte high
+  49    null terminator
+
+
+7F.  offsets of unit records
+
+As mentioned, each unit has a record block that is 49 bytes
+long.  Units are stored in alternating fashion; the first
+unit is Axis, the second is Allied, the third is Axis...  
+In effect each country's unit records start 98 bytes apart.
+
+For Allied units the records are stored consecutively,
+filling the first open block and not leaving any open
+spaces.  For Axis units all core units are in blocks number
+1 to 80 and all non-core units are in blocks starting at
+position 81.  Since there are always less than 80 core
+units, there will always be a number of empty slots before
+record 81 where you would expect to find an Axis unit.  This
+explains why ships always start with numbers greater than
+80, since ships can never be core units.
+
+Example:
+
+  1st 49 bytes... record   1   1st axis core unit
+  2nd 49 bytes... record   2   1st allied unit
+  3rd 49 bytes... record   3   2nd axis core unit
+  4th 49 bytes... record   4   2nd allied unit
+..
+..
+(assume there are only 18 axis core units)
+ 35th 49 bytes... record  35  18th axis core unit
+ 36th 49 bytes... record  36  18th allied unit
+ 37th 49 bytes... record  37  nothing stored here
+ 38th 49 bytes... record  38  19th allied unit
+ 39th 49 bytes... record  39  nothing stored here
+ 40th 49 bytes... record  40  20th allied unit
+..
+..
+157th 49 bytes... record 157  nothing stored here
+158th 49 bytes... record 158  79th allied unit
+159th 49 bytes... record 159  nothing stored here
+160th 49 bytes... record 160  80th allied unit
+161th 49 bytes... record 161  81st axis non core unit
+162th 49 bytes... record 162  81st allied unit
+163th 49 bytes... record 163  82nd axis non core unit
+164th 49 bytes... record 164  82nd allied unit
+..
+..
+
+There are positions available for 172 Axis and 172 Allied
+units, so the size of this block is always 16,856 bytes. 
+However, there is a limit as to the number of units a
+scenario can have, so many of these 49 byte records simply
+contain 0x00's.
+
+
+7G.  other important offsets
+
+After the unit records comes 7149 bytes.  Most of this is
+simply data such as turns remaining, prestige, computer
+skill levels, game type marker bytes, "0xff fences" and so
+on.
+
+A few key locations and what they mean are listed below. 
+Since the offsets vary according to filelength, offsets are
+listed using the filelength as a reference point, since this
+reference point does not change for locations after the 4
+"map blocks".
+
+filelength-24005
+    The start of the first unit record
+
+filelength-4134
+    number of turns remaining
+
+filelength-4121
+    number of human players
+    0x00 means two human player
+    0x01 means one human player
+
+filelength-4120
+    the currently active player.
+    0x00 means the Axis player is active
+    0x01 means the Allied player is active
+
+filelength-3751
+    the first of the two bytes of the Axis prestige int.
+
+file length-3749
+    the first of the two bytes of the Allied prestige int.
+    (note on prestige:  prestige is an unsigned int, so a 
+    maximum value of 65535 is allowed.  However, if you then 
+    add to the amount during gameplay, it will overflow to 
+    0.)
+
+filelength-3724
+    the campaign/scenario byte
+    0x00 means not a campaign game.
+    0x01 is a campaign game.
+
+The size of any saved game file can be computed by the
+formula 4*(width*height)+24005.
+
+
+7H.  saved game editor
+
+There is a saved game editor available by FTP that allows
+you to modify many aspects of the saved game such as
+prestige, and unit attributes such as experience, strength,
+fuel, ammo, entrenchment and position.
+************************************************************
+8.  PLAYING OTHER SCENARIOS WITH THE DEMO VERSION
+
+As mentioned, it is possible to convert the crippled demo
+version of PzG into almost a full-fledged version.
+
+Have a look at the [drive:\path]\DAT subdirectory of the
+demo: almost all scenarios are there, you only need to copy
+them over one of the two "allowed" scenarios, 01 and 02. 
+For example, if you want to replace scenario 01, put the
+following batch file in your path:
+
+REM   cheatpg.bat
+copy  map%1.*       map01.*
+copy  game0%1.scn   game001.scn
+
+Now type  "cheatpg 22", start bpanzer.exe, choose "POLAND"
+(scenario 01, but it has been replaced with the scenario 22
+data by the batch file) and you will play scenario 22,
+Crete.  You will be able to play more than 30 other
+different scenarios with the Demo version of the game!  Some
+of them exist only as map*.set & map*.stm files, you must
+use the *.scn file of another game or write one yourself.
+
+There is obviously a better hacking way, which gives you the
+possibility of choosing each scenario from the start screen,
+like in the real game version, but that's for wizardsn and the
+above method works good enough for a quick start. SSI was not
+very happy about this, but if they cram your harddisk with a 
+lot of files you paid for (most of the demo version come in CD-ROM
+compilations on magazines you must buy) there is surely nothing 
+wrong with just using them instead of leaving them lying around
+unused, we bought the real version anyway, just to investigate
+further, and we use the demo one for quick hacking and testing
+new scenarios (it loads quickly and with no "multimedia" fuss), 
+and the real one for real play. It is interesting to note, for
+those of you, like me (Francesco) paying Cserve, that the
+GAMERS forum in Cserve is strongly censored (like all other forums):
+the local Sysop took away this very file, in may, under pressure 
+from SSI. This is a good reason, in my opinion, to leave Cserve as 
+soon as somebody else offers you a better access to the Web.
+In the demo version, which is astoundingly rich, you will 
+also find something that you will not even get with the 
+"complete" CD-ROM and diskette versions of the game! In the
+demo lurks the huge "ARENA" scenario, which was probably 
+a training ground for the beta testers of the game. Prepare 
+your own ARENA.SCN following the indications above and enjoy 
+this huge (width= 68, height= 50) battlefield!
+
+************************************************************
+9.  SCENARIO NUMBERS AND RELATED DATA TABLE
+
+I (Steve) ran some of these values through a spreadsheet to 
+save time.  All values are in decimal (base 10)
+
+NO. is the scenario number
+FL is the filelength
+1ST is the offset where unit records start
+TURN is the offset of the remaining turns
+PREST is the offset of the axis prestige int
+     (Allied prestige is at PREST+2.)
+
+
+NO.                FL       1ST    TURN    PREST
+ 1 POLAND          25354    1349   21220   21603
+ 2 WARSAW          25714    1709   21580   21963
+ 3 NORWAY          31954    7949   27820   28203
+ 4 LOWCOUNTRIES    29194    5189   25060   25443
+ 5 FRANCE          33610    9605   29476   29859
+ 6 SEALION (40)    32662    8657   28528   28911
+ 7 NORTH AFRICA    35794   11789   31660   32043
+ 8 MIDDLE EAST     33310    9305   29176   29559
+ 9 EL ALAMEIN      35794   11789   31660   32043
+10 CAUCASUS        35434   11429   31300   31683
+11 SEALION (43)    32662    8657   28528   28911
+12 TORCH           26794    2789   22660   23043
+13 HUSKY           32258    8253   28124   28507
+14 ANZIO           31418    7413   27284   27667
+15 D-DAY           37306   13301   33172   33555
+16 ANVIL           31342    7337   27208   27591
+17 ARDENNES        32010    8005   27876   28259
+18 COBRA           34462   10457   30328   30711
+19 MARKET-GARDEN   27982    3977   23848   24231
+20 BERLIN (WEST)   38346   14341   34212   34595
+21 BALKANS         37722   13717   33588   33971
+22 CRETE           36266   12261   32132   32515
+23 BARBAROSSA      29482    5477   25348   25731
+24 KIEV            33946    9941   29812   30195
+25 MOSCOW (41)     35426   11421   31292   31675
+26 SEVASTOPOL      26906    2901   22772   23155
+27 MOSCOW (42)     35426   11421   31292   31675
+28 STALINGRAD      35434   11429   31300   31683
+29 KHARKOV         35018   11013   30884   31267
+30 KURSK           28738    4733   24604   24987
+31 MOSCOW (43)     35426   11421   31292   31675
+32 BYELORUSSIA     29482    5477   25348   25731
+33 BUDAPEST        31258    7253   27124   27507
+34 BERLIN (EAST)   38346   14341   34212   34595
+35 BERLIN          38346   14341   34212   34595
+36 WASHINGTON      33038    9033   28904   29287
+37 EARLY MOSCOW    35426   11421   31292   31675
+38 SEALION PLUS    32662    8657   28528   28911
+
+-Enjoy!
+
+-Francesco & Steve
+
+-- 
+Francesco Vianello (100114.453.,@COMPUSERVE.COM) 
+Ixelles, Bruxelles
+
+ 
+
+
+gior...@ix.netcom.com 	
+
+95/7/16
+
+
+kro...@pollux.itp.uni-hannover.de (Eike Kroemer) wrote:
+>When spinning it makes radiply clicking sounds. The deepening in the
+>CD-ROM carriage, where you are supposed to put the CD in, is a bit 
+>wider in diameter than the CD and there are no rubber pieces to prevent
+>it from sliding. So I could imagine it runs a bit off center and hits the
+>boundaries frequently, on the other hand then there should be read-errors,
+>what do you think?
+>The PzG CD is definitely of the same size as my others (that do not
+>make any unusual noise), so there is only weight left to explain the 
+>difference.....looking at music CDs you will sometimes notice differences
+>in thickness, too. But anyway, I don't have suitable scales, so this is
+>only a hypothesis.
+If I were you, I wouldn't be worried at ALL. Ignore it. You can try
+the Panzer General CD-ROM in somebody else's CD-ROM drive.
