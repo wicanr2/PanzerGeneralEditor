@@ -8,6 +8,10 @@ This editor supports "Panzer General DOS/WIN95", "Allied General".
 #Compliation
 prerequisite: Visual Stduio 2012, .Net Framework 4.5
 
+#Funny Limerick 
+* 001BBE5CH - 001BBED4H
+I am not Slappy the Lot Boy, despite my witty demeanor repeat NOT slappy Boy. We love Lot Boy
+
 #Author
 Chun-Yu Wang (wicanr2@gmail.com)
 
