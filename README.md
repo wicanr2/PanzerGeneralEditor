@@ -1,6 +1,10 @@
 #Pazner General Chinese Editor
 This editor supports "Panzer General DOS/WIN95", "Allied General".
 
+#Installation
+1. copy PGCht/PG-cht.ext into your {PANZER_GENERAL}/
+2. copy PGCht/MAPNAMES.STR into your {PANZER_GENERAL}/DATA/
+
  -PGEdit/prebuilt/PGEdit.exe
  -裝甲元帥中文修改器 (Panzer General Chinese Editor)
  <img src="/images/screenshot7.png?raw=true" width="480" alt="裝甲元帥中文修改器" title="裝甲元帥中文修改器">
