@@ -10,7 +10,9 @@ prerequisite: Visual Stduio 2012, .Net Framework 4.5
 
 #Funny Limerick 
 * 001BBE5CH - 001BBED4H
-I am not Slappy the Lot Boy, despite my witty demeanor repeat NOT slappy Boy. We love Lot Boy
+I am not Slappy the Lot Boy, despite my witty demeanor repeat NOT slappy Boy. We love Lot Boy.
+* 001BD0D4 
+General Slappy the Lotboy
 
 #Author
 Chun-Yu Wang (wicanr2@gmail.com)
