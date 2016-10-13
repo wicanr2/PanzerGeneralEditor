@@ -1,6 +1,9 @@
 #Pazner General Chinese Editor
 This editor supports "Panzer General DOS/WIN95", "Allied General".
 
+2016.10.14
+Change Font from Arial to Tahoma for Chinese Version
+
 #Installation
 1. copy PGCht/PG-cht.ext into your {PANZER_GENERAL}/
 2. copy PGCht/MAPNAMES.STR into your {PANZER_GENERAL}/DATA/
