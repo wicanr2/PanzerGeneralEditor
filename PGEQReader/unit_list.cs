@@ -81,8 +81,12 @@ namespace PGEQReader
 			//tmp = enc.GetBytes( name );
             tmp = Encoding.GetEncoding(950).GetBytes(name);
 			size = tmp.Length;
-			if (size >= 18) size = 18;
+			if (size >= 20) size = 20;
 			//只有 copy 前面 18個字
+            for (int ii = 0; ii < 20; ii++)
+            {
+                pgu.name[ii] = 0;
+            }
 			Array.Copy( tmp, 0, pgu.name, 0, size );
 		}
 		public void set_soft_attack(int i, int v) {

@@ -8,6 +8,7 @@ Change Font from Arial to Tahoma for Chinese Version
  1. 中文化波蘭戰場地名
  2. Change encoding page from utf-8 to 950 in PGEdit
  3. 刪除 PG-Cht.exe 資源表無關的字串
+ 4. 部分單位名稱中文化
 
 #Installation
 1. copy PGCht/PG-cht.exe into your {PANZER_GENERAL}/

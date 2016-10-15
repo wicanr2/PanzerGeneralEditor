@@ -176,7 +176,7 @@ namespace PanzerGeneralEdit {
       Object_Message tmp;
       tmp = new Object_Message();
       tmp.object_name = tb_name.Name;
-      tmp.message = "名稱長度最大18 bytes(中文等於九個字";
+      tmp.message = "名稱長度最大20 bytes(中文等於十個字)";
       obj_match.Add( tmp );
 
       tmp = new Object_Message();
