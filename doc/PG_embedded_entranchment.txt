@@ -1,0 +1,60 @@
+EMBEDDED UNIT CLASS ENTRENCHMENT RATE TABLE
+==============================================
+
+This is a relatively recent "discovery"... It was greatly facilitated by the contents of Prima's Official Strategy Guide. :banana 
+
+In order for aspiring Developers and Phantom-Modders to have a fighting chance at properly understanding what the Embedded Unit Class Entrenchment Rate Table (EUCERT) is all about, they sure as hell must understand the advanced mechanics and internals of ==>
+
+a) Unit Classes Revisited
+viewtopic.php?f=98&t=48441#p703049
+
+b) Ground Unit Entrenchment
+viewtopic.php?f=98&t=48441#p711217
+
+Data Structure
+------------------
+
+The EUCERT commences at hexadecimal offset BD4FD (decimal offset 775421). It spans a 19 byte long data block (array). The hexadecimal value of each byte reflects the UCER corresponding to each one of the 18 eminently familiar unit classes (PLUS that one MYSTERY class) as per reference point (a) above.
+
+Here is the relevant SSI stock hexadecimal array:
+
+03 01 02 02 02 01 02 01 00 00 00 00 00 00 00 01 00 00 00
+
+PG.exe (WIN) location 0x1BDB48h
+
+Less cryptically:
+
+CODE: SELECT ALL
+Infantry (03)            
+Tank (01)
+Recon (02)
+Anti-Tank (02)      
+Artillery (02)
+Anti-Aircraft (01)
+Air Defense (02)        
+Fort(ification) (01)
+Fighter (00)
+Tactical Bomber (00)
+Level Bomber (00)
+Submarine (00)
+Destroyer (00)
+Capital Ship (00)    
+Aircraft Carrier (00)
+Land Transport (01)
+Air Transport (00)
+Sea Transport (00)
+MYSTERY (00)
+
+
+A Note
+---------
+
+Is it not wonderful that, in this particular area, Prima and SSI are in COMPLETE agreement? The Guide's table (Table 4-2) flawlessly reflects the actual hexadecimal contents of PANZER.EXE both in substance as well in presentation (ok, ok, Prima's Guide forgot to mention Land Transports  :) )...  :clap Most probably, SSI's Mr. Paul Murray did NOT call in sick that particular day (leaving the explaining to "poor" Mr. Joel Billings  :yikes )... Thank you Paul. :clap
+Last edited by PBEMmaniac on 19 Jan 2014, 08:47, edited 3 times in total.
+PBEMmaniac
+Specialist Eight
+Specialist Eight
+ 
+Posts: 1191
+Joined: 22 Feb 2012, 20:56
+

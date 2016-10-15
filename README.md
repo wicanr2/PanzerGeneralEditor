@@ -4,8 +4,13 @@ This editor supports "Panzer General DOS/WIN95", "Allied General".
 2016.10.14
 Change Font from Arial to Tahoma for Chinese Version
 
+2016.10.16
+ 1. 中文化波蘭戰場地名
+ 2. Change encoding page from utf-8 to 950 in PGEdit
+ 3. 刪除 PG-Cht.exe 資源表無關的字串
+
 #Installation
-1. copy PGCht/PG-cht.ext into your {PANZER_GENERAL}/
+1. copy PGCht/PG-cht.exe into your {PANZER_GENERAL}/
 2. copy PGCht/MAPNAMES.STR into your {PANZER_GENERAL}/DATA/
 3. Panzer General Edit PGEdit/prebuilt/PGEdit.exe
 

@@ -77,8 +77,9 @@ namespace PGEQReader
 			byte[] tmp;
 			int size = 0;
 			pgu = unit_pool[i].pg_unit;
-			System.Text.UTF8Encoding enc = new System.Text.UTF8Encoding();
-			tmp = enc.GetBytes( name );
+			//System.Text.UTF8Encoding enc = new System.Text.UTF8Encoding();
+			//tmp = enc.GetBytes( name );
+            tmp = Encoding.GetEncoding(950).GetBytes(name);
 			size = tmp.Length;
 			if (size >= 18) size = 18;
 			//只有 copy 前面 18個字
@@ -206,8 +207,9 @@ namespace PGEQReader
 			if (i < 0 || i > pool_used) return "not existed";
 			PanzerGeneral_UNIT pgu;
 			pgu = unit_pool[i].pg_unit;
-			System.Text.UTF8Encoding enc = new System.Text.UTF8Encoding();
-			return enc.GetString( pgu.name );
+			//System.Text.UTF8Encoding enc = new System.Text.UTF8Encoding();
+			//return enc.GetString( pgu.name );
+            return Encoding.GetEncoding(950).GetString(pgu.name);
 		}
 		public byte get_soft_attack(int i) {
 			if (i < 0 || i > pool_used) return 0;
