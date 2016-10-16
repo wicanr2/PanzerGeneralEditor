@@ -22,6 +22,7 @@ Change Font from Arial to Tahoma for Chinese Version
 * 000C8EE0H CAUSALITY line height 0A
 * 000C8FAAH CAUSALITY 傷亡表 字型 type 00
 * 000C8FACH CAUSALITY 傷亡表 字型大小 0A
+* 000F1348H game option font size
 * 001023B3H PURCHASE UNIT 購買部隊 line height
 * 0010247FH PURCHASE UNIT 購買部隊字型大小  00 xx 0A
 * 0015A750H BUTTON FONT SIZE
