@@ -13,6 +13,12 @@ Change Font from Arial to Tahoma for Chinese Version
 2016.10.16 15:00
  1. 完成單位名稱中文化
 
+#Note
+0001A063H 視窗選單中文大小 預設09
+0015A750H BUTTON FONT SIZE
+000C4355H INFORMATION WINDOW FONT SIZE
+000C442BH INFORMATION WINDOW CONTENT FONT SIZE
+
 #Installation
 1. copy PGCht/PG-cht.exe into your {PANZER_GENERAL}/
 2. copy PGCht/MAPNAMES.STR into your {PANZER_GENERAL}/DATA/
