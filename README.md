@@ -10,6 +10,9 @@ Change Font from Arial to Tahoma for Chinese Version
  3. 刪除 PG-Cht.exe 資源表無關的字串
  4. 部分單位名稱中文化
 
+2016.10.16 15:00
+ 1. 完成單位名稱中文化
+
 #Installation
 1. copy PGCht/PG-cht.exe into your {PANZER_GENERAL}/
 2. copy PGCht/MAPNAMES.STR into your {PANZER_GENERAL}/DATA/
