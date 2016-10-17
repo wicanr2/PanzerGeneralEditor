@@ -1,8 +1,11 @@
 #Pazner General Chinese Editor
 This editor supports "Panzer General DOS/WIN95", "Allied General".
 
-2016.10.14
-Change Font from Arial to Tahoma for Chinese Version
+2016.10.18
+ 1. 完成大部分字型的調整, 更適合中文閱讀
+
+2016.10.16 15:00
+ 1. 完成單位名稱中文化
 
 2016.10.16
  1. 中文化波蘭戰場地名
@@ -10,18 +13,20 @@ Change Font from Arial to Tahoma for Chinese Version
  3. 刪除 PG-Cht.exe 資源表無關的字串
  4. 部分單位名稱中文化
 
-2016.10.16 15:00
- 1. 完成單位名稱中文化
+2016.10.14
+Change Font from Arial to Tahoma for Chinese Version
 
 #Note
 * 0001A063H 視窗選單中文大小 預設09
 * 0006072CH Dialog Title Font size
+* 000C09E4H 簡報 Dialog font size
 * 000C4355H INFORMATION WINDOW FONT SIZE
 * 000C442BH INFORMATION WINDOW CONTENT FONT SIZE
 * 000C8EDEH CAUSALITY line height 00
 * 000C8EE0H CAUSALITY line height 0A
 * 000C8FAAH CAUSALITY 傷亡表 字型 type 00
 * 000C8FACH CAUSALITY 傷亡表 字型大小 0A
+* 000CFA78H Status Bar font size
 * 000F1348H game option font size
 * 001023B3H PURCHASE UNIT 購買部隊 line height
 * 0010247FH PURCHASE UNIT 購買部隊字型大小  00 xx 0A
