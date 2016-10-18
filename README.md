@@ -1,5 +1,6 @@
-#Pazner General Chinese Editor
-This editor supports "Panzer General DOS/WIN95", "Allied General".
+#Pazner General Chinese Editor with Chinese Translation
+* Editor can support "Panzer General DOS/WIN95", "Allied General".
+* Panzer General Chinese Translation is used for WIN95 version
 
 2016.10.18
  1. 完成大部分字型的調整, 更適合中文閱讀
