@@ -4,6 +4,7 @@
 
 2016.10.18
  1. 完成大部分字型的調整, 更適合中文閱讀
+ 2. 新增調整字型過後的畫面
 
 2016.10.16 15:00
  1. 完成單位名稱中文化
@@ -54,21 +55,29 @@ General Slappy the Lotboy
 Chun-Yu Wang (wicanr2@gmail.com)
 
 #Chinese Translation ScreenShot
+-儲存視窗<br>
+ <img src="/images/screenshot8.png?raw=true" width="480" alt="儲存視窗" title="儲存視窗">
+
 -中文遊戲選項列表 ( CHT Game Selection Options )<br>
+ <img src="/images/screenshot1-1.png?raw=true" width="480" alt="中文遊戲選項列表" title="中文遊戲選項列表">
  <img src="/images/screenshot1.png?raw=true" width="480" alt="中文遊戲選項列表" title="中文遊戲選項列表">
 
 -購買部隊 (Purchase Unit with Chinese Translation)<br>
+ <img src="/images/screenshot2-2.png?raw=true" width="480" alt="購買部隊" title="購買部隊">
  <img src="/images/screenshot2.png?raw=true" width="480" alt="購買部隊" title="購買部隊">
 
 -遊戲畫面 ( Strategy Window )<br>
+ <img src="/images/screenshot3-1.png?raw=true" width="480" alt="遊戲畫面" title="遊戲畫面">
  <img src="/images/screenshot3.png?raw=true" width="480" alt="遊戲畫面" title="遊戲畫面">
 
 -ORG TABLE<br>
  <img src="/images/screenshot4.png?raw=true" width="240" alt="ORG TABLE" title="ORG TABLE">
 
 -部隊檢視 ( Review Unit )<br>
+ <img src="/images/screenshot5-1.png?raw=true" width="480" alt="部隊檢視" title="部隊檢視">
  <img src="/images/screenshot5.png?raw=true" width="480" alt="部隊檢視" title="部隊檢視">
 
 -戰場模式選單 ( Play Scenario )<br>
+ <img src="/images/screenshot6-1.png?raw=true" width="480" alt="戰場模式選單" title="戰場模式選單">
  <img src="/images/screenshot6.png?raw=true" width="480" alt="戰場模式選單" title="戰場模式選單">
 
