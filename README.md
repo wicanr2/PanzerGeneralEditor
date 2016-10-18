@@ -63,7 +63,7 @@ Chun-Yu Wang (wicanr2@gmail.com)
  <img src="/images/screenshot1.png?raw=true" width="480" alt="中文遊戲選項列表" title="中文遊戲選項列表">
 
 -購買部隊 (Purchase Unit with Chinese Translation)<br>
- <img src="/images/screenshot2-2.png?raw=true" width="480" alt="購買部隊" title="購買部隊">
+ <img src="/images/screenshot2-1.png?raw=true" width="480" alt="購買部隊" title="購買部隊">
  <img src="/images/screenshot2.png?raw=true" width="480" alt="購買部隊" title="購買部隊">
 
 -遊戲畫面 ( Strategy Window )<br>
