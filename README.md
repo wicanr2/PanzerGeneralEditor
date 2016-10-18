@@ -58,6 +58,9 @@ Chun-Yu Wang (wicanr2@gmail.com)
 -儲存視窗<br>
  <img src="/images/screenshot8.png?raw=true" width="480" alt="儲存視窗" title="儲存視窗">
 
+-簡報視窗<br>
+ <img src="/images/screenshot9.png?raw=true" width="480" alt="簡報視窗" title="簡報視窗">
+
 -中文遊戲選項列表 ( CHT Game Selection Options )<br>
  <img src="/images/screenshot1-1.png?raw=true" width="480" alt="中文遊戲選項列表" title="中文遊戲選項列表">
  <img src="/images/screenshot1.png?raw=true" width="480" alt="中文遊戲選項列表" title="中文遊戲選項列表">
