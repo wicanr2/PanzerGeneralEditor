@@ -18,6 +18,9 @@
 2016.10.14
 Change Font from Arial to Tahoma for Chinese Version
 
+#Demo
+[![裝甲元帥中文版 波蘭戰役](http://img.youtube.com/vi/EIXJP5Ft91M/0.jpg)](http://www.youtube.com/watch?v=EIXJP5Ft91M "裝甲元帥中文版 波蘭戰役")
+
 #Note
 * 0001A063H 視窗選單中文大小 預設09
 * 0006072CH Dialog Title Font size
