@@ -21,6 +21,7 @@ Change Font from Arial to Tahoma for Chinese Version
 #Note
 * 0001A063H 視窗選單中文大小 預設09
 * 0006072CH Dialog Title Font size
+* 0007F752H Waiting Dialog Font Size 
 * 000B9E71H Upgrade Window Detail Font Size 6A006A0A
 * 000B9F3DH Upgrade Window Font Size 6A006A0A
 * 000C09E4H 簡報 Dialog font size
