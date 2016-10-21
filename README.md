@@ -21,16 +21,18 @@ Change Font from Arial to Tahoma for Chinese Version
 #Note
 * 0001A063H 視窗選單中文大小 預設09
 * 0006072CH Dialog Title Font size
+* 000B9E71H Upgrade Window Detail Font Size 6A006A0A
+* 000B9F3DH Upgrade Window Font Size 6A006A0A
 * 000C09E4H 簡報 Dialog font size
-* 000C4355H INFORMATION WINDOW FONT SIZE
-* 000C442BH INFORMATION WINDOW CONTENT FONT SIZE
+* 000C4355H Information Window Font size
+* 000C442BH Information Window Content Font size
 * 000C8EDEH CAUSALITY line height 00
 * 000C8EE0H CAUSALITY line height 0A
 * 000C8FAAH CAUSALITY 傷亡表 字型 type 00
 * 000C8FACH CAUSALITY 傷亡表 字型大小 0A
 * 000CFA78H Status Bar font size
 * 000F1348H game option font size
-* 001023B3H PURCHASE UNIT 購買部隊 line height
+* 001023B3H PURCHASE UNIT 購買部隊 Detail Font Size
 * 0010247FH PURCHASE UNIT 購買部隊字型大小  00 xx 0A
 * 0015A750H BUTTON FONT SIZE
 
