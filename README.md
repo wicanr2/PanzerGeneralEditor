@@ -19,7 +19,7 @@
 Change Font from Arial to Tahoma for Chinese Version
 
 #Demo
-[![裝甲元帥中文版 波蘭戰役](http://img.youtube.com/vi/EIXJP5Ft91M/0.jpg)](http://www.youtube.com/watch?v=EIXJP5Ft91M "裝甲元帥中文版 波蘭戰役")
+[![裝甲元帥中文版 波蘭戰役](http://img.youtube.com/vi/D3X3dRyF424/0.jpg)](http://www.youtube.com/watch?v=D3X3dRyF424 "裝甲元帥中文版 波蘭戰役")
 
 #Note
 * 0001A063H 視窗選單中文大小 預設09
