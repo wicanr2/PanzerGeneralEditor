@@ -80,6 +80,28 @@ docker run --rm -it -v "$PWD":/src -w /src/PGEdit.Avalonia \
 
 > Linux 桌面需 X11 forwarding;Wayland 使用者請改用 publish + 本機執行。
 
+## 打包 Windows release
+
+產出 `.zip` 與 `.exe (SFX,自解壓含啟動)` 兩個檔到 `dist/`:
+
+```bash
+./PGEdit.Avalonia/make-release.sh
+```
+
+腳本會 (第一次跑會自動 cache 不重複下載):
+
+1. docker publish win-x64 self-contained single-file
+2. 與 README.txt 一起 zip
+3. 從 7-zip.org 抓 Windows SFX module
+4. 串接 SFX + config + 7z payload 成可雙擊執行的 `*-setup.exe`
+
+成品:
+
+| 檔案 | 大小 | 用途 |
+|---|---|---|
+| `PGEdit.Avalonia-<ver>-win-x64.zip` | ~38 MB | 一般 zip |
+| `PGEdit.Avalonia-<ver>-win-x64-setup.exe` | ~28 MB | 自解壓 SFX,雙擊解到當前目錄並自動跑 |
+
 ## 快捷鍵
 
 | Key | Action |

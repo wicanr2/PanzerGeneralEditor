@@ -299,3 +299,9 @@ __pycache__/
 
 #VIM
 *.swp
+
+# Release artifacts (zip / SFX);打包用 PGEdit.Avalonia/make-release.sh 產出
+dist/
+
+# Cached SFX modules etc. for make-release.sh
+.cache/
