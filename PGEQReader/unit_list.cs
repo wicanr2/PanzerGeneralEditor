@@ -356,5 +356,11 @@ namespace PGEQReader
       pgu = unit_pool[i].pg_unit;
 			return pgu.transport_type;
     }
+    public byte get_little_icon(int i) {
+			if (i < 0 || i > pool_used) return 0;
+			PanzerGeneral_UNIT pgu;
+      pgu = unit_pool[i].pg_unit;
+			return pgu._little_icon;
+    }
 	}
 }

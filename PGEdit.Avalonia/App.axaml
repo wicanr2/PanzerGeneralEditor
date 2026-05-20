@@ -1,0 +1,48 @@
+<Application xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="PGEdit.Avalonia.App"
+             RequestedThemeVariant="Light">
+    <Application.Styles>
+        <FluentTheme />
+        <StyleInclude Source="avares://PGEdit.Avalonia/Themes/AppTheme.axaml" />
+    </Application.Styles>
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.ThemeDictionaries>
+                <ResourceDictionary x:Key="Dark">
+                    <Color x:Key="AccentColor">#C7A24A</Color>
+                    <Color x:Key="AccentColorMuted">#7A6429</Color>
+                    <Color x:Key="SurfaceColor">#1B1F24</Color>
+                    <Color x:Key="SurfaceRaisedColor">#262C33</Color>
+                    <Color x:Key="OutlineColor">#3A434D</Color>
+                    <Color x:Key="TextPrimaryColor">#E8EDF2</Color>
+                    <Color x:Key="TextMutedColor">#9AA4AE</Color>
+                    <Color x:Key="DangerColor">#E2574C</Color>
+                    <Color x:Key="SuccessColor">#48B07B</Color>
+                </ResourceDictionary>
+                <ResourceDictionary x:Key="Light">
+                    <!-- 純白主題,參考 Notion/Linear 的 light surface -->
+                    <Color x:Key="AccentColor">#1F6FEB</Color>
+                    <Color x:Key="AccentColorMuted">#B8D2F7</Color>
+                    <Color x:Key="SurfaceColor">#FFFFFF</Color>
+                    <Color x:Key="SurfaceRaisedColor">#F7F9FC</Color>
+                    <Color x:Key="OutlineColor">#E1E5EA</Color>
+                    <Color x:Key="TextPrimaryColor">#1F2328</Color>
+                    <Color x:Key="TextMutedColor">#6B7280</Color>
+                    <Color x:Key="DangerColor">#D03A2F</Color>
+                    <Color x:Key="SuccessColor">#2F8856</Color>
+                </ResourceDictionary>
+            </ResourceDictionary.ThemeDictionaries>
+
+            <SolidColorBrush x:Key="AccentBrush" Color="{DynamicResource AccentColor}" />
+            <SolidColorBrush x:Key="AccentMutedBrush" Color="{DynamicResource AccentColorMuted}" />
+            <SolidColorBrush x:Key="SurfaceBrush" Color="{DynamicResource SurfaceColor}" />
+            <SolidColorBrush x:Key="SurfaceRaisedBrush" Color="{DynamicResource SurfaceRaisedColor}" />
+            <SolidColorBrush x:Key="OutlineBrush" Color="{DynamicResource OutlineColor}" />
+            <SolidColorBrush x:Key="TextPrimaryBrush" Color="{DynamicResource TextPrimaryColor}" />
+            <SolidColorBrush x:Key="TextMutedBrush" Color="{DynamicResource TextMutedColor}" />
+            <SolidColorBrush x:Key="DangerBrush" Color="{DynamicResource DangerColor}" />
+            <SolidColorBrush x:Key="SuccessBrush" Color="{DynamicResource SuccessColor}" />
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>

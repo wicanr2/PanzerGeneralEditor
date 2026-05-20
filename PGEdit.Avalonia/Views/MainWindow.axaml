@@ -1,0 +1,391 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="using:PGEdit.Avalonia.ViewModels"
+        xmlns:ctl="using:PGEdit.Avalonia.Controls"
+        mc:Ignorable="d"
+        d:DesignWidth="1280" d:DesignHeight="780"
+        x:Class="PGEdit.Avalonia.Views.MainWindow"
+        x:DataType="vm:MainWindowViewModel"
+        Title="裝甲元帥修改器 — PGEdit Avalonia"
+        Width="1280" Height="780"
+        MinWidth="1100" MinHeight="700">
+
+    <Window.KeyBindings>
+        <KeyBinding Gesture="Ctrl+O" Command="{Binding OpenCommand}" />
+        <KeyBinding Gesture="Ctrl+S" Command="{Binding SaveCommand}" />
+        <KeyBinding Gesture="Ctrl+Z" Command="{Binding UndoCommand}" />
+        <KeyBinding Gesture="Ctrl+Y" Command="{Binding RedoCommand}" />
+        <KeyBinding Gesture="Ctrl+Shift+Z" Command="{Binding RedoCommand}" />
+        <KeyBinding Gesture="Down" Command="{Binding NextCommand}" />
+        <KeyBinding Gesture="Up" Command="{Binding PrevCommand}" />
+    </Window.KeyBindings>
+
+    <Grid RowDefinitions="Auto,*,Auto">
+        <!-- ========== TOP BAR ========== -->
+        <Border Grid.Row="0"
+                Background="{DynamicResource SurfaceRaisedBrush}"
+                BorderBrush="{DynamicResource OutlineBrush}"
+                BorderThickness="0,0,0,1"
+                Padding="14,8">
+            <Grid ColumnDefinitions="Auto,*,Auto">
+                <StackPanel Grid.Column="0" Orientation="Horizontal" Spacing="10">
+                    <TextBlock Text="装" FontSize="24"
+                               Foreground="{DynamicResource AccentBrush}"
+                               VerticalAlignment="Center" />
+                    <StackPanel VerticalAlignment="Center">
+                        <TextBlock Classes="h1" Text="裝甲元帥修改器" />
+                        <TextBlock Classes="hint" Text="{Binding FilePath, FallbackValue='未開啟檔案'}" />
+                    </StackPanel>
+                </StackPanel>
+
+                <StackPanel Grid.Column="2" Orientation="Horizontal" Spacing="6"
+                            VerticalAlignment="Center">
+                    <Button Classes="ghost" Content="開啟…" Command="{Binding OpenCommand}"
+                            ToolTip.Tip="Ctrl+O" />
+                    <Button Classes="ghost" Content="↶ 復原" Command="{Binding UndoCommand}"
+                            ToolTip.Tip="Ctrl+Z" />
+                    <Button Classes="ghost" Content="↷ 重做" Command="{Binding RedoCommand}"
+                            ToolTip.Tip="Ctrl+Y" />
+                    <Border Width="1" Background="{DynamicResource OutlineBrush}" Margin="4,4" />
+                    <Button Classes="primary" Content="儲存修改"
+                            Command="{Binding SaveCommand}"
+                            ToolTip.Tip="Ctrl+S" />
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!-- ========== BODY ========== -->
+        <Grid Grid.Row="1" ColumnDefinitions="320,*">
+
+            <!-- Left: unit list -->
+            <Border Grid.Column="0"
+                    Background="{DynamicResource SurfaceBrush}"
+                    BorderBrush="{DynamicResource OutlineBrush}"
+                    BorderThickness="0,0,1,0">
+                <DockPanel Margin="10,8">
+                    <TextBox DockPanel.Dock="Top"
+                             Watermark="🔍  搜尋單位 (名稱 / 類別)"
+                             Text="{Binding SearchQuery, Mode=TwoWay}"
+                             Margin="0,0,0,6" />
+                    <TextBlock DockPanel.Dock="Top"
+                               Classes="hint" Margin="4,0,0,4"
+                               Text="{Binding Units.Count, StringFormat='共 {0} 個單位'}" />
+                    <ListBox ItemsSource="{Binding FilteredUnits}"
+                             SelectedItem="{Binding SelectedUnit, Mode=TwoWay}"
+                             Background="Transparent"
+                             BorderThickness="0">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate x:DataType="vm:UnitListItemViewModel">
+                                <Grid ColumnDefinitions="22,*,Auto" Margin="0,0">
+                                    <Border Grid.Column="0"
+                                            Width="20" Height="20"
+                                            CornerRadius="4"
+                                            Background="{DynamicResource AccentMutedBrush}">
+                                        <TextBlock Text="{Binding Glyph}"
+                                                   FontSize="14"
+                                                   FontWeight="SemiBold"
+                                                   Foreground="#0B0E12"
+                                                   HorizontalAlignment="Center"
+                                                   VerticalAlignment="Center" />
+                                    </Border>
+                                    <StackPanel Grid.Column="1" Margin="6,0,0,0"
+                                                VerticalAlignment="Center">
+                                        <TextBlock Text="{Binding Name}" FontSize="15" />
+                                    </StackPanel>
+                                    <TextBlock Grid.Column="2"
+                                               Classes="hint"
+                                               Text="{Binding Index, StringFormat='#{0:000}'}"
+                                               VerticalAlignment="Center" />
+                                </Grid>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                        <ListBox.Styles>
+                            <Style Selector="ListBoxItem">
+                                <Setter Property="Padding" Value="8,5" />
+                                <Setter Property="MinHeight" Value="34" />
+                            </Style>
+                        </ListBox.Styles>
+                    </ListBox>
+                </DockPanel>
+            </Border>
+
+            <!-- Right: editor (dense 2-column, no scroll) -->
+            <Grid Grid.Column="1" Margin="10,8"
+                  RowDefinitions="Auto,*,Auto" ColumnDefinitions="*">
+
+                <!-- Header row: icon | unit# + name | pills (right next to name) | dirty -->
+                <Border Grid.Row="0" Classes="card" Padding="12,8" Margin="0,0,0,8">
+                    <Grid ColumnDefinitions="Auto,Auto,Auto,*,Auto">
+                        <Border Grid.Column="0"
+                                Width="64" Height="64"
+                                CornerRadius="8"
+                                Background="{DynamicResource AccentBrush}"
+                                VerticalAlignment="Center">
+                            <Panel>
+                                <Image Source="{Binding Editor.IconBitmap}"
+                                       Stretch="Uniform" Margin="4"
+                                       IsVisible="{Binding Editor.HasIconBitmap}" />
+                                <TextBlock Text="{Binding Editor.TypeGlyph}"
+                                           FontSize="36" FontWeight="SemiBold"
+                                           Foreground="#0B0E12"
+                                           HorizontalAlignment="Center"
+                                           VerticalAlignment="Center"
+                                           IsVisible="{Binding !Editor.HasIconBitmap}" />
+                            </Panel>
+                        </Border>
+                        <StackPanel Grid.Column="1" Margin="10,0,0,0" VerticalAlignment="Center">
+                            <TextBlock Classes="hint"
+                                       Text="{Binding Editor.Index, StringFormat='Unit #{0:000}'}" />
+                            <TextBox Text="{Binding Editor.Name, Mode=TwoWay}"
+                                     FontSize="24" FontWeight="SemiBold"
+                                     Padding="6,2" MinWidth="240" MaxLength="20" />
+                        </StackPanel>
+                        <StackPanel Grid.Column="2" Orientation="Horizontal" Spacing="4"
+                                    VerticalAlignment="Bottom" Margin="8,0,0,4">
+                            <Border Classes="statusPill">
+                                <TextBlock Text="{Binding Editor.TypeName}" FontSize="14" />
+                            </Border>
+                            <Border Classes="statusPill">
+                                <TextBlock Text="{Binding Editor.MoveTypeName}" FontSize="14" />
+                            </Border>
+                        </StackPanel>
+                        <Border Grid.Column="4" Classes="statusPill"
+                                IsVisible="{Binding Editor.IsDirty}"
+                                Background="{DynamicResource DangerBrush}"
+                                VerticalAlignment="Center">
+                            <TextBlock Text="● 未儲存" FontSize="14" Foreground="White" />
+                        </Border>
+                    </Grid>
+                </Border>
+
+                <!-- Main body: 2-column dense layout -->
+                <Grid Grid.Row="1" ColumnDefinitions="*,*">
+
+                    <!-- LEFT COLUMN: attack + defense (Grid * proportions so they stretch full height) -->
+                    <Grid Grid.Column="0" Margin="0,0,4,0" RowDefinitions="4*,3*">
+                        <Border Grid.Row="0" Classes="card" Padding="12,10" Margin="0,0,0,8">
+                            <StackPanel>
+                                <TextBlock Classes="h2" Text="攻擊" />
+                                <Grid ColumnDefinitions="68,*,64">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="32" />
+                                        <RowDefinition Height="32" />
+                                        <RowDefinition Height="32" />
+                                        <RowDefinition Height="32" />
+                                    </Grid.RowDefinitions>
+                                    <TextBlock Grid.Row="0" Grid.Column="0" Classes="label" Text="柔性攻擊" />
+                                    <Slider  Grid.Row="0" Grid.Column="1" Minimum="0" Maximum="25"
+                                             Value="{Binding Editor.SoftAttack, Mode=TwoWay}" />
+                                    <NumericUpDown Grid.Row="0" Grid.Column="2" Minimum="0" Maximum="255"
+                                                   FormatString="0" ShowButtonSpinner="False"
+                                                   Value="{Binding Editor.SoftAttack, Mode=TwoWay}" />
+
+                                    <TextBlock Grid.Row="1" Grid.Column="0" Classes="label" Text="硬性攻擊" />
+                                    <Slider  Grid.Row="1" Grid.Column="1" Minimum="0" Maximum="25"
+                                             Value="{Binding Editor.HardAttack, Mode=TwoWay}" />
+                                    <NumericUpDown Grid.Row="1" Grid.Column="2" Minimum="0" Maximum="255"
+                                                   FormatString="0" ShowButtonSpinner="False"
+                                                   Value="{Binding Editor.HardAttack, Mode=TwoWay}" />
+
+                                    <TextBlock Grid.Row="2" Grid.Column="0" Classes="label" Text="對空攻擊" />
+                                    <Slider  Grid.Row="2" Grid.Column="1" Minimum="0" Maximum="25"
+                                             Value="{Binding Editor.AirAttack, Mode=TwoWay}" />
+                                    <NumericUpDown Grid.Row="2" Grid.Column="2" Minimum="0" Maximum="255"
+                                                   FormatString="0" ShowButtonSpinner="False"
+                                                   Value="{Binding Editor.AirAttack, Mode=TwoWay}" />
+
+                                    <TextBlock Grid.Row="3" Grid.Column="0" Classes="label" Text="對海攻擊" />
+                                    <Slider  Grid.Row="3" Grid.Column="1" Minimum="0" Maximum="25"
+                                             Value="{Binding Editor.NavalAttack, Mode=TwoWay}" />
+                                    <NumericUpDown Grid.Row="3" Grid.Column="2" Minimum="0" Maximum="255"
+                                                   FormatString="0" ShowButtonSpinner="False"
+                                                   Value="{Binding Editor.NavalAttack, Mode=TwoWay}" />
+                                </Grid>
+                            </StackPanel>
+                        </Border>
+
+                        <Border Grid.Row="1" Classes="card" Padding="12,10">
+                            <StackPanel>
+                                <TextBlock Classes="h2" Text="防禦" />
+                                <Grid ColumnDefinitions="68,*,64">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="32" />
+                                        <RowDefinition Height="32" />
+                                        <RowDefinition Height="32" />
+                                    </Grid.RowDefinitions>
+                                    <TextBlock Grid.Row="0" Grid.Column="0" Classes="label" Text="對地防禦" />
+                                    <Slider  Grid.Row="0" Grid.Column="1" Minimum="0" Maximum="25"
+                                             Value="{Binding Editor.GroundDefense, Mode=TwoWay}" />
+                                    <NumericUpDown Grid.Row="0" Grid.Column="2" Minimum="0" Maximum="255"
+                                                   FormatString="0" ShowButtonSpinner="False"
+                                                   Value="{Binding Editor.GroundDefense, Mode=TwoWay}" />
+
+                                    <TextBlock Grid.Row="1" Grid.Column="0" Classes="label" Text="對空防禦" />
+                                    <Slider  Grid.Row="1" Grid.Column="1" Minimum="0" Maximum="25"
+                                             Value="{Binding Editor.AirDefense, Mode=TwoWay}" />
+                                    <NumericUpDown Grid.Row="1" Grid.Column="2" Minimum="0" Maximum="255"
+                                                   FormatString="0" ShowButtonSpinner="False"
+                                                   Value="{Binding Editor.AirDefense, Mode=TwoWay}" />
+
+                                    <TextBlock Grid.Row="2" Grid.Column="0" Classes="label" Text="近戰防禦" />
+                                    <Slider  Grid.Row="2" Grid.Column="1" Minimum="0" Maximum="25"
+                                             Value="{Binding Editor.CloseDefense, Mode=TwoWay}" />
+                                    <NumericUpDown Grid.Row="2" Grid.Column="2" Minimum="0" Maximum="255"
+                                                   FormatString="0" ShowButtonSpinner="False"
+                                                   Value="{Binding Editor.CloseDefense, Mode=TwoWay}" />
+                                </Grid>
+                            </StackPanel>
+                        </Border>
+                    </Grid>
+
+                    <!-- RIGHT COLUMN: radar (compact) → economy (next) → mobility (stretch) -->
+                    <Grid Grid.Column="1" Margin="4,0,0,0" RowDefinitions="Auto,Auto,*">
+                        <Border Grid.Row="0" Classes="card" Padding="10,8" Margin="0,0,0,8">
+                            <StackPanel>
+                                <TextBlock Classes="h2" Text="能力雷達圖" Margin="0,0,0,4" />
+                                <ctl:StatRadarChart DataContext="{Binding Editor}"
+                                                    Height="140" />
+                            </StackPanel>
+                        </Border>
+
+                        <Border Grid.Row="1" Classes="card" Padding="12,8" Margin="0,0,0,8">
+                            <StackPanel>
+                                <TextBlock Classes="h2" Text="經濟 / 戰術" />
+                                <!-- 用 *,8,*,8,* 把欄寬 + gutter 寫明,3 個 NumericUpDown 嚴格等寬 -->
+                                <Grid ColumnDefinitions="*,8,*,8,*">
+                                    <StackPanel Grid.Column="0">
+                                        <TextBlock Classes="label" Text="價格 (×12)" />
+                                        <NumericUpDown Minimum="0" Maximum="3060" Increment="12"
+                                                       FormatString="0"
+                                                       HorizontalAlignment="Stretch"
+                                                       Value="{Binding Editor.Cost, Mode=TwoWay}" />
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="2">
+                                        <TextBlock Classes="label" Text="啟動值" />
+                                        <NumericUpDown Minimum="0" Maximum="255" FormatString="0"
+                                                       HorizontalAlignment="Stretch"
+                                                       Value="{Binding Editor.Initiative, Mode=TwoWay}" />
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="4">
+                                        <TextBlock Classes="label" Text="壓制力" />
+                                        <NumericUpDown Minimum="0" Maximum="255" FormatString="0"
+                                                       HorizontalAlignment="Stretch"
+                                                       Value="{Binding Editor.LevelPression, Mode=TwoWay}" />
+                                    </StackPanel>
+                                </Grid>
+                            </StackPanel>
+                        </Border>
+
+                        <Border Grid.Row="2" Classes="card" Padding="12,10">
+                            <StackPanel>
+                                <TextBlock Classes="h2" Text="機動 / 補給" />
+                                <Grid ColumnDefinitions="68,*,64">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="32" />
+                                        <RowDefinition Height="32" />
+                                        <RowDefinition Height="32" />
+                                        <RowDefinition Height="32" />
+                                        <RowDefinition Height="32" />
+                                    </Grid.RowDefinitions>
+                                    <TextBlock Grid.Row="0" Grid.Column="0" Classes="label" Text="移動量" />
+                                    <Slider  Grid.Row="0" Grid.Column="1" Minimum="0" Maximum="10"
+                                             Value="{Binding Editor.Movement, Mode=TwoWay}" />
+                                    <NumericUpDown Grid.Row="0" Grid.Column="2" Minimum="0" Maximum="255"
+                                                   FormatString="0" ShowButtonSpinner="False"
+                                                   Value="{Binding Editor.Movement, Mode=TwoWay}" />
+
+                                    <TextBlock Grid.Row="1" Grid.Column="0" Classes="label" Text="偵查範圍" />
+                                    <Slider  Grid.Row="1" Grid.Column="1" Minimum="0" Maximum="5"
+                                             Value="{Binding Editor.Spotting, Mode=TwoWay}" />
+                                    <NumericUpDown Grid.Row="1" Grid.Column="2" Minimum="0" Maximum="255"
+                                                   FormatString="0" ShowButtonSpinner="False"
+                                                   Value="{Binding Editor.Spotting, Mode=TwoWay}" />
+
+                                    <TextBlock Grid.Row="2" Grid.Column="0" Classes="label" Text="攻擊範圍" />
+                                    <Slider  Grid.Row="2" Grid.Column="1" Minimum="0" Maximum="25"
+                                             Value="{Binding Editor.Range, Mode=TwoWay}" />
+                                    <NumericUpDown Grid.Row="2" Grid.Column="2" Minimum="0" Maximum="255"
+                                                   FormatString="0" ShowButtonSpinner="False"
+                                                   Value="{Binding Editor.Range, Mode=TwoWay}" />
+
+                                    <TextBlock Grid.Row="3" Grid.Column="0" Classes="label" Text="油量" />
+                                    <Slider  Grid.Row="3" Grid.Column="1" Minimum="0" Maximum="100"
+                                             Value="{Binding Editor.Fuel, Mode=TwoWay}" />
+                                    <NumericUpDown Grid.Row="3" Grid.Column="2" Minimum="0" Maximum="255"
+                                                   FormatString="0" ShowButtonSpinner="False"
+                                                   Value="{Binding Editor.Fuel, Mode=TwoWay}" />
+
+                                    <TextBlock Grid.Row="4" Grid.Column="0" Classes="label" Text="彈藥量" />
+                                    <Slider  Grid.Row="4" Grid.Column="1" Minimum="0" Maximum="100"
+                                             Value="{Binding Editor.Ammunition, Mode=TwoWay}" />
+                                    <NumericUpDown Grid.Row="4" Grid.Column="2" Minimum="0" Maximum="255"
+                                                   FormatString="0" ShowButtonSpinner="False"
+                                                   Value="{Binding Editor.Ammunition, Mode=TwoWay}" />
+                                </Grid>
+                            </StackPanel>
+                        </Border>
+                    </Grid>
+                </Grid>
+
+                <!-- Advanced: collapsible at bottom -->
+                <Expander Grid.Row="2" Margin="0,8,0,0"
+                          Header="進階 / Raw bytes (unknown 欄位)" IsExpanded="False">
+                    <Border Classes="card" Padding="12,8">
+                        <Grid ColumnDefinitions="*,8,*,8,*,8,*,8,*">
+                            <StackPanel Grid.Column="0">
+                                <TextBlock Classes="label" Text="initial force" />
+                                <NumericUpDown Minimum="0" Maximum="255" FormatString="0"
+                                               HorizontalAlignment="Stretch"
+                                               Value="{Binding Editor.InitForce, Mode=TwoWay}" />
+                            </StackPanel>
+                            <StackPanel Grid.Column="2">
+                                <TextBlock Classes="label" Text="ground unit" />
+                                <CheckBox IsChecked="{Binding Editor.IsGroundUnit, Mode=TwoWay}"
+                                          Content="地面單位" />
+                            </StackPanel>
+                            <StackPanel Grid.Column="4">
+                                <TextBlock Classes="label" Text="unknown1" />
+                                <NumericUpDown Minimum="0" Maximum="65535" FormatString="0"
+                                               IsEnabled="False"
+                                               HorizontalAlignment="Stretch"
+                                               Value="{Binding Editor.Unknown1, Mode=OneWay}" />
+                            </StackPanel>
+                            <StackPanel Grid.Column="6">
+                                <TextBlock Classes="label" Text="unknown4" />
+                                <NumericUpDown Minimum="0" Maximum="255" FormatString="0"
+                                               IsEnabled="False"
+                                               HorizontalAlignment="Stretch"
+                                               Value="{Binding Editor.Unknown4, Mode=OneWay}" />
+                            </StackPanel>
+                            <StackPanel Grid.Column="8">
+                                <TextBlock Classes="label" Text="unknown5" />
+                                <NumericUpDown Minimum="0" Maximum="255" FormatString="0"
+                                               IsEnabled="False"
+                                               HorizontalAlignment="Stretch"
+                                               Value="{Binding Editor.Unknown5, Mode=OneWay}" />
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+                </Expander>
+            </Grid>
+        </Grid>
+
+        <!-- ========== STATUS BAR ========== -->
+        <Border Grid.Row="2"
+                Background="{DynamicResource SurfaceRaisedBrush}"
+                BorderBrush="{DynamicResource OutlineBrush}"
+                BorderThickness="0,1,0,0"
+                Padding="14,4">
+            <Grid ColumnDefinitions="*,Auto">
+                <TextBlock Grid.Column="0" Text="{Binding StatusMessage}"
+                           Classes="hint" VerticalAlignment="Center" />
+                <TextBlock Grid.Column="1" Text="{Binding BackupNotice}"
+                           Foreground="{DynamicResource SuccessBrush}" FontSize="14"
+                           IsVisible="{Binding BackupNotice, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"
+                           VerticalAlignment="Center" />
+            </Grid>
+        </Border>
+    </Grid>
+</Window>

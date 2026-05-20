@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8" />
+<title>PGEdit unit-icon picker</title>
+<style>
+  :root {
+    --bg: #1B1F24; --panel: #262C33; --line: #3A434D;
+    --accent: #C7A24A; --accent-dim: #7A6429;
+    --text: #E8EDF2; --muted: #9AA4AE; --danger: #E2574C; --ok: #48B07B;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; padding: 0; font-family: 'Noto Sans TC', system-ui, sans-serif;
+    background: var(--bg); color: var(--text); font-size: 13px;
+  }
+  header {
+    padding: 12px 18px; background: var(--panel); border-bottom: 1px solid var(--line);
+    display: flex; align-items: center; gap: 16px; position: sticky; top: 0; z-index: 10;
+  }
+  header h1 { font-size: 18px; margin: 0; color: var(--accent); }
+  header .actions { margin-left: auto; display: flex; gap: 8px; }
+  button {
+    background: var(--accent); color: #0B0E12; border: 0; padding: 7px 14px;
+    border-radius: 5px; font-weight: 600; cursor: pointer; font-size: 12px;
+  }
+  button.ghost { background: transparent; color: var(--text); border: 1px solid var(--line); }
+  button:hover { filter: brightness(1.1); }
+
+  .layout {
+    display: grid; grid-template-columns: 380px 1fr; gap: 0;
+    height: calc(100vh - 56px);
+  }
+
+  /* LEFT: 18 type cards */
+  aside {
+    background: var(--panel); border-right: 1px solid var(--line);
+    overflow-y: auto; padding: 10px;
+  }
+  .type-card {
+    display: grid; grid-template-columns: 56px 1fr auto; gap: 8px;
+    align-items: center; padding: 8px; margin-bottom: 6px;
+    background: #1F242A; border: 1px solid var(--line); border-radius: 6px;
+    cursor: pointer; transition: border-color 0.1s;
+  }
+  .type-card:hover { border-color: var(--accent-dim); }
+  .type-card.active { border-color: var(--accent); background: #2A2F36; }
+  .type-card .preview {
+    width: 56px; height: 40px; background: var(--accent);
+    display: flex; align-items: center; justify-content: center; border-radius: 4px;
+    overflow: hidden;
+  }
+  .type-card .preview img {
+    width: 100%; height: 100%; object-fit: contain;
+    image-rendering: pixelated;
+    filter: invert(1) brightness(0.85);
+  }
+  .type-card .preview .glyph {
+    font-size: 18px; font-weight: 600; color: #0B0E12;
+  }
+  .type-card .meta { min-width: 0; }
+  .type-card .id { font-family: monospace; font-size: 11px; color: var(--muted); }
+  .type-card .name { font-weight: 600; }
+  .type-card .sid { font-family: monospace; font-size: 11px; color: var(--accent); }
+  .type-card .clear { background: transparent; color: var(--danger); border: 0; padding: 4px; font-size: 16px; }
+
+  /* RIGHT: sprite gallery */
+  main { overflow-y: auto; padding: 12px; }
+  .toolbar {
+    display: flex; gap: 8px; margin-bottom: 12px; flex-wrap: wrap;
+    position: sticky; top: 0; background: var(--bg); z-index: 5; padding: 6px 0;
+  }
+  .toolbar input, .toolbar select {
+    background: #14181C; color: var(--text); border: 1px solid var(--line);
+    padding: 6px 10px; border-radius: 5px; font-size: 12px;
+  }
+  .toolbar input { flex: 1; min-width: 180px; }
+  .stat { color: var(--muted); font-size: 11px; align-self: center; }
+
+  .gallery {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+    gap: 8px;
+  }
+  .sprite {
+    background: var(--panel); border: 2px solid transparent;
+    border-radius: 6px; padding: 6px; cursor: pointer;
+    display: flex; flex-direction: column; align-items: center; gap: 4px;
+    transition: border-color 0.1s;
+  }
+  .sprite:hover { border-color: var(--accent-dim); }
+  .sprite.assigned { border-color: var(--ok); }
+  .sprite img {
+    width: 96px; height: 64px; object-fit: contain;
+    image-rendering: pixelated; background: #0B0E12; border-radius: 4px;
+    filter: invert(1) brightness(0.85);
+  }
+  .sprite .id { font-family: monospace; font-size: 11px; color: var(--accent); }
+  .sprite .wh { font-family: monospace; font-size: 10px; color: var(--muted); }
+
+  .toast {
+    position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+    background: var(--ok); color: #0B0E12; padding: 8px 16px; border-radius: 6px;
+    font-weight: 600; opacity: 0; transition: opacity 0.3s; z-index: 100;
+  }
+  .toast.show { opacity: 1; }
+
+  /* export modal */
+  .modal {
+    position: fixed; inset: 0; background: rgba(0,0,0,0.7);
+    display: none; align-items: center; justify-content: center; z-index: 50;
+  }
+  .modal.show { display: flex; }
+  .modal-card {
+    background: var(--panel); border: 1px solid var(--line); border-radius: 8px;
+    padding: 20px; max-width: 720px; width: 90%; max-height: 80vh; overflow: auto;
+  }
+  .modal pre {
+    background: #0B0E12; padding: 12px; border-radius: 4px; overflow: auto;
+    font-size: 11px; line-height: 1.5; color: #C8D2DC;
+  }
+</style>
+</head>
+<body>
+<header>
+  <h1>🎯 PGEdit unit-icon picker</h1>
+  <span class="stat" id="progress">0 / 18 已指派</span>
+  <div class="actions">
+    <button class="ghost" onclick="resetAll()">清空</button>
+    <button onclick="exportMapping()">匯出 shell 指令</button>
+  </div>
+</header>
+
+<div class="layout">
+  <aside id="types"></aside>
+  <main>
+    <div class="toolbar">
+      <input id="search" placeholder="🔍  搜尋 sprite ID (4-char,可用 partial)" />
+      <select id="sizeFilter">
+        <option value="">所有尺寸</option>
+      </select>
+      <span class="stat" id="filterStat"></span>
+    </div>
+    <div class="gallery" id="gallery"></div>
+  </main>
+</div>
+
+<div class="toast" id="toast"></div>
+<div class="modal" id="modal" onclick="if(event.target===this)this.classList.remove('show')">
+  <div class="modal-card">
+    <h2 style="margin-top:0;color:var(--accent)">匯出 mapping</h2>
+    <p>把以下 shell 指令貼到 terminal,從專案根目錄執行,即可把選好的 PNG 複製到 Assets/units/:</p>
+    <pre id="exportSh"></pre>
+    <p style="margin-top:14px">或 JSON (給後續工具用):</p>
+    <pre id="exportJson"></pre>
+    <div style="margin-top:12px;display:flex;gap:8px">
+      <button onclick="copyExport('sh')">複製 shell</button>
+      <button onclick="copyExport('json')" class="ghost">複製 JSON</button>
+      <button onclick="document.getElementById('modal').classList.remove('show')" class="ghost">關閉</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const TYPES = [["00", "Infantry", "步兵團"], ["01", "Tank", "戰車"], ["02", "Recon", "偵查車"], ["03", "AntiTank", "反戰車砲"], ["04", "Artillery", "砲兵"], ["05", "AntiAircraft", "防空砲"], ["06", "AirDefense", "防空高射砲"], ["07", "Fort", "碉堡"], ["08", "Fighter", "戰鬥機"], ["09", "Bomber", "轟炸機"], ["0a", "LevelBomber", "同溫層轟炸機"], ["0b", "Submarine", "潛水艇"], ["0c", "Destroyer", "驅逐艦"], ["0d", "Battleship", "主力艦"], ["0e", "Carrier", "巡洋艦"], ["0f", "Truck", "裝甲車"], ["10", "AirTransport", "運輸機"], ["11", "SeaTransport", "運輸船"]];
+const SPRITES = [{"id": "gfSn", "w": 508, "h": 456, "size": 234167}, {"id": "gRon", "w": 448, "h": 441, "size": 200096}, {"id": "gSjR", "w": 448, "h": 441, "size": 200100}, {"id": "gTon", "w": 446, "h": 362, "size": 162163}, {"id": "gcbn", "w": 334, "h": 450, "size": 151627}, {"id": "pYon", "w": 334, "h": 450, "size": 151472}, {"id": "g_on", "w": 477, "h": 304, "size": 146373}, {"id": "dpnn", "w": 448, "h": 290, "size": 129916}, {"id": "gaon", "w": 448, "h": 290, "size": 129915}, {"id": "gezs", "w": 272, "h": 430, "size": 119123}, {"id": "g1l9", "w": 371, "h": 271, "size": 101188}, {"id": "gjee", "w": 371, "h": 271, "size": 101189}, {"id": "gjew", "w": 371, "h": 271, "size": 101189}, {"id": "gjge", "w": 371, "h": 271, "size": 101189}, {"id": "gjgw", "w": 371, "h": 271, "size": 101189}, {"id": "gdlp", "w": 210, "h": 353, "size": 75473}, {"id": "a`P1", "w": 295, "h": 239, "size": 71541}, {"id": "g[et", "w": 369, "h": 190, "size": 71087}, {"id": "g[jd", "w": 231, "h": 298, "size": 69845}, {"id": "g[\\t", "w": 358, "h": 176, "size": 63914}, {"id": "gMdm", "w": 230, "h": 271, "size": 63215}, {"id": "gKgy", "w": 225, "h": 244, "size": 55327}, {"id": "b\\Ne", "w": 118, "h": 415, "size": 50027}, {"id": "a_ng", "w": 210, "h": 211, "size": 45149}, {"id": "a_og", "w": 210, "h": 211, "size": 45150}, {"id": "a_pg", "w": 210, "h": 211, "size": 45150}, {"id": "a_qr", "w": 210, "h": 211, "size": 45061}, {"id": "a_rg", "w": 210, "h": 211, "size": 45149}, {"id": "a_sg", "w": 210, "h": 211, "size": 45150}, {"id": "a_w0", "w": 210, "h": 211, "size": 45149}, {"id": "a_w1", "w": 210, "h": 211, "size": 45202}, {"id": "a_w2", "w": 210, "h": 211, "size": 45204}, {"id": "a_w3", "w": 210, "h": 211, "size": 45204}, {"id": "a_w4", "w": 210, "h": 211, "size": 45202}, {"id": "a_w5", "w": 210, "h": 211, "size": 45206}, {"id": "a_w6", "w": 210, "h": 211, "size": 45203}, {"id": "a_w7", "w": 210, "h": 211, "size": 45201}, {"id": "g_Sw", "w": 210, "h": 211, "size": 45150}, {"id": "g_Z1", "w": 210, "h": 211, "size": 45152}, {"id": "g_Z2", "w": 210, "h": 211, "size": 45154}, {"id": "g_Z3", "w": 210, "h": 211, "size": 45151}, {"id": "g_Z4", "w": 210, "h": 211, "size": 45152}, {"id": "g_Z5", "w": 210, "h": 211, "size": 45152}, {"id": "g_Z6", "w": 210, "h": 211, "size": 45152}, {"id": "aXOp", "w": 206, "h": 205, "size": 42243}, {"id": "dp[1", "w": 400, "h": 90, "size": 35774}, {"id": "dp[2", "w": 400, "h": 90, "size": 36150}, {"id": "dpg1", "w": 400, "h": 90, "size": 35778}, {"id": "dpg2", "w": 400, "h": 90, "size": 36153}, {"id": "gT\\2", "w": 400, "h": 90, "size": 36151}, {"id": "gTh2", "w": 400, "h": 90, "size": 36157}, {"id": "gYkn", "w": 131, "h": 253, "size": 34192}, {"id": "a`P2", "w": 276, "h": 92, "size": 25828}, {"id": "bome", "w": 225, "h": 108, "size": 24759}, {"id": "gTBt", "w": 225, "h": 108, "size": 24758}, {"id": "ggnn", "w": 225, "h": 108, "size": 24758}, {"id": "ggct", "w": 254, "h": 57, "size": 11007}, {"id": "g_ct", "w": 45, "h": 294, "size": 14141}, {"id": "gect", "w": 42, "h": 294, "size": 13263}, {"id": "a_t1", "w": 113, "h": 94, "size": 10902}, {"id": "a_t2", "w": 113, "h": 94, "size": 10905}, {"id": "gTWe", "w": 109, "h": 84, "size": 9425}, {"id": "dial", "w": 108, "h": 76, "size": 8401}, {"id": "a_t3", "w": 76, "h": 90, "size": 6631}, {"id": "39dn", "w": 148, "h": 37, "size": 5212}, {"id": "39up", "w": 148, "h": 37, "size": 5212}, {"id": "41Wn", "w": 148, "h": 37, "size": 5212}, {"id": "41hp", "w": 148, "h": 37, "size": 5212}, {"id": "41in", "w": 148, "h": 37, "size": 5212}, {"id": "41zp", "w": 148, "h": 37, "size": 5212}, {"id": "43Wn", "w": 148, "h": 37, "size": 5212}, {"id": "43hp", "w": 148, "h": 37, "size": 5212}, {"id": "43in", "w": 148, "h": 37, "size": 5212}, {"id": "43zp", "w": 148, "h": 37, "size": 5212}, {"id": "gcdl", "w": 294, "h": 18, "size": 4512}, {"id": "gpZy", "w": 294, "h": 18, "size": 170}, {"id": "geLp", "w": 89, "h": 57, "size": 5182}, {"id": "geRp", "w": 89, "h": 57, "size": 4531}, {"id": "gX_n", "w": 69, "h": 65, "size": 4706}, {"id": "wUPr", "w": 63, "h": 63, "size": 1791}, {"id": "sV`n", "w": 150, "h": 26, "size": 3598}, {"id": "sVqp", "w": 150, "h": 26, "size": 3598}, {"id": "bNin", "w": 68, "h": 54, "size": 3727}, {"id": "bNzp", "w": 68, "h": 54, "size": 3727}, {"id": "g_cd", "w": 45, "h": 80, "size": 3866}, {"id": "gecd", "w": 42, "h": 80, "size": 3626}, {"id": "aYYn", "w": 128, "h": 26, "size": 3080}, {"id": "aYjp", "w": 128, "h": 26, "size": 3080}, {"id": "sxTh", "w": 133, "h": 25, "size": 3394}, {"id": "ggT1", "w": 72, "h": 45, "size": 3331}, {"id": "gge1", "w": 72, "h": 45, "size": 3331}, {"id": "gqkg", "w": 72, "h": 45, "size": 3331}, {"id": "aqkg", "w": 70, "h": 45, "size": 3105}, {"id": "gkdl", "w": 18, "h": 174, "size": 3680}, {"id": "gxZy", "w": 18, "h": 174, "size": 3684}, {"id": "geWn", "w": 114, "h": 27, "size": 3074}, {"id": "ge_p", "w": 114, "h": 27, "size": 3074}, {"id": "g_\\p", "w": 113, "h": 27, "size": 3046}, {"id": "anUd", "w": 114, "h": 26, "size": 2729}, {"id": "anUu", "w": 114, "h": 26, "size": 2729}, {"id": "cupr", "w": 58, "h": 48, "size": 1052}, {"id": "adh1", "w": 111, "h": 24, "size": 2542}, {"id": "adh2", "w": 111, "h": 24, "size": 2542}, {"id": "agL1", "w": 111, "h": 24, "size": 2542}, {"id": "agL2", "w": 111, "h": 24, "size": 2542}, {"id": "sR`c", "w": 139, "h": 18, "size": 2328}, {"id": "nqVn", "w": 88, "h": 28, "size": 2574}, {"id": "nqgp", "w": 88, "h": 28, "size": 2574}, {"id": "ntVn", "w": 88, "h": 28, "size": 2574}, {"id": "ntgp", "w": 88, "h": 28, "size": 2574}, {"id": "gX[x", "w": 56, "h": 42, "size": 2284}, {"id": "rW_x", "w": 56, "h": 42, "size": 2284}, {"id": "akgn", "w": 95, "h": 24, "size": 2006}, {"id": "akxp", "w": 95, "h": 24, "size": 2006}, {"id": "aLQn", "w": 92, "h": 24, "size": 2124}, {"id": "aLbp", "w": 92, "h": 24, "size": 2124}, {"id": "aRen", "w": 92, "h": 24, "size": 2124}, {"id": "aRhy", "w": 92, "h": 24, "size": 2124}, {"id": "aRvp", "w": 92, "h": 24, "size": 2125}, {"id": "a[Dp", "w": 92, "h": 24, "size": 2124}, {"id": "a[ln", "w": 92, "h": 24, "size": 2124}, {"id": "a_fn", "w": 92, "h": 24, "size": 2124}, {"id": "a_wp", "w": 92, "h": 24, "size": 2124}, {"id": "aazg", "w": 92, "h": 24, "size": 2124}, {"id": "acHn", "w": 92, "h": 24, "size": 2125}, {"id": "acYp", "w": 92, "h": 24, "size": 2125}, {"id": "acgy", "w": 92, "h": 24, "size": 2124}, {"id": "adf1", "w": 92, "h": 24, "size": 2124}, {"id": "adf2", "w": 92, "h": 24, "size": 2124}, {"id": "agJ1", "w": 92, "h": 24, "size": 2124}, {"id": "agJ2", "w": 92, "h": 24, "size": 2124}, {"id": "agU1", "w": 92, "h": 24, "size": 2124}, {"id": "agU2", "w": 92, "h": 24, "size": 2124}, {"id": "agW1", "w": 92, "h": 24, "size": 2124}, {"id": "agW2", "w": 92, "h": 24, "size": 2124}, {"id": "amKn", "w": 92, "h": 24, "size": 2124}, {"id": "am\\p", "w": 92, "h": 24, "size": 2124}, {"id": "apig", "w": 92, "h": 24, "size": 2124}, {"id": "asYg", "w": 92, "h": 24, "size": 2124}, {"id": "aupg", "w": 92, "h": 24, "size": 2124}, {"id": "dHan", "w": 92, "h": 24, "size": 2125}, {"id": "dHjy", "w": 92, "h": 24, "size": 2124}, {"id": "dHrp", "w": 92, "h": 24, "size": 2125}, {"id": "gEQn", "w": 92, "h": 24, "size": 2306}, {"id": "gEbp", "w": 92, "h": 24, "size": 2306}, {"id": "gNfn", "w": 92, "h": 24, "size": 2306}, {"id": "gNwp", "w": 92, "h": 24, "size": 2306}, {"id": "gTDp", "w": 92, "h": 24, "size": 2306}, {"id": "gTln", "w": 92, "h": 24, "size": 2306}, {"id": "gazg", "w": 92, "h": 24, "size": 2306}, {"id": "gcKn", "w": 92, "h": 24, "size": 2306}, {"id": "gc[n", "w": 92, "h": 24, "size": 2306}, {"id": "gc\\p", "w": 92, "h": 24, "size": 2306}, {"id": "gclp", "w": 92, "h": 24, "size": 2306}, {"id": "gfYn", "w": 92, "h": 24, "size": 2306}, {"id": "gfjp", "w": 92, "h": 24, "size": 2306}, {"id": "gpig", "w": 92, "h": 24, "size": 2306}, {"id": "gsYg", "w": 92, "h": 24, "size": 2306}, {"id": "gupg", "w": 92, "h": 24, "size": 2306}, {"id": "seNe", "w": 198, "h": 11, "size": 2245}, {"id": "seYu", "w": 198, "h": 11, "size": 2222}, {"id": "seHl", "w": 197, "h": 11, "size": 2226}, {"id": "aKct", "w": 90, "h": 24, "size": 2080}, {"id": "aXGt", "w": 90, "h": 24, "size": 2080}, {"id": "a]Yq", "w": 90, "h": 24, "size": 2080}, {"id": "a]bn", "w": 90, "h": 24, "size": 2080}, {"id": "a]lq", "w": 90, "h": 24, "size": 2080}, {"id": "a]ls", "w": 90, "h": 24, "size": 2080}, {"id": "a`Sn", "w": 90, "h": 24, "size": 1906}, {"id": "baWn", "w": 90, "h": 24, "size": 2080}, {"id": "bahp", "w": 90, "h": 24, "size": 2080}, {"id": "gKct", "w": 90, "h": 24, "size": 2259}, {"id": "gXGt", "w": 90, "h": 24, "size": 2259}, {"id": "ggT2", "w": 91, "h": 23, "size": 2101}, {"id": "gge2", "w": 91, "h": 23, "size": 2098}, {"id": "aPQn", "w": 90, "h": 23, "size": 1902}, {"id": "aPbp", "w": 90, "h": 23, "size": 1902}, {"id": "a`dp", "w": 90, "h": 23, "size": 2076}, {"id": "cNQn", "w": 90, "h": 23, "size": 2076}, {"id": "cNbp", "w": 90, "h": 23, "size": 2076}, {"id": "gLcn", "w": 90, "h": 23, "size": 2165}, {"id": "gLtp", "w": 90, "h": 23, "size": 2165}, {"id": "gTWn", "w": 90, "h": 23, "size": 2165}, {"id": "gThp", "w": 90, "h": 23, "size": 2165}, {"id": "gYlt", "w": 345, "h": 6, "size": 74}, {"id": "g]Xn", "w": 90, "h": 23, "size": 2165}, {"id": "g]ip", "w": 90, "h": 23, "size": 2165}, {"id": "g_Wd", "w": 90, "h": 23, "size": 2165}, {"id": "g_Wu", "w": 90, "h": 23, "size": 2165}, {"id": "g`Sn", "w": 90, "h": 23, "size": 2165}, {"id": "g`dp", "w": 90, "h": 23, "size": 2165}, {"id": "okdn", "w": 90, "h": 23, "size": 2076}, {"id": "okup", "w": 90, "h": 23, "size": 2076}, {"id": "d`in", "w": 56, "h": 24, "size": 1332}, {"id": "d`lr", "w": 56, "h": 24, "size": 1332}, {"id": "d`zp", "w": 56, "h": 24, "size": 1332}, {"id": "a_Qn", "w": 37, "h": 31, "size": 1230}, {"id": "a_bp", "w": 37, "h": 31, "size": 1230}, {"id": "a_cn", "w": 37, "h": 31, "size": 1230}, {"id": "a_tp", "w": 37, "h": 31, "size": 1230}, {"id": "gXQn", "w": 37, "h": 31, "size": 1266}, {"id": "gXbp", "w": 37, "h": 31, "size": 1266}, {"id": "gXcn", "w": 37, "h": 31, "size": 1266}, {"id": "gXtp", "w": 37, "h": 31, "size": 1266}, {"id": "ppHl", "w": 63, "h": 18, "size": 98}, {"id": "ppNe", "w": 63, "h": 18, "size": 465}, {"id": "ppYu", "w": 63, "h": 18, "size": 1100}, {"id": "ggst", "w": 42, "h": 26, "size": 1196}, {"id": "nkfn", "w": 47, "h": 21, "size": 1077}, {"id": "nkwp", "w": 47, "h": 21, "size": 984}, {"id": "rVUn", "w": 47, "h": 21, "size": 1076}, {"id": "rVfp", "w": 47, "h": 21, "size": 984}, {"id": "aehd", "w": 45, "h": 20, "size": 986}, {"id": "aehu", "w": 45, "h": 20, "size": 986}, {"id": "gehd", "w": 45, "h": 20, "size": 986}, {"id": "gehu", "w": 45, "h": 20, "size": 986}, {"id": "ggIs", "w": 20, "h": 45, "size": 1015}, {"id": "ggh3", "w": 20, "h": 45, "size": 1016}, {"id": "ggh4", "w": 20, "h": 45, "size": 1016}, {"id": "ggs3", "w": 20, "h": 45, "size": 1016}, {"id": "ggs4", "w": 20, "h": 45, "size": 1016}, {"id": "gPcp", "w": 37, "h": 24, "size": 950}, {"id": "gaOg", "w": 37, "h": 24, "size": 950}, {"id": "gPRn", "w": 36, "h": 24, "size": 927}, {"id": "gQ_1", "w": 36, "h": 24, "size": 927}, {"id": "gQ_2", "w": 36, "h": 24, "size": 927}, {"id": "gQ_3", "w": 36, "h": 24, "size": 927}, {"id": "gQ_4", "w": 36, "h": 24, "size": 927}, {"id": "gQ_5", "w": 36, "h": 24, "size": 927}, {"id": "gQ_6", "w": 36, "h": 24, "size": 927}, {"id": "gQ_7", "w": 36, "h": 24, "size": 927}, {"id": "gQ_8", "w": 36, "h": 24, "size": 927}, {"id": "gQ_9", "w": 36, "h": 24, "size": 927}, {"id": "gUgn", "w": 36, "h": 24, "size": 927}, {"id": "gUpd", "w": 36, "h": 24, "size": 927}, {"id": "gUpg", "w": 36, "h": 24, "size": 927}, {"id": "gUug", "w": 36, "h": 24, "size": 927}, {"id": "gUxp", "w": 36, "h": 24, "size": 927}, {"id": "gWgy", "w": 36, "h": 24, "size": 927}, {"id": "g[_1", "w": 36, "h": 24, "size": 927}, {"id": "g[_2", "w": 36, "h": 24, "size": 927}, {"id": "g[_3", "w": 36, "h": 24, "size": 927}, {"id": "g[_4", "w": 36, "h": 24, "size": 927}, {"id": "g[_5", "w": 36, "h": 24, "size": 927}, {"id": "g[_6", "w": 36, "h": 24, "size": 927}, {"id": "g^a1", "w": 36, "h": 24, "size": 927}, {"id": "g^a2", "w": 36, "h": 24, "size": 927}, {"id": "g^a3", "w": 36, "h": 24, "size": 927}, {"id": "g^a4", "w": 36, "h": 24, "size": 927}, {"id": "g^a5", "w": 36, "h": 24, "size": 927}, {"id": "g^a6", "w": 36, "h": 24, "size": 927}, {"id": "g_`g", "w": 36, "h": 24, "size": 927}, {"id": "g_ag", "w": 36, "h": 24, "size": 927}, {"id": "g_bg", "w": 36, "h": 24, "size": 927}, {"id": "g_cg", "w": 36, "h": 24, "size": 927}, {"id": "g_dg", "w": 36, "h": 24, "size": 927}, {"id": "g_eg", "w": 36, "h": 24, "size": 927}, {"id": "g_fg", "w": 36, "h": 24, "size": 927}, {"id": "g_gg", "w": 36, "h": 24, "size": 927}, {"id": "g_hg", "w": 36, "h": 24, "size": 927}, {"id": "g`Zn", "w": 36, "h": 24, "size": 927}, {"id": "g`hg", "w": 36, "h": 24, "size": 927}, {"id": "g`kp", "w": 36, "h": 24, "size": 927}, {"id": "gair", "w": 36, "h": 24, "size": 927}, {"id": "gb[n", "w": 36, "h": 24, "size": 927}, {"id": "gbig", "w": 36, "h": 24, "size": 927}, {"id": "gblp", "w": 36, "h": 24, "size": 927}, {"id": "gcbd", "w": 36, "h": 24, "size": 927}, {"id": "gcbg", "w": 36, "h": 24, "size": 927}, {"id": "gcbu", "w": 36, "h": 24, "size": 927}, {"id": "gcdn", "w": 36, "h": 24, "size": 927}, {"id": "gcup", "w": 36, "h": 24, "size": 927}, {"id": "gehn", "w": 36, "h": 24, "size": 927}, {"id": "geyp", "w": 36, "h": 24, "size": 927}, {"id": "gfog", "w": 36, "h": 24, "size": 927}, {"id": "ggdn", "w": 36, "h": 24, "size": 927}, {"id": "ggup", "w": 36, "h": 24, "size": 927}, {"id": "gm[1", "w": 36, "h": 24, "size": 927}, {"id": "gm[2", "w": 36, "h": 24, "size": 927}, {"id": "gm[3", "w": 36, "h": 24, "size": 927}, {"id": "gm[4", "w": 36, "h": 24, "size": 927}, {"id": "gm[5", "w": 36, "h": 24, "size": 927}, {"id": "gm[6", "w": 36, "h": 24, "size": 927}, {"id": "gm[7", "w": 36, "h": 24, "size": 927}, {"id": "gm[8", "w": 36, "h": 24, "size": 927}, {"id": "gm[9", "w": 36, "h": 24, "size": 927}, {"id": "grVg", "w": 36, "h": 24, "size": 927}, {"id": "grag", "w": 36, "h": 24, "size": 927}, {"id": "grbg", "w": 36, "h": 24, "size": 927}, {"id": "grcg", "w": 36, "h": 24, "size": 927}, {"id": "grdg", "w": 36, "h": 24, "size": 927}, {"id": "greg", "w": 36, "h": 24, "size": 927}, {"id": "grfg", "w": 36, "h": 24, "size": 927}, {"id": "grig", "w": 36, "h": 24, "size": 927}, {"id": "gsqd", "w": 36, "h": 24, "size": 927}, {"id": "gsqg", "w": 36, "h": 24, "size": 927}, {"id": "gsun", "w": 36, "h": 24, "size": 927}, {"id": "gteg", "w": 36, "h": 24, "size": 927}, {"id": "aOUn", "w": 29, "h": 29, "size": 926}, {"id": "aOfp", "w": 29, "h": 29, "size": 926}, {"id": "aYVn", "w": 29, "h": 29, "size": 926}, {"id": "aYgp", "w": 29, "h": 29, "size": 926}, {"id": "a\\`n", "w": 29, "h": 29, "size": 926}, {"id": "a\\qp", "w": 29, "h": 29, "size": 926}, {"id": "a]In", "w": 29, "h": 29, "size": 926}, {"id": "a]Zp", "w": 29, "h": 29, "size": 926}, {"id": "a`_n", "w": 29, "h": 29, "size": 926}, {"id": "a`pp", "w": 29, "h": 29, "size": 926}, {"id": "af]g", "w": 29, "h": 29, "size": 926}, {"id": "ajNn", "w": 29, "h": 29, "size": 926}, {"id": "aoen", "w": 29, "h": 29, "size": 926}, {"id": "aovp", "w": 29, "h": 29, "size": 926}, {"id": "auSn", "w": 29, "h": 29, "size": 926}, {"id": "audp", "w": 29, "h": 29, "size": 926}, {"id": "axjg", "w": 29, "h": 29, "size": 926}, {"id": "e\\Un", "w": 29, "h": 29, "size": 926}, {"id": "e\\cg", "w": 29, "h": 29, "size": 926}, {"id": "e\\fp", "w": 29, "h": 29, "size": 926}, {"id": "geSn", "w": 29, "h": 29, "size": 926}, {"id": "geag", "w": 29, "h": 29, "size": 926}, {"id": "gedp", "w": 29, "h": 29, "size": 926}, {"id": "reVn", "w": 29, "h": 29, "size": 926}, {"id": "redg", "w": 29, "h": 29, "size": 926}, {"id": "regp", "w": 29, "h": 29, "size": 926}, {"id": "geVd", "w": 36, "h": 23, "size": 923}, {"id": "geVu", "w": 36, "h": 23, "size": 923}, {"id": "mehn", "w": 33, "h": 23, "size": 822}, {"id": "mevg", "w": 33, "h": 23, "size": 822}, {"id": "meyp", "w": 33, "h": 23, "size": 822}, {"id": "mhjn", "w": 33, "h": 23, "size": 822}, {"id": "plvg", "w": 33, "h": 23, "size": 822}, {"id": "poen", "w": 33, "h": 23, "size": 822}, {"id": "pojn", "w": 33, "h": 23, "size": 822}, {"id": "povp", "w": 33, "h": 23, "size": 822}, {"id": "aj_p", "w": 27, "h": 28, "size": 792}, {"id": "ae`n", "w": 37, "h": 20, "size": 436}, {"id": "ajvn", "w": 37, "h": 20, "size": 313}, {"id": "geRh", "w": 37, "h": 20, "size": 746}, {"id": "fPMg", "w": 28, "h": 21, "size": 660}, {"id": "fPMn", "w": 28, "h": 21, "size": 672}, {"id": "fPMr", "w": 28, "h": 21, "size": 620}, {"id": "fP^g", "w": 28, "h": 21, "size": 667}, {"id": "fP^p", "w": 28, "h": 21, "size": 640}, {"id": "fP^r", "w": 28, "h": 21, "size": 653}, {"id": "ggg1", "w": 21, "h": 25, "size": 565}, {"id": "ggg2", "w": 21, "h": 25, "size": 588}, {"id": "rrr1", "w": 21, "h": 25, "size": 565}, {"id": "rrr2", "w": 21, "h": 25, "size": 565}, {"id": "xxx0", "w": 21, "h": 25, "size": 565}, {"id": "gd\\s", "w": 21, "h": 23, "size": 536}, {"id": "ggh1", "w": 21, "h": 23, "size": 536}, {"id": "ggh2", "w": 21, "h": 23, "size": 555}, {"id": "ggs1", "w": 21, "h": 23, "size": 536}, {"id": "ggs2", "w": 21, "h": 23, "size": 539}, {"id": "g\\g6", "w": 37, "h": 12, "size": 395}, {"id": "a`^o", "w": 19, "h": 18, "size": 285}, {"id": "gXre", "w": 18, "h": 18, "size": 372}, {"id": "gXrw", "w": 18, "h": 18, "size": 372}, {"id": "ri^o", "w": 18, "h": 18, "size": 309}, {"id": "gcRn", "w": 17, "h": 18, "size": 306}, {"id": "gccp", "w": 17, "h": 18, "size": 306}, {"id": "ghlu", "w": 17, "h": 18, "size": 306}, {"id": "gihd", "w": 20, "h": 15, "size": 371}, {"id": "gihu", "w": 20, "h": 15, "size": 372}, {"id": "gind", "w": 20, "h": 15, "size": 371}, {"id": "ginu", "w": 20, "h": 15, "size": 371}, {"id": "gcfn", "w": 16, "h": 18, "size": 293}, {"id": "gcwp", "w": 16, "h": 18, "size": 308}, {"id": "ghru", "w": 16, "h": 18, "size": 269}, {"id": "gken", "w": 18, "h": 16, "size": 362}, {"id": "gkvp", "w": 18, "h": 16, "size": 362}, {"id": "gvuu", "w": 18, "h": 16, "size": 362}, {"id": "g]]t", "w": 15, "h": 18, "size": 310}, {"id": "gcch", "w": 15, "h": 18, "size": 288}, {"id": "gceb", "w": 15, "h": 18, "size": 310}, {"id": "gkRn", "w": 18, "h": 15, "size": 341}, {"id": "gkcp", "w": 18, "h": 15, "size": 341}, {"id": "gvdu", "w": 18, "h": 15, "size": 341}, {"id": "fPBk", "w": 20, "h": 13, "size": 302}, {"id": "gVBp", "w": 16, "h": 16, "size": 330}, {"id": "gVSn", "w": 16, "h": 16, "size": 315}, {"id": "gVXn", "w": 16, "h": 16, "size": 315}, {"id": "gVdp", "w": 16, "h": 16, "size": 330}, {"id": "gVen", "w": 16, "h": 16, "size": 315}, {"id": "gVip", "w": 16, "h": 16, "size": 330}, {"id": "gVjn", "w": 16, "h": 16, "size": 315}, {"id": "gVvp", "w": 16, "h": 16, "size": 330}, {"id": "geHn", "w": 16, "h": 16, "size": 315}, {"id": "geQn", "w": 16, "h": 16, "size": 315}, {"id": "geVn", "w": 16, "h": 16, "size": 315}, {"id": "geYp", "w": 16, "h": 16, "size": 330}, {"id": "geZn", "w": 16, "h": 16, "size": 315}, {"id": "ge\\o", "w": 16, "h": 16, "size": 330}, {"id": "ge`n", "w": 16, "h": 16, "size": 318}, {"id": "gebp", "w": 16, "h": 16, "size": 330}, {"id": "gegp", "w": 16, "h": 16, "size": 330}, {"id": "gekp", "w": 16, "h": 16, "size": 330}, {"id": "a`Tn", "w": 15, "h": 17, "size": 332}, {"id": "a`Un", "w": 15, "h": 17, "size": 332}, {"id": "a`Wr", "w": 15, "h": 17, "size": 332}, {"id": "a`Xr", "w": 15, "h": 17, "size": 332}, {"id": "a`ep", "w": 15, "h": 17, "size": 332}, {"id": "a`fp", "w": 15, "h": 17, "size": 332}, {"id": "g`Tn", "w": 15, "h": 17, "size": 308}, {"id": "g`Un", "w": 15, "h": 17, "size": 308}, {"id": "g`Wr", "w": 15, "h": 17, "size": 308}, {"id": "g`Xr", "w": 15, "h": 17, "size": 308}, {"id": "g`ep", "w": 15, "h": 17, "size": 308}, {"id": "g`fp", "w": 15, "h": 17, "size": 308}, {"id": "gY^o", "w": 21, "h": 12, "size": 214}, {"id": "gk]t", "w": 18, "h": 14, "size": 320}, {"id": "gkch", "w": 18, "h": 14, "size": 320}, {"id": "gkeb", "w": 18, "h": 14, "size": 320}, {"id": "adfh", "w": 14, "h": 14, "size": 229}, {"id": "aduc", "w": 14, "h": 14, "size": 229}, {"id": "gLUn", "w": 14, "h": 14, "size": 251}, {"id": "gL]n", "w": 14, "h": 14, "size": 251}, {"id": "gLfp", "w": 14, "h": 14, "size": 251}, {"id": "gLnp", "w": 14, "h": 14, "size": 251}, {"id": "g\\g4", "w": 16, "h": 12, "size": 134}, {"id": "g\\g7", "w": 16, "h": 12, "size": 142}, {"id": "g\\g9", "w": 16, "h": 12, "size": 134}, {"id": "g\\bn", "w": 13, "h": 12, "size": 181}, {"id": "g\\g1", "w": 13, "h": 12, "size": 181}, {"id": "g\\sp", "w": 13, "h": 12, "size": 181}, {"id": "aPgn", "w": 12, "h": 12, "size": 184}, {"id": "aSUn", "w": 12, "h": 12, "size": 197}, {"id": "aSfp", "w": 12, "h": 12, "size": 195}, {"id": "aabp", "w": 12, "h": 12, "size": 184}, {"id": "cLXx", "w": 12, "h": 12, "size": 195}, {"id": "caSf", "w": 12, "h": 12, "size": 197}, {"id": "ca_n", "w": 12, "h": 12, "size": 197}, {"id": "l_ek", "w": 13, "h": 10, "size": 112}, {"id": "a]ch", "w": 11, "h": 11, "size": 158}, {"id": "a]pe", "w": 11, "h": 11, "size": 158}, {"id": "dp]d", "w": 11, "h": 11, "size": 162}, {"id": "dp]u", "w": 11, "h": 11, "size": 180}, {"id": "gT^d", "w": 11, "h": 11, "size": 162}, {"id": "gT^u", "w": 11, "h": 11, "size": 180}, {"id": "hDek", "w": 15, "h": 8, "size": 102}, {"id": "gYdr", "w": 10, "h": 10, "size": 132}, {"id": "aRR1", "w": 8, "h": 12, "size": 102}, {"id": "aRR2", "w": 8, "h": 12, "size": 109}, {"id": "aRR3", "w": 8, "h": 12, "size": 123}, {"id": "aRR4", "w": 8, "h": 12, "size": 137}, {"id": "aRR5", "w": 8, "h": 12, "size": 150}, {"id": "aRR6", "w": 8, "h": 12, "size": 160}, {"id": "aZM1", "w": 8, "h": 12, "size": 102}, {"id": "aZM2", "w": 8, "h": 12, "size": 110}, {"id": "aZM3", "w": 8, "h": 12, "size": 126}, {"id": "aZM4", "w": 8, "h": 12, "size": 142}, {"id": "aZM5", "w": 8, "h": 12, "size": 155}, {"id": "aZM6", "w": 8, "h": 12, "size": 165}, {"id": "gRR1", "w": 8, "h": 12, "size": 102}, {"id": "gRR2", "w": 8, "h": 12, "size": 109}, {"id": "gRR3", "w": 8, "h": 12, "size": 123}, {"id": "gRR4", "w": 8, "h": 12, "size": 142}, {"id": "gRR5", "w": 8, "h": 12, "size": 155}, {"id": "gRR6", "w": 8, "h": 12, "size": 160}, {"id": "rRR1", "w": 8, "h": 12, "size": 102}, {"id": "rRR2", "w": 8, "h": 12, "size": 109}, {"id": "rRR3", "w": 8, "h": 12, "size": 123}, {"id": "rRR4", "w": 8, "h": 12, "size": 137}, {"id": "rRR5", "w": 8, "h": 12, "size": 150}, {"id": "rRR6", "w": 8, "h": 12, "size": 160}, {"id": "tcTl", "w": 11, "h": 8, "size": 82}, {"id": "tcZe", "w": 11, "h": 8, "size": 82}, {"id": "tceu", "w": 11, "h": 8, "size": 82}, {"id": "aZM0", "w": 7, "h": 11, "size": 98}, {"id": "a]On", "w": 11, "h": 7, "size": 124}, {"id": "a]`p", "w": 11, "h": 7, "size": 124}, {"id": "gVOn", "w": 11, "h": 7, "size": 124}, {"id": "gVZn", "w": 11, "h": 7, "size": 124}, {"id": "gV`p", "w": 11, "h": 7, "size": 124}, {"id": "gVfn", "w": 11, "h": 7, "size": 124}, {"id": "gVkp", "w": 11, "h": 7, "size": 124}, {"id": "gVwp", "w": 11, "h": 7, "size": 124}, {"id": "g]an", "w": 8, "h": 9, "size": 120}, {"id": "geUn", "w": 8, "h": 9, "size": 111}, {"id": "gefp", "w": 8, "h": 9, "size": 125}, {"id": "riQf", "w": 12, "h": 6, "size": 79}, {"id": "rkfk", "w": 11, "h": 6, "size": 85}, {"id": "aaNl", "w": 9, "h": 7, "size": 114}, {"id": "aa_u", "w": 9, "h": 7, "size": 114}, {"id": "g\\g5", "w": 18, "h": 3, "size": 38}, {"id": "g\\g3", "w": 17, "h": 3, "size": 70}, {"id": "g\\h0", "w": 17, "h": 3, "size": 43}, {"id": "ridr", "w": 7, "h": 7, "size": 100}, {"id": "g\\g2", "w": 3, "h": 16, "size": 122}, {"id": "g\\g8", "w": 3, "h": 16, "size": 122}, {"id": "aaTe", "w": 6, "h": 6, "size": 78}];
+const INITIAL = {"00": "ggup", "01": "gQ_4", "02": "gQ_7", "03": "gQ_5", "04": "gm[6", "05": "gQ_5", "06": "gQ_6", "07": "gteg", "08": "g_`g", "09": "g_ag", "0a": "g_bg", "0b": "g_fg", "0c": "gUpg", "0d": "g_gg", "0e": "gQ_3", "0f": "gQ_6", "10": "g_cg", "11": "gQ_2"};
+
+let mapping = JSON.parse(localStorage.getItem('pgedit-icon-map') || 'null') || {...INITIAL};
+let activeType = null;
+let filterSize = '';
+let filterText = '';
+
+// --- helpers ---
+function persist() {
+  localStorage.setItem('pgedit-icon-map', JSON.stringify(mapping));
+  updateProgress();
+}
+function updateProgress() {
+  const n = Object.keys(mapping).length;
+  document.getElementById('progress').textContent = `${n} / 18 已指派`;
+}
+function toast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 1500);
+}
+
+// --- left panel ---
+function renderTypes() {
+  const html = TYPES.map(([idx, en, zh]) => {
+    const sid = mapping[idx];
+    const isActive = activeType === idx ? ' active' : '';
+    const previewBody = sid
+      ? `<img src="art-out/${sid}.png" alt="${sid}">`
+      : `<span class="glyph">${idx}</span>`;
+    const sidLine = sid
+      ? `<div class="sid">${sid}</div>`
+      : `<div class="sid" style="color:var(--muted)">未指派</div>`;
+    const clearBtn = sid
+      ? `<button class="clear" onclick="event.stopPropagation();clearType('${idx}')" title="清除">✕</button>`
+      : `<span style="width:24px"></span>`;
+    return `
+      <div class="type-card${isActive}" onclick="selectType('${idx}')">
+        <div class="preview">${previewBody}</div>
+        <div class="meta">
+          <div class="id">${idx} · ${en}</div>
+          <div class="name">${zh}</div>
+          ${sidLine}
+        </div>
+        ${clearBtn}
+      </div>`;
+  }).join('');
+  document.getElementById('types').innerHTML = html;
+}
+
+function selectType(idx) {
+  activeType = activeType === idx ? null : idx;
+  renderTypes();
+  renderGallery();
+  if (activeType) {
+    toast(`選 sprite 指派給 ${idx}`);
+  }
+}
+
+function clearType(idx) {
+  delete mapping[idx];
+  persist();
+  renderTypes();
+  renderGallery();
+}
+
+// --- right panel ---
+function renderSizeFilter() {
+  const counts = {};
+  SPRITES.forEach(s => {
+    const k = `${s.w}x${s.h}`;
+    counts[k] = (counts[k] || 0) + 1;
+  });
+  const sel = document.getElementById('sizeFilter');
+  Object.entries(counts).sort((a,b) => b[1]-a[1]).forEach(([sz, n]) => {
+    const opt = document.createElement('option');
+    opt.value = sz;
+    opt.textContent = `${sz} (${n})`;
+    sel.appendChild(opt);
+  });
+  sel.addEventListener('change', e => { filterSize = e.target.value; renderGallery(); });
+}
+
+function renderGallery() {
+  const term = filterText.trim().toLowerCase();
+  const filtered = SPRITES.filter(s => {
+    if (filterSize && `${s.w}x${s.h}` !== filterSize) return false;
+    if (term && !s.id.toLowerCase().includes(term)) return false;
+    return true;
+  });
+  document.getElementById('filterStat').textContent =
+    `顯示 ${filtered.length} / ${SPRITES.length}` +
+    (activeType ? ` · 點圖指派給 ${activeType}` : '');
+  const used = new Set(Object.values(mapping));
+  const html = filtered.map(s => {
+    const isUsed = used.has(s.id) ? ' assigned' : '';
+    return `
+      <div class="sprite${isUsed}" onclick="assignSprite('${s.id.replace(/'/g, "\\'")}')">
+        <img src="art-out/${s.id}.png" alt="${s.id}">
+        <div class="id">${s.id}</div>
+        <div class="wh">${s.w}×${s.h}</div>
+      </div>`;
+  }).join('');
+  document.getElementById('gallery').innerHTML = html;
+}
+
+function assignSprite(sid) {
+  if (!activeType) {
+    toast('先點左邊的 type card 選擇要指派的 unit type');
+    return;
+  }
+  mapping[activeType] = sid;
+  persist();
+  toast(`✓ ${activeType} ← ${sid}`);
+  renderTypes();
+  renderGallery();
+}
+
+document.getElementById('search').addEventListener('input', e => {
+  filterText = e.target.value;
+  renderGallery();
+});
+
+function resetAll() {
+  if (!confirm('清空全部 18 個 mapping?')) return;
+  mapping = {};
+  persist();
+  renderTypes();
+  renderGallery();
+  toast('已清空');
+}
+
+// --- export ---
+function buildExportSh() {
+  const lines = ['#!/usr/bin/env bash',
+                 '# 從專案根目錄 (PanzerGeneralEditor/) 執行',
+                 'set -euo pipefail',
+                 'cd "$(dirname "$0")/.." 2>/dev/null || true'];
+  TYPES.forEach(([idx]) => {
+    const sid = mapping[idx];
+    if (!sid) return;
+    // shell-safe: filenames may contain [, `, ', \, etc.; use python -c for portability
+    const safe = sid.replace(/'/g, "'\\''");
+    lines.push(`cp "tools/art-out/${safe}.png" "PGEdit.Avalonia/Assets/units/${idx}.png"`);
+  });
+  return lines.join('\n');
+}
+
+function buildExportJson() {
+  return JSON.stringify(mapping, null, 2);
+}
+
+function exportMapping() {
+  document.getElementById('exportSh').textContent = buildExportSh();
+  document.getElementById('exportJson').textContent = buildExportJson();
+  document.getElementById('modal').classList.add('show');
+}
+
+function copyExport(kind) {
+  const el = document.getElementById(kind === 'sh' ? 'exportSh' : 'exportJson');
+  navigator.clipboard.writeText(el.textContent).then(() => toast('已複製到剪貼簿'));
+}
+
+// init
+renderTypes();
+renderSizeFilter();
+renderGallery();
+updateProgress();
+</script>
+</body>
+</html>

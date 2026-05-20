@@ -2,6 +2,16 @@
 * Editor can support "Panzer General DOS/WIN95", "Allied General".
 * Panzer General Chinese Translation is used for WIN95 version
 
+2026.05.20 — PGEdit.Avalonia (.NET 8 modern rewrite)
+ 1. 平行新增 `PGEdit.Avalonia/`,.NET 8 + Avalonia 11,跨平台 (Win/Linux/Mac)
+ 2. Modern UX:雙欄密集排版、Dark/Light theme、雷達圖、搜尋、Undo/Redo、儲存前 DiffDialog、自動 `.bak` 備份
+ 3. 真實 PG hex unit icon:解出 `ART/TILEART.DAT` SSI chunk 格式,256 個 u-sprite,EQP byte 42 (`_little_icon`) 直接 index
+ 4. 字體大、64×64 icon container、白色 silhouette + 藍色 accent (Notion 風)
+ 5. 既有 WinForms 版 (`PGEdit/`) 完全保留,共用 PGEQReader source
+ 6. 詳細見 [PGEdit.Avalonia/README.md](PGEdit.Avalonia/README.md)、[tools/README.md](tools/README.md)
+
+![](images/avalonia-light-theme.png)
+
 2016.10.18
  1. 完成大部分字型的調整, 更適合中文閱讀
  2. 新增調整字型過後的畫面

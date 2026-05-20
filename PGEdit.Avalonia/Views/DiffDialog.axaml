@@ -1,0 +1,44 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:models="using:PGEdit.Avalonia.Models"
+        x:Class="PGEdit.Avalonia.Views.DiffDialog"
+        Title="確認變更"
+        Width="520" Height="420"
+        WindowStartupLocation="CenterOwner"
+        CanResize="False">
+    <Grid RowDefinitions="Auto,*,Auto" Margin="20">
+        <StackPanel Grid.Row="0" Margin="0,0,0,12">
+            <TextBlock Classes="h2" Text="即將寫回的變更" />
+            <TextBlock Classes="hint" Text="檢視下列差異後再決定是否儲存。" />
+        </StackPanel>
+
+        <Border Grid.Row="1" Classes="card">
+            <ScrollViewer>
+                <ItemsControl x:Name="DiffList">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate x:DataType="models:DiffRow">
+                            <Grid ColumnDefinitions="*,Auto,Auto,Auto" Margin="0,4">
+                                <TextBlock Text="{Binding Field}" Classes="label" />
+                                <TextBlock Grid.Column="1" Text="{Binding Before}"
+                                           Foreground="{DynamicResource TextMutedBrush}"
+                                           FontFamily="Consolas, monospace" />
+                                <TextBlock Grid.Column="2" Text=" → " Margin="6,0"
+                                           Foreground="{DynamicResource TextMutedBrush}" />
+                                <TextBlock Grid.Column="3" Text="{Binding After}"
+                                           Foreground="{DynamicResource AccentBrush}"
+                                           FontFamily="Consolas, monospace"
+                                           FontWeight="SemiBold" />
+                            </Grid>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </ScrollViewer>
+        </Border>
+
+        <StackPanel Grid.Row="2" Orientation="Horizontal"
+                    HorizontalAlignment="Right" Spacing="8" Margin="0,12,0,0">
+            <Button Classes="ghost" Content="取消" Click="OnCancel" />
+            <Button Classes="primary" Content="確認儲存" Click="OnConfirm" />
+        </StackPanel>
+    </Grid>
+</Window>

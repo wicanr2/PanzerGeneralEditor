@@ -236,6 +236,9 @@ namespace PGEQReader {
     public int get_transport_type(int i) {
       return (int) pg_unit_list.get_transport_type(i);
     }
+    public int get_little_icon(int i) {
+      return (int) pg_unit_list.get_little_icon(i);
+    }
 		public void list_i(int i) {
 			pg_unit_list.list_i( i );
 		}
