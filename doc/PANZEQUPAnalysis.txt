@@ -1,178 +1,190 @@
 JP's Panzer General and Allied General Forum
-PANZEQUP.EQP
-=============
+PANZEQUP.EQP 檔案結構分析
+==========================
 
-Our interest here lies in Unit Equipment Specs (UES) editing. UES editing focuses on adding or altering PANZEQUP.EQP data.
+本文聚焦於 Unit Equipment Specs (UES,單位裝備規格) 的編輯。UES 編輯的
+重點是新增或修改 PANZEQUP.EQP 內的資料。
 
-History
----------
 
-1) The grand-daddy of all PANZEQUP.EQP versions is none other than the PANZEQUP.EQP binary file that is NATIVE to PG1-DOS, Floppy Disk Ver. 1.2. It is 21,252 bytes long and has a date file stamp of November 1, 1994. It is located in the \DAT\ sub-directory.
+歷史
+-----
 
-2) There is also the PANZEQUP.EQP file which is NATIVE to AG-Win9x Ver. 1.1. It is 21,902 bytes long. This file is a SLIGHTLY MODIFIED & EXPANDED version of the PANZEQUP.EQP file that is native to PG1-DOS.
+1) PANZEQUP.EQP 的「老祖宗」是 PG1-DOS 軟碟版 1.2 內的原版檔案,大小
+   21,252 bytes,時間戳記為 1994-11-01,位置在 \DAT\ 子目錄。
 
-3) In its present state of technical development, PGF NEITHER requires the presence of NOR utilizes a PANZEQUP.EQP file in the \SCENARIO\ sub-folder. Instead it employs its own NATIVE EQUIPMENT.PGEQP file.
+2) AG-Win9x 1.1 也有一份原版 PANZEQUP.EQP,大小 21,902 bytes;這是
+   PG1-DOS 原版稍經修改與擴充後的版本。
 
-4) Countless Modded PANZEQUP.EQP files have been "publicized" in the last 15 years or so!  :) Modded Second Generation PANZEQUP.EQP files have done away with numerous misconceptions that have plagued the Hobby during the first 3-4 years... :phew 
+3) 在目前技術發展狀態下,PGF (Panzer General Forever) 既不需要也不使用
+   \SCENARIO\ 子目錄下的 PANZEQUP.EQP,而是用自家原生的 EQUIPMENT.PGEQP。
 
-Data Structure: Overview
--------------------------------
+4) 過去 15 年來「公開」的 modded PANZEQUP.EQP 不計其數。第二代 modded
+   PANZEQUP.EQP 也釐清了過去 3~4 年困擾玩家的許多誤解。
 
-The byte values at offsets 0 (XX) and 1 (YY) have a special meaning and must be read together (16-BIT format). Thus, "XX YY" must be interpreted as hexadecimal YYXX. This value represents the total number of UES entries sequentially present in PANZEQUP.EQP.
 
-Each UES is described by a data block (array) 50 bytes long. Such arrays are sequentially placed one after another in STRICT order.
+資料結構:總覽
+----------------
 
-To illustrate, let us take SSI's grand-daddy. The hexadecimal byte value at offset 0 is "A9" and that at offset 1 is "01"; this means hexadeximal 01A9. In base ten terms, hexadecimal 01A9 translates to 425. Therefore, the PANZEQUP.EQP file contains PRECISELY 425 UES data entries, each 50 bytes long. Now, 425 times 50 equals 21,250. Add 2 bytes corresponding to offsets 0 and 1 and the result is 21,252 bytes which is, of course, the PANZEQUP.EQP file size. Mercifully, everything checks out !! :phew 
+byte offset 0 (XX) 與 1 (YY) 兩個 byte 需合起來讀 (16-bit 格式):
+「XX YY」要解讀為十六進位 YYXX。這個值代表 PANZEQUP.EQP 內順序排列的
+UES 項數總和。
 
-A typical UES array consists of TWO (2) consecutive data segments. The FIRST data segment is 20 bytes long and is dedicated to the unit type's alphanumeric description (e.g., Katyusha BM31). In binary terms, each UES array sports a "null-terminated" data segment, 20 bytes long. The SECOND data segment is 30 bytes long and each byte is dedicated to a particular unit attribute.
+每個 UES 是 50 bytes 的資料區塊 (陣列),嚴格依順序一個接一個排列。
 
-ATTENTION: PANZEQUP.EQP can accommodate up to 450 UES entries, MAXIMUM !! Thus spoke the... PG1-DOS engine... :yikes :)
+舉例 SSI 老祖宗版:offset 0 byte 值 "A9",offset 1 byte 值 "01" → 十六
+進位 01A9 → 十進位 425。所以該 PANZEQUP.EQP 含 425 筆 UES,每筆 50
+bytes。425 × 50 = 21,250,加上 offset 0~1 兩個 byte 共 21,252 bytes,
+完全吻合檔案大小。
 
-Data Structure: Details
-----------------------------
+注意:PANZEQUP.EQP 最多可容納 450 筆 UES,這是 PG1-DOS 引擎的硬上限。
 
-Consider a typical UES array.
 
-Bytes b00 to b19 inclusive constitute the FIRST data segment (UNIT LABEL).
+資料結構:細節
+----------------
 
-The SECOND data segment is outlined via the following legend:
+典型 UES 陣列分成兩段資料區:
+
+- byte b00 ~ b19 (共 20 bytes):第一段,單位名稱 (UNIT LABEL),
+  null-terminated string。
+
+- byte b20 ~ b49 (共 30 bytes):第二段,每個 byte 對應一個單位屬性。
+
+
+第二段每個 byte 的意義:
 
 ===> Byte b20
-UNIT CLASS
-Hexadecimal Range: "00" to "11"
+單位類別 (UNIT CLASS)
+十六進位範圍:"00" ~ "11"
 
-Infantry (00) ; Tank (01) ; Recon (02) ; Anti-Tank (03) ; Artillery (04)
-Anti-Aircraft (05) ; Air Defense (06) ; Fort(ification) (07) ; Fighter (08)
-Tactical Bomber (09) ; Level Bomber (0A) ; Submarine (0B)
-Destroyer (0C) ; Capital Ship (0D) ; Aircraft Carrier (0E)
-Land Transport (0F) ; Air Transport (10) ; Sea Transport (11)
+  步兵 (00)       | 戰車 (01)         | 偵查 (02)
+  反戰車 (03)     | 砲兵 (04)         | 自走防空砲 (05)
+  固定防空 (06)   | 碉堡 (07)         | 戰鬥機 (08)
+  戰術轟炸機 (09) | 同溫層轟炸機 (0A) | 潛水艇 (0B)
+  驅逐艦 (0C)     | 主力艦 (0D)       | 航空母艦 (0E)
+  陸地運輸 (0F)   | 空中運輸 (10)     | 海上運輸 (11)
 
 ===> Byte b21
-SOFT ATTACK
-Hexadecimal Range: "00" to "FF"
+柔性攻擊 (SOFT ATTACK,對軟目標)
+十六進位範圍:"00" ~ "FF"
 
 ===> Byte b22
-HARD ATTACK
-Hexadecimal Range: "00" to "FF"
+硬性攻擊 (HARD ATTACK,對裝甲)
+十六進位範圍:"00" ~ "FF"
 
 ===> Byte b23
-AIR ATTACK
-Hexadecimal Range: "00" to "FF"
+對空攻擊 (AIR ATTACK)
+十六進位範圍:"00" ~ "FF"
 
 ===> Byte b24
-NAVAL ATTACK
-Hexadecimal Range: "00" to "FF"
+對海攻擊 (NAVAL ATTACK)
+十六進位範圍:"00" ~ "FF"
 
 ===> Byte b25
-GROUND DEFENSE
-Hexadecimal Range: "00" to "FF"
+對地防禦 (GROUND DEFENSE)
+十六進位範圍:"00" ~ "FF"
 
 ===> Byte b26
-AIR DEFENSE
-Hexadecimal Range: "00" to "FF"
+對空防禦 (AIR DEFENSE)
+十六進位範圍:"00" ~ "FF"
 
 ===> Byte b27
-CLOSE / ASW DEFENSE
-Hexadecimal Range: "00" to "FF"
+近戰 / 反潛防禦 (CLOSE / ASW DEFENSE)
+十六進位範圍:"00" ~ "FF"
 
 ===> Byte b28
-TARGET TYPE
-Hexadecimal Range: "00" to "03"
+目標類型 (TARGET TYPE)
+十六進位範圍:"00" ~ "03"
 
-Soft (00) ; Hard (01) ; Air (02) ; Naval (03)
+  軟 (00) | 硬 (01) | 空 (02) | 海 (03)
 
-===> Bytes b29 AND b30
-BOMBER SPECIAL CAPABILITIES
+===> Bytes b29 與 b30
+轟炸機特殊能力 (BOMBER SPECIAL CAPABILITIES)
 
-IF Tactical Bomber Class THEN
-"00 00" ALLOWS the initiation of air combat (i.e., Fighter-Bomber);
-"01 00" PROHIBITS the initiation of air combat
+  若為「戰術轟炸機」類別:
+    "00 00" 允許主動發起空戰 (即 Fighter-Bomber)
+    "01 00" 禁止主動發起空戰
 
-IF Level Bomber Class THEN
-"XX YY" SPECIFIES the unit's BASE ACCURACY RATING (16-BIT)
-Array Range: "00 00" to "FF 01"
+  若為「同溫層轟炸機」類別:
+    "XX YY" 為單位的「基本準確度」(16-bit),範圍 "00 00" ~ "FF 01"
 
-IF Other Class THEN
-"00 00"
+  其他類別:固定為 "00 00"
 
 ===> Byte b31
-INITIATIVE
-Hexadecimal Range: "00" to "FF"
+攻擊啟動值 (INITIATIVE)
+十六進位範圍:"00" ~ "FF"
 
 ===> Byte b32
-RANGE
-Hexadecimal Range: "00" to "FF"
+攻擊範圍 (RANGE)
+十六進位範圍:"00" ~ "FF"
 
 ===> Byte b33
-SPOTTING
-Hexadecimal Range: "00" to "FF"
+偵查範圍 (SPOTTING)
+十六進位範圍:"00" ~ "FF"
 
 ===> Byte b34
-SURFACE / AIR UNIT
-Hexadecimal Range: "00" OR "01" (Boolean)
+地面/空中單位 (SURFACE / AIR UNIT)
+布林值:"00" 或 "01"
 
-Surface (00) ; Air (01)
+  地面/海面 (00) | 空中 (01)
 
 ===> Byte b35
-MOVEMENT METHOD
-Hexadecimal Range: "00" to "07"
+移動方式 (MOVEMENT METHOD)
+十六進位範圍:"00" ~ "07"
 
-Tracked (00) ; Half-Tracked (01) ; Wheeled (02) ; Leg (03)
-Towed (04) ; Air (05) ; Naval (06) ; All Terrain (07)
+  履帶 (00)   | 半履帶 (01) | 輪胎 (02) | 徒步 (03)
+  拖曳 (04)   | 飛行 (05)   | 航行 (06) | 全地形 (07)
 
 ===> Byte b36
-MOVEMENT ALLOWANCE
-Hexadecimal Range: "00" to "FF"
+移動量 (MOVEMENT ALLOWANCE)
+十六進位範圍:"00" ~ "FF"
 
 ===> Byte b37
-FUEL CAPACITY
-Hexadecimal Range: "00" to "FF"
+油量容量 (FUEL CAPACITY)
+十六進位範圍:"00" ~ "FF"
 
 ===> Byte b38
-AMMO CAPACITY
-Hexadecimal Range: "00" to "FF"
+彈藥容量 (AMMO CAPACITY)
+十六進位範圍:"00" ~ "FF"
 
 ===> Byte b39
-UNKNOWN
-Hexadecimal Value: "0A" (Universal)
+未知欄位 (固定為 "0A")
 
-SPECULATION: Unit-specific entrenchment level (PLUS points) cap universally overridden by "last minute" PANZER.EXE simplifying code tinkering... :2cents  :dunno 
+  推測:單位的構工 (entrenchment) 等級上限,但在 PANZER.EXE 最後階段
+  簡化程式碼時被全域 override 了。
 
 ===> Byte b40
-UNKNOWN
-Hexadecimal Value: "06" (Universal)
+未知欄位 (固定為 "06")
 
-SPECULATION: Unit-specific experience level (PLUS points) cap universally overridden by "last minute" PANZER.EXE simplifying code tinkering... :2cents  :dunno 
+  推測:單位的經驗值上限,被 PANZER.EXE 簡化過。
 
 ===> Byte b41
-PURCHASE COST DIVIDED BY TWELVE (12)
-Hexadecimal Range: "00" to "FF"
+單位購買價格除以 12 (PURCHASE COST DIVIDED BY 12)
+十六進位範圍:"00" ~ "FF"
 
-===> Bytes b42 AND b43
-UNIT IMAGE POSITION IN TACICONS.SHP
-"XX YY" (16-BIT) ----> hexadecimal YYXX
-Array Range: "00 00" to "FF FF"
+===> Bytes b42 與 b43
+單位圖示在 TACICONS.SHP 內的位置
+"XX YY" (16-bit) → 十六進位 YYXX
+陣列範圍:"00 00" ~ "FF FF"
 
-===> Bytes b44 AND b45
-UNIT ANIMATION ID (decimal) "xxx" AS PER FILE A_xxx_n.SHP
-"XX YY" (16-BIT) ----> hexadecimal YYXX
-Array Range: "00 00" to "68 00"
+===> Bytes b44 與 b45
+單位動畫 ID (decimal "xxx"),對應檔案 A_xxx_n.SHP
+"XX YY" (16-bit) → 十六進位 YYXX
+陣列範圍:"00 00" ~ "68 00"
 
 ===> Byte b46
-UNIT TYPE DEBUT MONTH
-Hexadecimal Range: "01" to "0C"
+單位首次登場月份 (DEBUT MONTH)
+十六進位範圍:"01" ~ "0C"
 
 ===> Byte b47
-UNIT TYPE DEBUT YEAR
-Hexadecimal Range: "0A" to "63"
+單位首次登場年份 (DEBUT YEAR)
+十六進位範圍:"0A" ~ "63"
 
 ===> Byte b48
-UNIT TYPE LAST YEAR OF AVAILABILITY
-Hexadecimal Range: "0A" to "63"
+單位最後可購買年份 (LAST YEAR OF AVAILABILITY)
+十六進位範圍:"0A" ~ "63"
 
 ===> Byte b49
-UNIT TYPE TRANSPORTABILITY COMBO CAPABILITIES
-Hexadecimal Range: "00" to "03"
+單位被運輸能力 (TRANSPORTABILITY COMBO)
+十六進位範圍:"00" ~ "03"
 
-None (00) ; Sea ONLY (01) ; Sea AND Air (Airfields ONLY) (02)
-Sea AND Air (Paradrop) (03)
+  無 (00) | 僅海運 (01) | 海運 + 空運 (限機場) (02) | 海運 + 傘降 (03)

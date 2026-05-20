@@ -11,7 +11,7 @@
 |---|---|
 | 18 欄位平鋪、無分組 | 卡片分組 (識別 / 攻擊 / 防禦 / 機動 / 經濟 / 進階) |
 | 9pt 新細明體,固定 pixel 佈局 | Inter + Noto Sans TC,DPI-aware,可拉伸 |
-| 無 Dark mode | 預設 Dark,可切 Light |
+| 無 Dark mode | 可在 Dark / Light 主題切換,預設 Light |
 | ListBox 純文字 | 單位類別 glyph + 搜尋 (`SearchQuery` 即時過濾) |
 | `MouseHover` 才顯示說明 | `Watermark` + `ToolTip` + 永遠可見的 hint |
 | 直接覆寫 .EQP | 第一次儲存自動 `*.YYYYMMDD-HHMMSS.bak` |
@@ -50,7 +50,7 @@ PGEdit.Avalonia/
     └── AppTheme.axaml           ← .card / .h2 / .label 等 utility class
 ```
 
-## Build (docker, 符合 L.CY hard rule)
+## Build (docker)
 
 不依賴本機 .NET SDK,從專案根目錄執行:
 

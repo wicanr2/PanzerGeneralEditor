@@ -1,60 +1,61 @@
-EMBEDDED UNIT CLASS ENTRENCHMENT RATE TABLE
-==============================================
+內嵌單位類別「構工率」表 (Embedded Unit Class Entrenchment Rate Table, EUCERT)
+====================================================================================
 
-This is a relatively recent "discovery"... It was greatly facilitated by the contents of Prima's Official Strategy Guide. :banana 
+這是一份相對近期被「發掘」的資料,內容大量得益於 Prima 官方策略指南。
 
-In order for aspiring Developers and Phantom-Modders to have a fighting chance at properly understanding what the Embedded Unit Class Entrenchment Rate Table (EUCERT) is all about, they sure as hell must understand the advanced mechanics and internals of ==>
+要理解 EUCERT 是什麼,讀者應先熟悉以下兩個進階主題:
 
 a) Unit Classes Revisited
-viewtopic.php?f=98&t=48441#p703049
+   (單位類別解析,JP's Panzer General Forum 第 48441 號討論串第 703049 文)
 
 b) Ground Unit Entrenchment
-viewtopic.php?f=98&t=48441#p711217
+   (地面單位構工機制,同討論串第 711217 文)
 
-Data Structure
-------------------
-
-The EUCERT commences at hexadecimal offset BD4FD (decimal offset 775421). It spans a 19 byte long data block (array). The hexadecimal value of each byte reflects the UCER corresponding to each one of the 18 eminently familiar unit classes (PLUS that one MYSTERY class) as per reference point (a) above.
-
-Here is the relevant SSI stock hexadecimal array:
-
-03 01 02 02 02 01 02 01 00 00 00 00 00 00 00 01 00 00 00
-
-PG.exe (WIN) location 0x1BDB48h
-
-Less cryptically:
-
-CODE: SELECT ALL
-Infantry (03)            
-Tank (01)
-Recon (02)
-Anti-Tank (02)      
-Artillery (02)
-Anti-Aircraft (01)
-Air Defense (02)        
-Fort(ification) (01)
-Fighter (00)
-Tactical Bomber (00)
-Level Bomber (00)
-Submarine (00)
-Destroyer (00)
-Capital Ship (00)    
-Aircraft Carrier (00)
-Land Transport (01)
-Air Transport (00)
-Sea Transport (00)
-MYSTERY (00)
-
-
-A Note
+資料結構
 ---------
 
-Is it not wonderful that, in this particular area, Prima and SSI are in COMPLETE agreement? The Guide's table (Table 4-2) flawlessly reflects the actual hexadecimal contents of PANZER.EXE both in substance as well in presentation (ok, ok, Prima's Guide forgot to mention Land Transports  :) )...  :clap Most probably, SSI's Mr. Paul Murray did NOT call in sick that particular day (leaving the explaining to "poor" Mr. Joel Billings  :yikes )... Thank you Paul. :clap
-Last edited by PBEMmaniac on 19 Jan 2014, 08:47, edited 3 times in total.
-PBEMmaniac
-Specialist Eight
-Specialist Eight
- 
-Posts: 1191
-Joined: 22 Feb 2012, 20:56
+EUCERT 起始位置為十六進位 offset BD4FD (十進位 775421)。整個資料區塊長
+度 19 byte;每個 byte 的十六進位值對應一個 unit class (18 個常見類別 +
+1 個未知/神秘類別) 的「Unit Class Entrenchment Rate (UCER)」。
 
+SSI 原版的十六進位陣列如下:
+
+    03 01 02 02 02 01 02 01 00 00 00 00 00 00 00 01 00 00 00
+
+對應的 PG.exe (Windows 版) 位置:0x1BDB48h
+
+逐 byte 解讀:
+
+| 索引 | Unit Class             | UCER |
+|------|------------------------|------|
+| 00   | Infantry (步兵)         | 03   |
+| 01   | Tank (戰車)             | 01   |
+| 02   | Recon (偵查)            | 02   |
+| 03   | Anti-Tank (反戰車)      | 02   |
+| 04   | Artillery (砲兵)        | 02   |
+| 05   | Anti-Aircraft (自走防空)| 01   |
+| 06   | Air Defense (固定防空)  | 02   |
+| 07   | Fortification (碉堡)    | 01   |
+| 08   | Fighter (戰鬥機)        | 00   |
+| 09   | Tactical Bomber (戰術轟炸機) | 00 |
+| 0A   | Level Bomber (同溫層轟炸機)  | 00 |
+| 0B   | Submarine (潛水艇)      | 00   |
+| 0C   | Destroyer (驅逐艦)      | 00   |
+| 0D   | Capital Ship (主力艦)   | 00   |
+| 0E   | Aircraft Carrier (航空母艦) | 00 |
+| 0F   | Land Transport (陸運)   | 01   |
+| 10   | Air Transport (空運)    | 00   |
+| 11   | Sea Transport (海運)    | 00   |
+| --   | MYSTERY (神秘類別)      | 00   |
+
+
+附註
+-----
+
+值得注意的是,在這個領域 Prima 官方策略指南與 SSI 完全一致 —— 指南的
+Table 4-2 內容與 PANZER.EXE 的實際 hex 資料在實質與呈現上都對得起來
+(雖然 Prima 漏掉了 Land Transport 那一行)。
+
+原文作者:PBEMmaniac (Specialist Eight)
+JP's Panzer General and Allied General Forum
+最後修改:2014-01-19

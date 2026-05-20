@@ -1,17 +1,17 @@
-# Panzer General Editor
+# 裝甲元帥編輯器 (Panzer General Editor)
 
-A binary equipment-file (`PANZEQUP.EQP`) editor for **Panzer General (DOS/WIN95)** and
-**Allied General**. Lets you read and modify per-unit stats: attack / defense, range,
-spotting, movement, fuel, ammo, cost, etc.
+針對 **Panzer General (DOS/WIN95)** 與 **Allied General** 的裝備檔
+(`PANZEQUP.EQP`) 編輯器。可讀取與修改每個單位的數值:攻擊力、防禦力、
+射程、偵查、移動量、油量、彈藥、價格等。
 
-Two editions ship in this repo:
+本 repo 包含兩個版本:
 
-| Edition | Stack | Status |
+| 版本 | 技術 | 狀態 |
 |---|---|---|
-| **PGEdit.Avalonia** | .NET 8 + Avalonia 11, cross-platform (Win / Linux / macOS) | **Active** — modern UX rewrite |
-| `PGEdit/` (legacy)  | WinForms + .NET 4.5, Visual Studio 2012 | Preserved as-is |
+| **PGEdit.Avalonia** | .NET 8 + Avalonia 11,跨平台 (Win / Linux / macOS) | **主要開發版** |
+| `PGEdit/` (舊版) | WinForms + .NET 4.5,Visual Studio 2012 | 保留不動 |
 
-Both share the same underlying parser (`PGEQReader/`).
+兩個版本共用底層解析器 `PGEQReader/`。
 
 ---
 
@@ -19,96 +19,90 @@ Both share the same underlying parser (`PGEQReader/`).
 
 ![](images/avalonia-light-theme.png)
 
-### Features
+### 功能
 
-- **Two-column dense layout** — attack/defense left, radar+economy+mobility right;
-  single screen, no scrolling needed.
-- **Real PG hex unit icons** — decodes `ART/TILEART.DAT` (SSI chunk-based format
-  `Indx` / `Vers` / `CPal` / `RLEi`), extracts 256 `u###` hex sprites. EQP byte 42
-  (`_little_icon`) directly indexes into `Assets/units/u<NN>.png`, matching the
-  exact sprite the game would render in-hex.
-- **Dark / Light theme** — Notion-style white surface + blue accent (default), or
-  switch via `RequestedThemeVariant`.
-- **Safer editing** —
-  - Auto-`.bak` (timestamped) on first save per session
-  - Diff dialog before write-back lists every changed field
-  - Undo / Redo (Ctrl+Z / Ctrl+Y), depth 100
-  - Range-validated `NumericUpDown` instead of free-form text (cost auto-rounds to
-    multiples of 12)
-- **Stat radar chart** — 7-axis (soft/hard/air/naval attack + ground/air/close
-  defense) per unit.
-- **Search & filter** — filter unit list by name or type.
-- **Large UI** — 16 px base font, 64×64 unit-icon container, generous spacing.
-- **Keyboard shortcuts** — Ctrl+O open · Ctrl+S save · Ctrl+Z/Y undo/redo · ↑/↓ next/prev unit.
+- **雙欄密集排版** — 攻擊/防禦在左,雷達圖、經濟、機動在右;單畫面看完不需捲動。
+- **真實 PG hex 單位圖示** — 解析 `ART/TILEART.DAT` (SSI chunk-based 格式
+  `Indx` / `Vers` / `CPal` / `RLEi`),抽出 256 個 `u###` hex sprite。EQP byte 42
+  (`_little_icon`) 直接 index 進 `Assets/units/u<NN>.png`,跟遊戲中 hex 格子內
+  顯示的 sprite 完全一致。
+- **Dark / Light 主題** — 預設 Notion 風白底藍 accent,可由 `RequestedThemeVariant` 切換。
+- **安全編輯** —
+  - 首次儲存自動產生時間戳記 `.bak` 備份
+  - 寫回前彈出 Diff 對話框列出每筆變更
+  - Undo / Redo (Ctrl+Z / Ctrl+Y),深度 100
+  - `NumericUpDown` 帶 range 驗證,避免亂打字破檔;價格自動修為 12 倍數
+- **能力雷達圖** — 7 軸 (柔/硬/空/海 攻擊 + 地/空/近戰 防禦)。
+- **搜尋與過濾** — 依名稱或類別即時過濾單位列表。
+- **大字體** — 16 px 基準字級、64×64 單位圖示、寬鬆間距,長時間編輯不傷眼。
+- **快捷鍵** — Ctrl+O 開啟 · Ctrl+S 儲存 · Ctrl+Z/Y 復原/重做 · ↑/↓ 上/下一個單位。
 
-### Build (Docker, recommended)
+### 建置 (Docker,推薦)
 
-No local .NET SDK required:
+不需要本機安裝 .NET SDK:
 
 ```bash
 ./PGEdit.Avalonia/docker-build.sh linux-x64
-# →  PGEdit.Avalonia/out/linux-x64/PGEdit.Avalonia  (self-contained binary)
+# →  PGEdit.Avalonia/out/linux-x64/PGEdit.Avalonia  (self-contained 單檔)
 ```
 
-Other RIDs:
+其他平台:
 
-| Target | RID |
+| 目標 | RID |
 |---|---|
 | Windows x64 | `win-x64` |
 | macOS Apple Silicon | `osx-arm64` |
 | macOS Intel | `osx-x64` |
 
-### Build (local .NET 8 SDK)
+### 建置 (本機 .NET 8 SDK)
 
 ```bash
 cd PGEdit.Avalonia
 dotnet publish -c Release -r <RID> --self-contained -p:PublishSingleFile=true -o ./out
 ```
 
-### Layout
+### 目錄結構
 
 ```
 PGEdit.Avalonia/
-├── PGEdit.Avalonia.csproj      .NET 8 SDK-style; links PGEQReader source
-├── Program.cs, App.axaml/.cs   Entry + Fluent + dark/light palette
+├── PGEdit.Avalonia.csproj      .NET 8 SDK-style;link 引用 PGEQReader source
+├── Program.cs, App.axaml/.cs   進入點 + Fluent + dark/light palette
 ├── Models/                     UnitDto, UnitType, StatBounds, DiffRow
 ├── Services/                   EquipmentFileService, BackupService,
 │                               UndoRedoService, UnitIconProvider
 ├── ViewModels/                 Main, UnitEditor, UnitListItem
 ├── Views/                      MainWindow.axaml, DiffDialog.axaml
-├── Controls/                   StatRadarChart  (custom Avalonia Control)
-├── Themes/                     AppTheme.axaml  (.card / .h2 / .label utility classes)
+├── Controls/                   StatRadarChart  (自製 Avalonia Control)
+├── Themes/                     AppTheme.axaml  (.card / .h2 / .label utility class)
 └── Assets/units/u000.png ~ u255.png
 ```
 
-See [PGEdit.Avalonia/README.md](PGEdit.Avalonia/README.md) for more.
+詳細說明見 [PGEdit.Avalonia/README.md](PGEdit.Avalonia/README.md)。
 
 ---
 
-## Tools
+## 工具 (tools/)
 
-The `tools/` directory provides utilities to inspect Panzer General data files and
-re-extract unit icons from a different PG installation:
+`tools/` 目錄提供探勘 PG 資料檔 + 從不同 PG 安裝重抽 unit icon 的腳本:
 
-- `pg-data-explorer.py` — scans a PG `DATA/` or `ART/` folder and produces a
-  report with file magic, entropy, ASCII strings, and hex headers.
-- `extract-art-dat.py` — parses SSI chunk-based `.DAT` files (`Indx` TOC + `RLEi`
-  RLE-encoded indexed bitmaps + `CPal` palettes) and writes one PNG per sprite.
-- `build-icon-picker.py` + `icon-picker.html` — generates a self-contained HTML
-  gallery of all extracted sprites (per size) with click-to-assign workflow and a
-  shell-command exporter.
+- `pg-data-explorer.py` — 掃描 PG `DATA/` 或 `ART/` 目錄,輸出每個檔的 magic、
+  entropy、ASCII 字串、hex header 摘要報告。
+- `extract-art-dat.py` — 解析 SSI chunk-based `.DAT` 檔 (`Indx` TOC + `RLEi`
+  RLE-encoded indexed bitmap + `CPal` palette),每個 sprite 輸出一張 PNG。
+- `build-icon-picker.py` + `icon-picker.html` — 產出 self-contained 的 HTML
+  sprite gallery (依尺寸分組,可搜尋、點選指派、匯出 shell 指令)。
 
-See [tools/README.md](tools/README.md).
+詳細說明見 [tools/README.md](tools/README.md)。
 
 ---
 
-## Legacy `PGEdit/` (WinForms)
+## 舊版 `PGEdit/` (WinForms)
 
-Preserved unchanged. Build with Visual Studio 2012 + .NET Framework 4.5, or
-run the pre-built binary at `PGEdit/prebuilt/PGEdit.exe`.
+保留不動。需要 Visual Studio 2012 + .NET Framework 4.5 建置,或直接執行
+`PGEdit/prebuilt/PGEdit.exe`。
 
 ---
 
-## Author
+## 作者
 
 Chun-Yu Wang (wicanr2@gmail.com)

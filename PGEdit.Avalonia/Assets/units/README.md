@@ -29,15 +29,25 @@ PG 原本「每個 unit 一張 icon」的視覺資訊 (例如 Tiger I vs Tiger I
 
 ## Palette
 
-目前用 greyscale fallback (shape 清楚但 team colour 沒對)。要真正的彩色
-需要解 SSI CPal 6698-byte 結構,後續 TODO。
+目前以 fallback palette 上色:透明背景 + 純白 silhouette,在編輯器左上的
+藍色 (或深色) 圓角容器中對比清楚。真正的 PG 彩色 sprite 需要解 SSI CPal
+6698-byte 結構,列為後續 TODO。
 
 ## 來源
 
 ```
-PG-cht-1.2_繁中化_20260519-wine/ART/TILEART.DAT  (888 KB)
+{PG 安裝目錄}/ART/TILEART.DAT  (888 KB)
   ↓ tools/extract-art-dat.py
   ↓ TOC: 919 entries → 912 RLEi sprites
-  ↓ filter prefix='u', size=60x50 → 256 个 hex unit
+  ↓ filter prefix='u', size=60x50 → 256 個 hex unit
 PGEdit.Avalonia/Assets/units/u000.png ~ u255.png
+```
+
+如要從不同 PG 安裝重新抽,執行:
+
+```bash
+python3 tools/extract-art-dat.py \
+    /path/to/PG/ART/TILEART.DAT \
+    tools/tileart-out/
+cp tools/tileart-out/u???.png PGEdit.Avalonia/Assets/units/
 ```
